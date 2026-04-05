@@ -1,0 +1,36 @@
+name: "📋 Task"
+description: "Tarefa técnica ou de documentação"
+title: "[TASK] "
+labels: ["setup"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição da Tarefa
+      description: O que precisa ser feito?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de Aceite
+      description: Como sabemos que está pronto?
+      placeholder: |
+        - [ ] Critério 1
+        - [ ] Critério 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: repository
+    attributes:
+      label: Repositório
+      options:
+        - petcard-api
+        - petcard-web
+        - petcard-mobile
+        - petcard-shared
+        - petcard-docs
+    validations:
+      required: true

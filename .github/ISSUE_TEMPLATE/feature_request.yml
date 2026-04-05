@@ -1,0 +1,44 @@
+name: "✨ Feature Request"
+description: "Sugerir uma nova funcionalidade"
+title: "[FEATURE] "
+labels: ["feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição da Feature
+      description: Descreva a funcionalidade desejada.
+      placeholder: "O que você gostaria que o sistema fizesse?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivação
+      description: Por que essa feature é importante?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de Aceite
+      description: Como sabemos que está pronto?
+      placeholder: |
+        - [ ] Critério 1
+        - [ ] Critério 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: repository
+    attributes:
+      label: Repositório
+      options:
+        - petcard-api
+        - petcard-web
+        - petcard-mobile
+        - petcard-shared
+    validations:
+      required: true
