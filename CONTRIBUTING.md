@@ -64,7 +64,7 @@ Como as issues podem estar em repos diferentes, use a sintaxe completa:
 - Pelo menos 1 aprovação de code review.
 - Sem commits diretos em main ou develop.
 
-## Fluxo de Atualização do @petcard/shared
+## Fluxo de Atualização do @petcardorg/shared
 
 Quando precisar alterar DTOs, enums ou types compartilhados:
 
@@ -72,7 +72,7 @@ Quando precisar alterar DTOs, enums ou types compartilhados:
 2. Incremente a versão no package.json (seguir semver).
 3. Faça push — o CI publica automaticamente no GitHub Packages.
 4. Nos repos consumidores, atualize a dependência:
-   npm update @petcard/shared
+   npm update @petcardorg/shared
 5. Verifique se o build continua passando.
 
 ## Padrões de Código
