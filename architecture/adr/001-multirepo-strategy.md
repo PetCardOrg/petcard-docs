@@ -29,7 +29,7 @@ Migramos para uma estratégia **Multirepo** com 5 repositórios independentes:
 - `petcard-shared` — Pacote npm publicado via GitHub Packages
 - `petcard-docs` — Documentação central e gestão do projeto
 
-O pacote `@petcard/shared` é publicado no GitHub Packages e consumido pelos outros repos como dependência npm convencional.
+O pacote `@petcardorg/shared` é publicado no GitHub Packages e consumido pelos outros repos como dependência npm convencional.
 
 A gestão do projeto é centralizada em um GitHub Project Board no `petcard-docs`, que agrega issues de todos os repositórios.
 
