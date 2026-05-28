@@ -1,6 +1,6 @@
 # ADR-002: Integrações Externas (M4) — Firebase Push + Google Calendar
 
-**Data:** 2026-05-16
+**Data:** 2026-05-16 (emenda em 2026-05-28: ver "Limitações conscientes (M4)")
 **Status:** Aceita
 **Autores:** Ricardo Temporal, Álvaro Araújo, Camila Martins
 
@@ -159,3 +159,18 @@ Adiar a decisão deixaria o `.env.example` ambíguo e bloquearia testes de stagi
 - Métricas Prometheus para `notification.push.dlq.depth` e `calendar.sync.dlq.depth` configuradas em PC-068 e PC-069. Alarme se DLQ > 0 por mais de 1h.
 - Runbook em `petcard-docs/runbooks/encryption-key-rotation.md` (a criar durante M4) descrevendo como gerar nova chave, re-encriptar tokens existentes e rotacionar no Secrets Manager.
 - `PATCH /tutor/me` aceita timezone via dropdown padronizado (IANA tz database) na primeira tela de onboarding do mobile, antes de qualquer registro de dose.
+
+## Limitações conscientes (M4)
+
+### Google Calendar é unidirecional (PetCard → Google)
+
+**Emenda de 2026-05-28.** A sincronização com o Google Calendar no M4 é **somente de saída**: criar, atualizar ou remover um `appointment` no PetCard reflete na agenda do tutor (via fila `calendar.sync`, entregue em PC-069). O caminho inverso — tutor edita ou apaga o evento direto no Google Calendar e o PetCard absorve a mudança — **não é implementado**. A issue PC-065 ("Sincronização bidirecional de agendamentos") foi **descopada do M4** e fechada com essa justificativa.
+
+Motivos:
+
+- **Mecanismo nativo contradiz o próprio M4.** A forma idiomática de o Google avisar mudanças é `events.watch` (push notifications), que é um **webhook de entrada** — exatamente o que esta ADR já colocou fora do escopo do M4. Exigiria endpoint HTTPS público, canal que expira a cada ~7 dias com cron de renovação e túnel em ambiente de dev.
+- **Alternativa (polling com `syncToken`) tem custo desproporcional.** Evitaria o webhook, mas adiciona cron incremental por tutor, resolução de conflito (last-write-wins via `googleEtag`/`lastSyncedAt`) e prevenção de loop de eco — engenharia significativa para um caso de uso marginal.
+- **Valor de produto baixo.** O núcleo já está entregue: a consulta marcada no PetCard aparece na agenda do tutor com lembrete nativo. O cenário inverso (tutor reagenda a consulta do vet direto no Calendar pessoal e espera o PetCard refletir) é raro e não está no caminho crítico do MVP.
+- **Coerência com YAGNI.** Alinhado ao princípio do projeto de não introduzir abstrações sem demanda real.
+
+O schema já carrega os campos que viabilizariam o lado de entrada no futuro (`googleEtag`, `syncStatus`, `lastSyncedAt` em `appointment`); a evolução para sync bidirecional fica documentada como candidata a **M5+**, caso surja demanda real.
