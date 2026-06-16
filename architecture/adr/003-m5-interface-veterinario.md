@@ -1,10 +1,10 @@
 # ADR-003: Interface do Veterinário (M5) — Escrita Reversa + Painel Web
 
-**Data:** 2026-05-29
-**Status:** 🚧 Proposta (rascunho) — pendente de sessão de arquitetura M5
-**Autores:** Ricardo Temporal (demais a confirmar na sessão)
+**Data:** 2026-05-29 (proposta) · 2026-06-16 (aceita)
+**Status:** ✅ Aceita
+**Autores:** Ricardo Temporal
 
-> Este documento é um **rascunho**. As seções "Decisões já fechadas" registram o que Ricardo definiu em 2026-05-29; as quatro "Pendências" estão abertas, com uma recomendação por pendência, para serem discutidas e fechadas em sessão antes de começar a codar. Ao fechar, mudar o status para **Aceita** e remover este aviso.
+> As quatro pendências (P1–P4) que estavam abertas no rascunho foram **fechadas e implementadas** no M5 (interface do veterinário já entregue em `develop`). Cada seção P abaixo registra agora a **decisão efetivamente adotada** e como ela foi construída no código — em três casos a direção recomendada foi seguida; em P1 a implementação ficou ainda mais simples do que a recomendação original (ver nota). Documento promovido a **Aceita** em 2026-06-16, após a defesa da Parte 1.
 
 ## Contexto
 
@@ -32,7 +32,7 @@ O veterinário é uma **entidade própria** (`veterinario`), com CRMV único e v
 
 O login do veterinário (PC-078) usa o **mesmo JWT próprio (HS256 + bcrypt)** do resto do sistema. A menção a "Auth0" na issue PC-078 está **desatualizada** — Auth0 foi abandonado em M0 (recomendação #7 da auditoria) e **não será reintroduzido**.
 
-## Pendências (a fechar na sessão)
+## Decisões fechadas (P1–P4)
 
 ### P1. Como o JWT identifica o principal com duas tabelas
 
@@ -44,7 +44,7 @@ O login do veterinário (PC-078) usa o **mesmo JWT próprio (HS256 + bcrypt)** d
 - **(B) Tabela `account`/`credential` única com FK polimórfica.** Login e senha centralizados numa tabela de credencial que aponta para `tutor` ou `veterinario`. Mais "correto" em domínios grandes, mas é uma refatoração do auth de M1 inteiro.
 - **(C) `VetJwtStrategy` + guard separados.** Estratégia e guard dedicados para a rota do vet. Isola, mas duplica pipeline de auth e complica rotas que sirvam ambos.
 
-**Recomendação:** **(A)**. Custo baixo, mantém um único guard e não mexe no auth do tutor já entregue. Sub-decisão: o `Role.VET` legado vira `type='vet'` mapeado para `role=VET` na borda (para `@Roles(Role.VET)` seguir funcionando), e o `Role.VET` em `Tutor` é marcado como morto/depreciado — confirmar se removemos o valor do enum agora ou deixamos para M6.
+**Decisão (implementada):** uma variante **mais simples que a (A)**. Em vez de adicionar um claim `type` novo, o discriminador do principal é o **próprio claim `role`** (`Role.TUTOR | Role.VET`) que o JWT já carrega. Há **endpoints de login separados** — `login` (tutor, consulta `tutor`) e `loginVeterinario` (consulta `veterinario`) em `AuthService` — e cada um assina o token com o `sub` = id da tabela correspondente e o `role` adequado. O `JwtStrategy` confia no claim (sem ida ao banco) e propaga `{ sub, email, role }`; `@Auth`/`@Roles(Role.VET)`/`RolesGuard` continuam funcionando sem mudança. **Resultado relevante:** o `Role.VET` **não virou código morto** — passou a ser exatamente o mecanismo de identidade do vet, então a preocupação do rascunho com um enum legado deixou de existir. Guard único, auth do tutor (M1) intocado.
 
 ### P2. `nota_clinica` como entidade nova vs `veterinarianName` legado
 
@@ -55,7 +55,7 @@ O login do veterinário (PC-078) usa o **mesmo JWT próprio (HS256 + bcrypt)** d
 - **(A) `nota_clinica` é entidade nova; `veterinarianName` legado fica como está.** Nova tabela `nota_clinica` (`id, petId FK, veterinarioId FK, diagnostico, prescricao, observacoes, createdAt`), imutável pelo tutor. Os campos `veterinarianName` continuam existindo como texto livre nos registros de vacina/vermífugo, sem migração. A timeline do perfil (PC-080) **mescla** as duas fontes para exibição.
 - **(B) Migrar `veterinarianName` para FK `veterinario`.** Normaliza, mas exige backfill/heurística de match por nome (dados sujos) e mexe em registros de milestones anteriores — risco alto, valor baixo para o TCC.
 
-**Recomendação:** **(A)**. YAGNI: a nota estruturada nasce limpa e ligada à entidade `veterinario`; o texto livre legado não precisa ser reescrito, só convive na visualização.
+**Decisão (implementada):** **(A)**. A tabela `nota_clinica` foi criada (`petId`/`veterinarioId` FKs, `diagnostico`, `prescricao`, `observacoes`, `googlePlaceId`, timestamps), imutável pelo tutor; o `veterinarianName` legado dos registros de vacina/vermífugo permanece como texto livre, sem migração. A timeline do perfil (PC-080) mescla as fontes na exibição.
 
 ### P3. De onde vem "pets atendidos" do dashboard
 
@@ -67,7 +67,7 @@ O login do veterinário (PC-078) usa o **mesmo JWT próprio (HS256 + bcrypt)** d
 - **(B) Tabela de vínculo explícita** (`atendimento`/`vinculo_vet_pet`). Permite vincular antes de escrever nota, mas adiciona modelo e fluxo de criação sem demanda clara no escopo de M5.
 - **(C) Escopo por clínica.** Vet vê todos os pets ligados à sua clínica. Depende de pet↔clínica, relação que **não existe** hoje — fora de escopo de M5.
 
-**Recomendação:** **(A)** para o MVP. Resolve PC-079 com o que P2 já cria. Busca por nome do pet/tutor via `where` + `ILIKE`; paginação no padrão dos outros endpoints. (B) fica como evolução se surgir o caso "vet quer ver o pet antes de atender".
+**Decisão (implementada):** **(A)**. `VeterinarioService.findAttendedPets` lista `DISTINCT petId` em `nota_clinica WHERE veterinarioId = :atual`, ordenado pela nota mais recente, com busca por nome do pet/tutor (`contains` + `mode: 'insensitive'`) e paginação no padrão dos outros endpoints. Sem tabela de vínculo nova.
 
 ### P4. Sessão e estado no `petcard-web`
 
@@ -81,7 +81,7 @@ O login do veterinário (PC-078) usa o **mesmo JWT próprio (HS256 + bcrypt)** d
 - **HTTP:** estender `apiFetch` (`src/services/api.ts`) para anexar `Authorization: Bearer` e suportar `POST/PATCH` com body — hoje é GET-only. Manter o padrão `services/*.service.ts` (espelhar `card.service.ts`) para vet/nota/pet.
 - **i18n:** toda string nova entra em `pt-BR` **e** `en-US`, sem texto hardcoded.
 
-**Recomendação:** seguir a direção acima; a única trava real é **confirmar se a API tem refresh token** — isso decide entre `localStorage` simples e o esquema memória + cookie `httpOnly`.
+**Decisão (implementada):** a API **não** expõe endpoint de refresh (confirmado), então adotou-se o caminho de MVP: **access token em `localStorage`** (`AuthContext.tsx`, chave única), com o tradeoff de XSS assumido conscientemente. Sessão via **React Context** (`AuthContext`), proteção de rotas via componente **`ProtectedRoute`** (redirect para `/login`), `apiFetch` estendido para `Authorization: Bearer` + `POST/PATCH`, e i18n pt-BR/en-US em toda string nova. Sem Redux/React Query (YAGNI).
 
 ## Alternativas Consideradas
 
@@ -102,19 +102,18 @@ Resumidas dentro de cada pendência (opções B/C rejeitadas ou adiadas em P1-P3
 
 ### Negativas / riscos
 
-- **`Role.VET` legado em `Tutor` vira código morto** até ser removido (P1) — risco de confusão se não for depreciado explicitamente nesta milestone.
-- **`localStorage` para o token** (P4, caso sem refresh) carrega risco de XSS — precisa ser registrado como limitação consciente do MVP e a sanitização/CSP do web revisada.
+- **`localStorage` para o token** (P4, sem refresh na API) carrega risco de XSS — registrado como limitação consciente do MVP; revisar sanitização/CSP do web e manter TTL curto no JWT.
 - **Timeline mesclando duas fontes** (P2): `nota_clinica` (estruturada) + `veterinarianName` (texto livre) exige cuidado de ordenação/exibição no PC-080 para não parecer inconsistente.
 
 ### Mitigações
 
-- Marcar `Role.VET` como deprecado no schema/coment e abrir item para remoção em M6.
-- Se ficar `localStorage`: documentar o tradeoff aqui, garantir TTL curto no JWT e revisar CSP/escape no `petcard-web`.
+- `Role.VET` permanece como valor **ativo** do enum (é o discriminador do principal em P1) — sem remoção pendente.
+- `localStorage` (P4): tradeoff documentado aqui; garantir TTL curto no JWT e revisar CSP/escape no `petcard-web`.
 - PC-080: normalizar as duas fontes num mesmo formato de item de timeline na camada de serviço do web antes de renderizar.
 
 ## Próximos passos
 
-1. Fechar P1-P4 em sessão; atualizar status para **Aceita**.
-2. Refletir as decisões fechadas na seção correspondente do `petcard-api/CLAUDE.md`.
-3. Confirmar com o backend (Álvaro) se a API expõe refresh token (trava de P4).
-4. PC-084/PC-085: publicar `@petcardorg/shared@0.9.0` com os DTOs antes de api/web consumirem.
+1. ✅ P1–P4 fechadas e implementadas no M5; status promovido a **Aceita** (2026-06-16).
+2. ✅ `@petcardorg/shared@0.9.0` publicado com os DTOs do vet/nota; api, web e mobile alinhados em `^0.9.0` e consumindo o contrato (DTOs locais duplicados removidos — ver auditoria 2026-06-01, achado #6).
+3. ✅ Confirmado que a API **não** expõe refresh token — P4 resolvido com `localStorage` + TTL.
+4. Pendente (Parte 2 / M6): revisar CSP/escape no `petcard-web` por conta do token em `localStorage`.
