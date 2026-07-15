@@ -37,12 +37,12 @@ Repositório central de documentação, gestão de projeto e artefatos acadêmic
 | Camada | Tecnologia |
 |---|---|
 | Mobile | React Native + Expo + TypeScript |
-| Web (Vet) | React.js 19 + Vite 6 + TypeScript |
-| Backend | NestJS 10 + Node.js 20 LTS |
+| Web (Vet) | React.js 19 + Vite 8 + TypeScript |
+| Backend | NestJS 11 + Node.js 20 LTS |
 | Banco | PostgreSQL 16 + PostGIS 3.4 |
-| Cache | Redis 7 |
+| Cache | Redis 7 (provisionado no compose, não consumido em código) |
 | Fila | RabbitMQ 3 |
 | Storage | AWS S3 |
-| Auth | Auth0 (OAuth 2.0 + JWT) |
+| Auth | JWT próprio (HS256 + bcrypt) — Auth0 abandonado em M0 (ver ADR-003) |
 | ORM | Prisma 6 |
 | Push | Firebase Cloud Messaging |
