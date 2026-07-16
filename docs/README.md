@@ -1,0 +1,19 @@
+# Documentação e artefatos do TCC
+
+Artefatos acadêmicos e técnicos centrais do PetCard, versionados aqui como fonte única. As decisões arquiteturais pontuais ficam nos [ADRs](../architecture/adr/).
+
+## Artefatos
+
+| Documento | Descrição |
+|---|---|
+| [TAP](tap.md) | Termo de Abertura do Projeto — objetivo, escopo (RF/RNF), cronograma |
+| [DAS](das.md) | Documento de Arquitetura de Software — stack, camadas, entidades, casos de uso |
+
+## Auditorias técnicas
+
+Revisões de qualidade cruzando planejado (TAP/DAS) × implementado × confiável para a banca.
+
+| Data | Documento | Foco |
+|---|---|---|
+| 2026-06-01 | [Auditoria completa](auditorias/2026-06-01.md) | Auditoria de reta final da Parte 1 (5 repos) |
+| 2026-07-01 | [Auditoria delta](auditorias/2026-07-01-delta.md) | O que a de 01/06 apontou: resolvido, pendente e novo |
