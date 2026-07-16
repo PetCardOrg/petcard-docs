@@ -25,6 +25,17 @@ Repositório central de documentação, gestão de projeto e artefatos acadêmic
 - **Artefatos do TCC** — TAP, relatório, apresentação de defesa
 - **Infraestrutura** — Terraform e scripts de deploy (quando aplicável)
  
+## Documentação e artefatos
+
+Índice completo em [`docs/`](docs/README.md).
+
+| Documento | Link |
+|---|---|
+| TAP — Termo de Abertura do Projeto | [docs/tap.md](docs/tap.md) |
+| DAS — Documento de Arquitetura de Software | [docs/das.md](docs/das.md) |
+| Auditorias técnicas | [docs/auditorias/](docs/auditorias/) |
+| ADRs — Architecture Decision Records | [architecture/adr/](architecture/adr/) |
+
 ## Links Rápidos
  
 | Recurso | Link |
