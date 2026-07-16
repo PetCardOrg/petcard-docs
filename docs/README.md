@@ -17,3 +17,9 @@ Revisões de qualidade cruzando planejado (TAP/DAS) × implementado × confiáve
 |---|---|---|
 | 2026-06-01 | [Auditoria completa](auditorias/2026-06-01.md) | Auditoria de reta final da Parte 1 (5 repos) |
 | 2026-07-01 | [Auditoria delta](auditorias/2026-07-01-delta.md) | O que a de 01/06 apontou: resolvido, pendente e novo |
+
+## QA
+
+| Documento | Descrição |
+|---|---|
+| [Roteiro de testes manuais](qa/roteiro-testes-manuais.md) | Passos e resultado esperado dos 16 casos de uso (UC01–UC16), revalidado a cada marco |
