@@ -23,3 +23,9 @@ Revisões de qualidade cruzando planejado (TAP/DAS) × implementado × confiáve
 | Documento | Descrição |
 |---|---|
 | [Roteiro de testes manuais](qa/roteiro-testes-manuais.md) | Passos e resultado esperado dos 16 casos de uso (UC01–UC16), revalidado a cada marco |
+
+## API
+
+| Artefato | Descrição |
+|---|---|
+| [Collection Postman](api/README.md) | Collection + environment do Postman com os 53 endpoints, gerados do contrato OpenAPI (PC-097/PC-098) |
