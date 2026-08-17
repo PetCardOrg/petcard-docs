@@ -20,6 +20,15 @@ As saídas possíveis eram: raspar a página de consulta (frágil, sujeita a cap
 
 ## Decisão
 
+### 0. O enforcement acompanha o caminho que a interface usa
+
+Restringir apenas a carteira do QR não bastava: a tela do veterinário lê notas
+e medicações por `/pets/:id/clinical-notes` e `/pets/:id/medications`. Enquanto
+esses endpoints exigiam só o papel `VET`, a restrição não existia no fluxo real.
+A verificação passou a valer neles também, e na criação de nota clínica. O tutor
+continua acessando o próprio pet sem verificação — a exigência recai apenas sobre
+quem entra como veterinário.
+
 ### 1. A verificação libera o extra; o QR não fica trancado
 
 A rota pública `GET /cards/:token` **permanece anônima e mínima**, com a curadoria da api#114 intacta. Acrescentou-se `GET /cards/:token/clinico`, que devolve a mesma carteira acrescida de medicações e notas clínicas, exigindo papel `VET` **e** CRMV verificado.
@@ -30,7 +39,7 @@ Rejeitou-se trancar a rota pública inteira. Isso tornaria a curadoria da api#11
 
 O acesso à base externa é mediado pela interface `CrmvValidator` (`validate(crmv, uf) → { valid, situacao, nome }`), com dois adaptadores escolhidos por configuração (`CRMV_PROVIDER`):
 
-- **`InfosimplesCrmvValidator`** — consulta o cadastro do CFMV pela [API da Infosimples](https://infosimples.com/consultas/cfmv-cadastro/), que automatiza a consulta pública oficial e devolve o campo `situacao`. Serviço **pago por chamada**: R$ 0,20 na primeira faixa, com franquia mínima mensal de R$ 100,00.
+- **`InfosimplesCrmvValidator`** — consulta o cadastro do CFMV pela [API da Infosimples](https://infosimples.com/consultas/cfmv-cadastro/), que automatiza a consulta pública oficial e devolve o campo `situacao`. Serviço **pago por chamada** — a própria resposta traz `price` (R$ 0,24 na consulta observada), com franquia mínima mensal de R$ 100,00.
 - **`StubCrmvValidator`** — determinístico, sem chamada externa. É o padrão.
 
 O provedor é detalhe de configuração. Se a Infosimples mudar de contrato, encarecer ou sair do ar, troca-se o adaptador sem tocar em regra de negócio.
@@ -60,6 +69,7 @@ A verificação **expira** (`CRMV_TTL_DAYS`, padrão 180): um registro pode ser 
 - **A validação confere o registro, não a identidade.** Nada garante que quem cadastrou o CRMV é seu titular. Uma verificação de identidade real (documento, prova de vida) está fora do escopo do TCC.
 - **A situação é lida por heurística de texto** (`Ativo`/`Regular` na string devolvida). Se o provedor mudar o vocabulário, a regra precisa acompanhar.
 - O `accessed_by_crmv` na resposta registra quem acessou, mas **não há trilha de auditoria persistida** dos acessos clínicos — candidato natural para a api#117 (histórico de ações clínicas).
+- **A documentação da API exige login**, então o adaptador nasceu de contrato inferido e precisou ser corrigido quando o contrato real apareceu: o sucesso é `code: 200` (não 600) e os registros ficam em `data[].resultados[]` (não em `data[]`). Fica o registro de que integrações assim pedem uma consulta real antes de considerar o adaptador pronto.
 
 ## Referências
 
