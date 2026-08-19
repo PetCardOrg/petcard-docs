@@ -109,6 +109,35 @@
         ]
       }
     },
+    "/auth/veterinario/register": {
+      "post": {
+        "description": "O CRMV é validado na base externa durante o cadastro. Se o provedor estiver indisponível, a conta é criada mesmo assim como não verificada — veja `crmv_verificado` na resposta.",
+        "operationId": "AuthController_registerVeterinario",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVeterinarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "409": {
+            "description": "Email ou CRMV já cadastrado"
+          }
+        },
+        "summary": "Cadastrar veterinário (JWT com role VET)",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/auth/veterinario/login": {
       "post": {
         "operationId": "AuthController_loginVeterinario",
@@ -160,6 +189,307 @@
         "summary": "Perfil do veterinário autenticado",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/veterinarios/me/crmv": {
+      "get": {
+        "operationId": "VeterinarioController_crmvStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Situação da verificação do meu CRMV",
+        "tags": [
+          "veterinarios"
+        ]
+      }
+    },
+    "/veterinarios/me/crmv/verificar": {
+      "post": {
+        "description": "A consulta é paga por chamada: uma verificação dentro do prazo é reaproveitada. Use force=true para consultar de novo mesmo assim.",
+        "operationId": "VeterinarioController_verificarCrmv",
+        "parameters": [
+          {
+            "name": "force",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Verificar meu CRMV na base externa",
+        "tags": [
+          "veterinarios"
+        ]
+      }
+    },
+    "/veterinarios/dashboard/pets": {
+      "get": {
+        "operationId": "VeterinarioController_dashboardPets",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dashboard do vet: pets atendidos (paginado, com busca)",
+        "tags": [
+          "veterinarios"
+        ]
+      }
+    },
+    "/veterinarios": {
+      "get": {
+        "operationId": "VeterinarioController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Listar veterinários",
+        "tags": [
+          "veterinarios"
+        ]
+      }
+    },
+    "/veterinarios/{id}": {
+      "get": {
+        "operationId": "VeterinarioController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          },
+          "404": {
+            "description": "Veterinário não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Buscar veterinário por id",
+        "tags": [
+          "veterinarios"
+        ]
+      },
+      "patch": {
+        "operationId": "VeterinarioController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVeterinarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          },
+          "404": {
+            "description": "Veterinário não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualizar veterinário",
+        "tags": [
+          "veterinarios"
+        ]
+      },
+      "delete": {
+        "operationId": "VeterinarioController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          },
+          "404": {
+            "description": "Veterinário não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remover veterinário",
+        "tags": [
+          "veterinarios"
         ]
       }
     },
@@ -438,6 +768,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "error",
+            "required": false,
+            "in": "query",
+            "description": "Preenchido pelo Google quando o consentimento é negado",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -569,6 +908,52 @@
           }
         ],
         "summary": "Carteira digital do pet (visão do tutor dono)",
+        "tags": [
+          "cards"
+        ]
+      }
+    },
+    "/cards/{token}/clinico": {
+      "get": {
+        "description": "Mesma carteira do QR, acrescida de medicações e notas clínicas — os dados que a carteira pública não expõe. Exige CRMV verificado (api#113).",
+        "operationId": "CardController_getClinicalCard",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarteiraDigitalClinicaResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado\n\nCRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Carteira não encontrada"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Carteira clínica por token do QR (veterinário com CRMV verificado)",
         "tags": [
           "cards"
         ]
@@ -996,7 +1381,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1042,7 +1427,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1097,7 +1482,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Registro não encontrado"
@@ -1133,7 +1518,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Registro não encontrado"
@@ -1147,6 +1532,45 @@
         "summary": "Remover registro de vacina",
         "tags": [
           "vaccines"
+        ]
+      }
+    },
+    "/pets/{petId}/historico-clinico": {
+      "get": {
+        "description": "Linha do tempo com notas, vacinas, vermífugos e medicações. Inclui registros excluídos, marcados por `excluido`, e a trilha de ações de cada um com o responsável e o CRMV.",
+        "operationId": "HistoricoClinicoController_doPet",
+        "parameters": [
+          {
+            "name": "petId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Pet não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Histórico clínico completo do pet",
+        "tags": [
+          "historico-clinico"
         ]
       }
     },
@@ -1188,7 +1612,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1234,7 +1658,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1289,7 +1713,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Registro não encontrado"
@@ -1325,7 +1749,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Registro não encontrado"
@@ -1380,7 +1804,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1426,7 +1850,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1481,7 +1905,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Registro não encontrado"
@@ -1517,7 +1941,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Registro não encontrado"
@@ -1798,7 +2222,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1844,7 +2268,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Pet não encontrado"
@@ -1905,6 +2329,59 @@
           "clinical-notes"
         ]
       },
+      "patch": {
+        "operationId": "VetNoteController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNotaClinicaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotaClinicaResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Nota clínica não encontrada"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Editar nota clínica (somente o vet autor)",
+        "tags": [
+          "clinical-notes"
+        ]
+      },
       "delete": {
         "operationId": "VetNoteController_remove",
         "parameters": [
@@ -1939,272 +2416,6 @@
         "summary": "Remover nota clínica (somente o vet autor)",
         "tags": [
           "clinical-notes"
-        ]
-      }
-    },
-    "/veterinarios": {
-      "post": {
-        "operationId": "VeterinarioController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateVeterinarioDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Cadastrar veterinário",
-        "tags": [
-          "veterinarios"
-        ]
-      },
-      "get": {
-        "operationId": "VeterinarioController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Listar veterinários",
-        "tags": [
-          "veterinarios"
-        ]
-      }
-    },
-    "/veterinarios/dashboard/pets": {
-      "get": {
-        "operationId": "VeterinarioController_dashboardPets",
-        "parameters": [
-          {
-            "name": "search",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "minimum": 1,
-              "default": 1,
-              "type": "number"
-            }
-          },
-          {
-            "name": "pageSize",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "minimum": 1,
-              "default": 10,
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Dashboard do vet: pets atendidos (paginado, com busca)",
-        "tags": [
-          "veterinarios"
-        ]
-      }
-    },
-    "/veterinarios/{id}": {
-      "get": {
-        "operationId": "VeterinarioController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          },
-          "404": {
-            "description": "Veterinário não encontrado"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Buscar veterinário por id",
-        "tags": [
-          "veterinarios"
-        ]
-      },
-      "patch": {
-        "operationId": "VeterinarioController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateVeterinarioDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          },
-          "404": {
-            "description": "Veterinário não encontrado"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Atualizar veterinário",
-        "tags": [
-          "veterinarios"
-        ]
-      },
-      "delete": {
-        "operationId": "VeterinarioController_remove",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          },
-          "404": {
-            "description": "Veterinário não encontrado"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Remover veterinário",
-        "tags": [
-          "veterinarios"
         ]
       }
     }
@@ -2263,6 +2474,60 @@
           "email",
           "password"
         ]
+      },
+      "CreateVeterinarioDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "minLength": 2
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
+          },
+          "crmv": {
+            "type": "string",
+            "minLength": 3
+          },
+          "telefone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nome",
+          "email",
+          "password",
+          "crmv"
+        ]
+      },
+      "UpdateVeterinarioDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "minLength": 2
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
+          },
+          "crmv": {
+            "type": "string",
+            "minLength": 3
+          },
+          "telefone": {
+            "type": "string"
+          }
+        }
       },
       "CreateAppointmentDto": {
         "type": "object",
@@ -2408,6 +2673,56 @@
           "issued_at"
         ]
       },
+      "NotaClinicaResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pet_id": {
+            "type": "string"
+          },
+          "veterinario_id": {
+            "type": "string"
+          },
+          "veterinario_nome": {
+            "type": "string"
+          },
+          "veterinario_crmv": {
+            "type": "string"
+          },
+          "google_place_id": {
+            "type": "string"
+          },
+          "diagnostico": {
+            "type": "string"
+          },
+          "prescricao": {
+            "type": "string"
+          },
+          "observacoes": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "pet_id",
+          "veterinario_id",
+          "veterinario_nome",
+          "veterinario_crmv",
+          "diagnostico",
+          "created_at",
+          "updated_at"
+        ]
+      },
       "VaccineRecordResponseDto": {
         "type": "object",
         "properties": {
@@ -2428,6 +2743,14 @@
           },
           "veterinarian_name": {
             "type": "string"
+          },
+          "veterinario_id": {
+            "type": "string",
+            "description": "Veterinário do PetCard que fez o registro; ausente quando foi o tutor."
+          },
+          "veterinario_crmv": {
+            "type": "string",
+            "description": "CRMV de quem registrou, quando é um veterinário do PetCard."
           },
           "notes": {
             "type": "string"
@@ -2471,6 +2794,14 @@
           "veterinarian_name": {
             "type": "string"
           },
+          "veterinario_id": {
+            "type": "string",
+            "description": "Veterinário do PetCard que fez o registro; ausente quando foi o tutor."
+          },
+          "veterinario_crmv": {
+            "type": "string",
+            "description": "CRMV de quem registrou, quando é um veterinário do PetCard."
+          },
           "notes": {
             "type": "string"
           },
@@ -2510,6 +2841,18 @@
           "frequency": {
             "type": "string"
           },
+          "veterinario_id": {
+            "type": "string",
+            "description": "Veterinário do PetCard que fez o registro; ausente quando foi o tutor."
+          },
+          "veterinario_crmv": {
+            "type": "string",
+            "description": "CRMV de quem registrou, quando é um veterinário do PetCard."
+          },
+          "veterinarian_name": {
+            "type": "string",
+            "description": "Nome de quem prescreveu; texto livre quando é profissional de fora."
+          },
           "start_date": {
             "type": "string"
           },
@@ -2537,6 +2880,96 @@
           "start_date",
           "created_at",
           "updated_at"
+        ]
+      },
+      "CarteiraDigitalClinicaResponseDto": {
+        "type": "object",
+        "properties": {
+          "clinical_notes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotaClinicaResponseDto"
+            }
+          },
+          "accessed_by_crmv": {
+            "type": "string",
+            "description": "CRMV do veterinário que acessou, registrado junto ao acesso."
+          },
+          "pet_id": {
+            "type": "string"
+          },
+          "pet_name": {
+            "type": "string"
+          },
+          "species": {
+            "type": "string",
+            "enum": [
+              "DOG",
+              "CAT",
+              "BIRD",
+              "OTHER"
+            ]
+          },
+          "breed": {
+            "type": "string"
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "birth_date": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "photo_url": {
+            "type": "string"
+          },
+          "qr_code_url": {
+            "type": "string"
+          },
+          "tutor_name": {
+            "type": "string"
+          },
+          "vaccines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VaccineRecordResponseDto"
+            }
+          },
+          "dewormings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DewormingRecordResponseDto"
+            }
+          },
+          "medications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MedicationRecordResponseDto"
+            }
+          },
+          "issued_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "clinical_notes",
+          "accessed_by_crmv",
+          "pet_id",
+          "pet_name",
+          "species",
+          "sex",
+          "tutor_name",
+          "vaccines",
+          "dewormings",
+          "medications",
+          "issued_at"
         ]
       },
       "CarteiraDigitalPublicResponseDto": {
@@ -2905,6 +3338,9 @@
           "end_date": {
             "type": "string"
           },
+          "veterinarian_name": {
+            "type": "string"
+          },
           "notes": {
             "type": "string"
           }
@@ -2937,6 +3373,9 @@
             "type": "string"
           },
           "end_date": {
+            "type": "string"
+          },
+          "veterinarian_name": {
             "type": "string"
           },
           "notes": {
@@ -3080,106 +3519,17 @@
           "diagnostico"
         ]
       },
-      "NotaClinicaResponseDto": {
+      "UpdateNotaClinicaDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "pet_id": {
-            "type": "string"
-          },
-          "veterinario_id": {
-            "type": "string"
-          },
-          "veterinario_nome": {
-            "type": "string"
-          },
-          "veterinario_crmv": {
-            "type": "string"
-          },
-          "google_place_id": {
-            "type": "string"
-          },
           "diagnostico": {
-            "type": "string"
+            "type": "string",
+            "minLength": 3
           },
           "prescricao": {
             "type": "string"
           },
           "observacoes": {
-            "type": "string"
-          },
-          "created_at": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updated_at": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "pet_id",
-          "veterinario_id",
-          "veterinario_nome",
-          "veterinario_crmv",
-          "diagnostico",
-          "created_at",
-          "updated_at"
-        ]
-      },
-      "CreateVeterinarioDto": {
-        "type": "object",
-        "properties": {
-          "nome": {
-            "type": "string",
-            "minLength": 2
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 6
-          },
-          "crmv": {
-            "type": "string",
-            "minLength": 3
-          },
-          "telefone": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "nome",
-          "email",
-          "password",
-          "crmv"
-        ]
-      },
-      "UpdateVeterinarioDto": {
-        "type": "object",
-        "properties": {
-          "nome": {
-            "type": "string",
-            "minLength": 2
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 6
-          },
-          "crmv": {
-            "type": "string",
-            "minLength": 3
-          },
-          "telefone": {
             "type": "string"
           }
         }
