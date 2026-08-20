@@ -7,7 +7,7 @@
 Documentação **canônica** e board centralizado da entrega do TCC. **Fonte-única** dos artefatos acadêmicos e técnicos — editar aqui, não em cópias locais.
 
 - **`docs/`** — `tap.md`, `das.md`, `auditorias/`, `qa/` (roteiro dos 16 UCs), `api/` (OpenAPI + collection Postman da PC-098), `README.md` (índice).
-- **`architecture/adr/`** — ADRs numerados (`001-multirepo-strategy`, `002-m4-integracoes-externas`, `003-m5-interface-veterinario`, `004-modo-offline-rf15`). Próximo número = 005+.
+- **`architecture/adr/`** — ADRs numerados (`001-multirepo-strategy`, `002-m4-integracoes-externas`, `003-m5-interface-veterinario`, `004-modo-offline-rf15`, `005-verificacao-crmv-e-acesso-clinico`, `006-cobertura-de-confianca`). Próximo número = 007+.
 - **`.github/`** — ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE, CONTRIBUTING. É onde vive o **board da M7** (issues PC-094…PC-108).
 
 ## Convenções
