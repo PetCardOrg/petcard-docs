@@ -108,22 +108,30 @@ Converter.convert({ type: 'json', data: openapi }, options, (err, result) => {
   });
 
   // Endpoints públicos: noauth. Demais: herdam o Bearer da collection.
-  const publicPaths = [
-    '/auth/login',
-    '/auth/register',
-    '/auth/veterinario/login',
-  ];
+  //
+  // Quem é público sai do próprio contrato: `@Auth` compõe `@ApiBearerAuth`,
+  // então só rota com `@Public()` fica sem `security` no OpenAPI. Uma lista
+  // fixa aqui envelhece calada — foi o que aconteceu com o cadastro de
+  // veterinário (público, mandava Bearer à toa) e com a carteira clínica
+  // (protegida, era marcada noauth por um regex sobre /cards/:token).
+  const protegidos = new Set();
+  Object.entries(openapi.paths).forEach(([rota, operacoes]) => {
+    Object.entries(operacoes).forEach(([metodo, operacao]) => {
+      if (operacao && Array.isArray(operacao.security)) {
+        protegidos.add(`${metodo.toUpperCase()} ${rota}`);
+      }
+    });
+  });
+  // A collection escreve `:token` onde o OpenAPI escreve `{token}`.
+  const chaveDe = (i) =>
+    `${i.request.method} ${pathOf(i).replace(/:([^/]+)/g, '{$1}')}`;
+
   walk(collection.item, (i) => {
     if (!i.request) return;
-    const p = pathOf(i);
-    const publicCard =
-      /^\/cards\//.test(p) &&
-      /:token|\{\{token\}\}/.test(p) &&
-      i.request.method === 'GET';
-    if (publicPaths.includes(p) || publicCard) {
-      i.request.auth = { type: 'noauth' };
-    } else if (i.request.auth && i.request.auth.type === 'bearer') {
+    if (protegidos.has(chaveDe(i))) {
       delete i.request.auth; // herda {{access_token}} da collection
+    } else {
+      i.request.auth = { type: 'noauth' };
     }
   });
 

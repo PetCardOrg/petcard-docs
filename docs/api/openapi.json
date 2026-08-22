@@ -268,6 +268,74 @@
         ]
       }
     },
+    "/veterinarios/me": {
+      "patch": {
+        "description": "Só o próprio veterinário altera o próprio cadastro — o id vem do token, não da rota. Trocar o CRMV zera a verificação: o registro novo precisa ser verificado antes de liberar dado clínico de novo.",
+        "operationId": "VeterinarioController_updateMe",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVeterinarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualizar meu cadastro",
+        "tags": [
+          "veterinarios"
+        ]
+      },
+      "delete": {
+        "operationId": "VeterinarioController_removeMe",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Excluir minha conta de veterinário",
+        "tags": [
+          "veterinarios"
+        ]
+      }
+    },
     "/veterinarios/dashboard/pets": {
       "get": {
         "operationId": "VeterinarioController_dashboardPets",
@@ -323,104 +391,17 @@
         ]
       }
     },
-    "/veterinarios": {
-      "get": {
-        "operationId": "VeterinarioController_findAll",
+    "/veterinarios/me/pets": {
+      "post": {
+        "description": "Ter o token do QR é a autorização de fato para o atendimento. Reabrir a carteira de um pet que já está na lista só atualiza o último atendimento. Exige CRMV verificado, como o acesso à carteira clínica.",
+        "operationId": "VeterinarioController_adicionarPet",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Listar veterinários",
-        "tags": [
-          "veterinarios"
-        ]
-      }
-    },
-    "/veterinarios/{id}": {
-      "get": {
-        "operationId": "VeterinarioController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel VET"
-          },
-          "404": {
-            "description": "Veterinário não encontrado"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Buscar veterinário por id",
-        "tags": [
-          "veterinarios"
-        ]
-      },
-      "patch": {
-        "operationId": "VeterinarioController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateVeterinarioDto"
+                "$ref": "#/components/schemas/AdicionarPetAtendidoDto"
               }
             }
           }
@@ -431,7 +412,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/PetAtendidoResponseDto"
                 }
               }
             }
@@ -440,10 +421,10 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
-            "description": "Veterinário não encontrado"
+            "description": "Carteira não encontrada"
           }
         },
         "security": [
@@ -451,16 +432,19 @@
             "bearer": []
           }
         ],
-        "summary": "Atualizar veterinário",
+        "summary": "Adicionar à minha lista o pet cuja carteira foi lida no QR",
         "tags": [
           "veterinarios"
         ]
-      },
+      }
+    },
+    "/veterinarios/me/pets/{petId}": {
       "delete": {
-        "operationId": "VeterinarioController_remove",
+        "description": "Remove só o vínculo. O pet, os registros clínicos e a trilha de ações permanecem — inclusive para outros veterinários.",
+        "operationId": "VeterinarioController_removerPet",
         "parameters": [
           {
-            "name": "id",
+            "name": "petId",
             "required": true,
             "in": "path",
             "schema": {
@@ -479,7 +463,7 @@
             "description": "Requer papel VET"
           },
           "404": {
-            "description": "Veterinário não encontrado"
+            "description": "Pet não está na lista"
           }
         },
         "security": [
@@ -487,7 +471,7 @@
             "bearer": []
           }
         ],
-        "summary": "Remover veterinário",
+        "summary": "Tirar o pet da minha lista",
         "tags": [
           "veterinarios"
         ]
@@ -2528,6 +2512,44 @@
             "type": "string"
           }
         }
+      },
+      "AdicionarPetAtendidoDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "PetAtendidoResponseDto": {
+        "type": "object",
+        "properties": {
+          "pet_id": {
+            "type": "string"
+          },
+          "pet_nome": {
+            "type": "string"
+          },
+          "adicionado_em": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Quando o pet entrou na lista deste veterinário."
+          },
+          "novo": {
+            "type": "boolean",
+            "description": "`false` quando o pet já estava na lista e este acesso só o atualizou."
+          }
+        },
+        "required": [
+          "pet_id",
+          "pet_nome",
+          "adicionado_em",
+          "novo"
+        ]
       },
       "CreateAppointmentDto": {
         "type": "object",
