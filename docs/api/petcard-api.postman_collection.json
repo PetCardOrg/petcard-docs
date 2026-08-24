@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "37cacc8d-016f-4aaf-95d9-ad26629ad5f6",
+      "id": "bc3baa43-a2b4-4d73-806d-2162d119809f",
       "name": "health",
       "description": {
         "content": "",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "442232ca-c266-4fec-874c-e72543306f16",
+          "id": "67e22721-247a-43f9-881e-2866ff96d6ff",
           "name": "Health check da API",
           "request": {
             "name": "Health check da API",
@@ -37,7 +37,7 @@
           },
           "response": [
             {
-              "id": "614c8da0-7b2f-49b3-b9de-bd061c5b5c29",
+              "id": "c1b8e884-db33-4231-89ec-79460ce4e469",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -80,7 +80,7 @@
       "event": []
     },
     {
-      "id": "53a45e3b-a978-4648-acca-a4e418efa965",
+      "id": "ac66c38d-9eb5-42d1-b7ee-02dee65d7a60",
       "name": "auth",
       "description": {
         "content": "",
@@ -88,7 +88,7 @@
       },
       "item": [
         {
-          "id": "666fff1a-7e46-49ce-9c5b-5daa5f0e384d",
+          "id": "e125da44-704f-4fce-8fda-776bbeba93bd",
           "name": "Registrar novo tutor",
           "request": {
             "name": "Registrar novo tutor",
@@ -116,7 +116,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"string\",\n  \"email\": \"TvCW9I5TH@qdUCFuJgJY.ra\",\n  \"password\": \"string\"\n}",
+              "raw": "{\n  \"name\": \"string\",\n  \"email\": \"Y1ZDR15bC-aOs@ZDNovmnvTDfxQqI.pnth\",\n  \"password\": \"stringstring\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -126,7 +126,7 @@
           },
           "response": [
             {
-              "id": "f95afff3-c3ec-4519-86a5-50888b9f0a1b",
+              "id": "7a981387-93c6-48b6-a16b-487e67f89b9a",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -142,7 +142,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"TvCW9I5TH@qdUCFuJgJY.ra\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"Y1ZDR15bC-aOs@ZDNovmnvTDfxQqI.pnth\",\n  \"password\": \"stringstring\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -163,7 +163,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3278049f-a8ab-4e41-b56f-a009403e45ca",
+              "id": "687efdde-5e5f-4b24-8539-bdeb12665786",
               "name": "Email já cadastrado",
               "originalRequest": {
                 "url": {
@@ -180,7 +180,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"TvCW9I5TH@qdUCFuJgJY.ra\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"Y1ZDR15bC-aOs@ZDNovmnvTDfxQqI.pnth\",\n  \"password\": \"stringstring\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -199,6 +199,44 @@
               "body": "",
               "cookie": [],
               "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "41b813ff-f694-4ba6-82ad-39e4823dd831",
+              "name": "Limite de tentativas excedido",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "auth",
+                    "register"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"Y1ZDR15bC-aOs@ZDNovmnvTDfxQqI.pnth\",\n  \"password\": \"stringstring\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
             }
           ],
           "event": [],
@@ -207,7 +245,7 @@
           }
         },
         {
-          "id": "1786cbc7-bb00-402e-aa53-a5977a88856b",
+          "id": "bccf8852-1f0c-48c5-af69-7da293fb29e4",
           "name": "Login do tutor (JWT com role TUTOR)",
           "request": {
             "name": "Login do tutor (JWT com role TUTOR)",
@@ -245,7 +283,7 @@
           },
           "response": [
             {
-              "id": "5f4d20bd-420e-4000-8d45-7fe286c45f7f",
+              "id": "e45e7cea-a460-4a78-9599-a4d77903e8c8",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -261,7 +299,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Q374JHOu2i@DruKJCWCGFLlMGBdBFQtWYTG.ega\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"XYgiz4BL@pGaiWVkkBELUs.ki\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -282,7 +320,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "39485892-4fdd-4d76-a2d4-fc4e8235b46e",
+              "id": "52080e50-4fc2-4ba6-9543-8e6c05f1c086",
               "name": "Credenciais inválidas",
               "originalRequest": {
                 "url": {
@@ -299,7 +337,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Q374JHOu2i@DruKJCWCGFLlMGBdBFQtWYTG.ega\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"XYgiz4BL@pGaiWVkkBELUs.ki\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -309,6 +347,44 @@
               },
               "status": "Unauthorized",
               "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fd7facbb-653c-4ab8-aff2-6db8ef097468",
+              "name": "Limite de tentativas excedido",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "auth",
+                    "login"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"XYgiz4BL@pGaiWVkkBELUs.ki\",\n  \"password\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
               "header": [
                 {
                   "key": "Content-Type",
@@ -342,7 +418,7 @@
           }
         },
         {
-          "id": "82363e37-44cc-41a7-b722-5c0c62755197",
+          "id": "bce3efab-005b-4421-8604-004e395ef40a",
           "name": "Payload do JWT do usuário autenticado",
           "request": {
             "name": "Payload do JWT do usuário autenticado",
@@ -368,7 +444,7 @@
           },
           "response": [
             {
-              "id": "bb661c22-0843-4a29-9238-e262b71f9ac5",
+              "id": "035c821a-7932-4c5c-a3f0-7bf702d04d86",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -403,7 +479,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "c3e4a0ef-2ed4-4a02-9992-272a47f959cd",
+              "id": "1e0b3ad1-9c38-4e06-acb9-5f40d900dff0",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -439,7 +515,7 @@
           }
         },
         {
-          "id": "95b27a00-71a2-4fbe-b5cf-87b5038acb5a",
+          "id": "8112deef-2d95-4b35-a32f-1d89f954903c",
           "name": "Cadastrar veterinário (JWT com role VET)",
           "request": {
             "name": "Cadastrar veterinário (JWT com role VET)",
@@ -471,7 +547,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"7oC52Ep@KjvgTDcVASRfzeZZBVXOrkzVI.wf\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+              "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"5eELFjs@gj.rtbg\",\n  \"password\": \"stringst\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -481,7 +557,7 @@
           },
           "response": [
             {
-              "id": "9dfa1892-e110-40cc-a945-3b10f6e6f5c1",
+              "id": "9da89d97-a077-471c-83ce-4a2bfe21b18b",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -498,7 +574,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"7oC52Ep@KjvgTDcVASRfzeZZBVXOrkzVI.wf\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"5eELFjs@gj.rtbg\",\n  \"password\": \"stringst\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -519,7 +595,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3ea15ca0-3d44-491d-977c-b261d02c1f27",
+              "id": "965815b7-ad42-4b4b-bc15-2016a7eb4ddb",
               "name": "Email ou CRMV já cadastrado",
               "originalRequest": {
                 "url": {
@@ -537,7 +613,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"7oC52Ep@KjvgTDcVASRfzeZZBVXOrkzVI.wf\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"5eELFjs@gj.rtbg\",\n  \"password\": \"stringst\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -556,6 +632,45 @@
               "body": "",
               "cookie": [],
               "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "03b61689-329f-4f5a-bab8-82f92bf0011b",
+              "name": "Limite de tentativas excedido",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "auth",
+                    "veterinario",
+                    "register"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"5eELFjs@gj.rtbg\",\n  \"password\": \"stringst\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
             }
           ],
           "event": [],
@@ -564,7 +679,7 @@
           }
         },
         {
-          "id": "38f82c7b-b461-45e5-85f5-767adb1fd6e2",
+          "id": "8d08bcca-2bc2-42bc-9efe-e494391c7b12",
           "name": "Login do veterinário (JWT com role VET)",
           "request": {
             "name": "Login do veterinário (JWT com role VET)",
@@ -603,7 +718,7 @@
           },
           "response": [
             {
-              "id": "8f43b8ea-d08c-4b8e-945d-0541bf5cf63b",
+              "id": "3494a47a-3b58-42bf-af1d-ca5fc3b80427",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -620,7 +735,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Q374JHOu2i@DruKJCWCGFLlMGBdBFQtWYTG.ega\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"XYgiz4BL@pGaiWVkkBELUs.ki\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -641,7 +756,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "f30c5dac-63fe-4aab-8271-198b2f6a7220",
+              "id": "df91ccb7-6040-4cc3-b28e-167539f776cf",
               "name": "Credenciais inválidas",
               "originalRequest": {
                 "url": {
@@ -659,7 +774,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Q374JHOu2i@DruKJCWCGFLlMGBdBFQtWYTG.ega\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"XYgiz4BL@pGaiWVkkBELUs.ki\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -669,6 +784,45 @@
               },
               "status": "Unauthorized",
               "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "eac9ad31-a000-4662-9b6b-201aac810397",
+              "name": "Limite de tentativas excedido",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "auth",
+                    "veterinario",
+                    "login"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"XYgiz4BL@pGaiWVkkBELUs.ki\",\n  \"password\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
               "header": [
                 {
                   "key": "Content-Type",
@@ -702,7 +856,7 @@
           }
         },
         {
-          "id": "b9f20f91-410c-4807-b7a1-455f4161e127",
+          "id": "9ec2b1ea-b6a0-4e76-ade3-a81baa2fb129",
           "name": "Perfil do veterinário autenticado",
           "request": {
             "name": "Perfil do veterinário autenticado",
@@ -723,7 +877,7 @@
           },
           "response": [
             {
-              "id": "e9b2914c-9ba0-41ba-a0d1-cbc2d9cc1d7f",
+              "id": "523e395d-8ea4-4b24-b1fb-7760a0503ff4",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -753,7 +907,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "f840ae46-db49-4723-bbaf-61937d341e3a",
+              "id": "a998f429-0a7f-4de6-a7d0-0822d816fe02",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -784,7 +938,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "4677c027-1a1e-4ec8-af90-55ed2c22ee9e",
+              "id": "39b19989-00e7-4795-86b8-c24db4516a03",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -824,7 +978,7 @@
       "event": []
     },
     {
-      "id": "9c730ef0-c69c-4e25-a14e-63bf4b6b1001",
+      "id": "cde26602-d076-4843-a20c-f894ace90d6e",
       "name": "veterinarios",
       "description": {
         "content": "",
@@ -832,7 +986,7 @@
       },
       "item": [
         {
-          "id": "28065e58-d503-48de-9267-e5ba957653a2",
+          "id": "0eee47dc-6967-405b-9110-825e1440f386",
           "name": "Situação da verificação do meu CRMV",
           "request": {
             "name": "Situação da verificação do meu CRMV",
@@ -859,7 +1013,7 @@
           },
           "response": [
             {
-              "id": "4c652142-2d04-484f-83ae-ff93c34a99e4",
+              "id": "54d8f7d6-09f3-4a16-b81b-920eae8cf143",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -895,7 +1049,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "6337b7b0-2d21-433a-9580-2b89d2ccbdd1",
+              "id": "612d0154-c318-4cb9-9d55-6e5adefa259a",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -926,7 +1080,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "351e043f-411d-47b8-af81-fa0cfe2ba8b3",
+              "id": "f3b444fc-34a3-4e4d-ae77-8cb8fbef395c",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -963,7 +1117,7 @@
           }
         },
         {
-          "id": "80d74183-656d-4dc5-81ab-d8f0b021292e",
+          "id": "809f3a23-a81c-4b69-af07-ecc62874e14b",
           "name": "Verificar meu CRMV na base externa",
           "request": {
             "name": "Verificar meu CRMV na base externa",
@@ -1000,7 +1154,7 @@
           },
           "response": [
             {
-              "id": "c81713f3-2e57-495d-b4af-eadb0ba5c4d8",
+              "id": "abada97e-0116-45de-8b5f-94bd105f56f0",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1042,7 +1196,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "f85f54b3-401f-4b49-a3e5-2571d9e7f1a9",
+              "id": "06558dbc-10fb-467d-ba86-e794cbc238d2",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -1079,7 +1233,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "100b1026-6387-4b3a-b95d-197e5a5b0616",
+              "id": "0490d9a7-fc73-4018-a80b-edb284d64483",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -1122,7 +1276,7 @@
           }
         },
         {
-          "id": "dd467f76-2ee1-4405-a105-ba27af8018ef",
+          "id": "a48f93a7-b9b1-4add-9b9b-cbf1382e2a37",
           "name": "Atualizar meu cadastro",
           "request": {
             "name": "Atualizar meu cadastro",
@@ -1154,7 +1308,7 @@
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"mWFw91ecow@qbkAFTacgHK.gh\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+              "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"ynG-e@DoGRkPuDzvoYgZmXHAFnjLy.iiu\",\n  \"password\": \"stringstring\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\",\n  \"foto_url\": \"http://JoMiBNhDKljgLGoUX.jecZSt7GtT9KZHgr2dO5xcDJz1gCuOLOxa3Fo5+wvxR1XqbsKvfifk4ZA,XWwShNf2LJi\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1164,7 +1318,7 @@
           },
           "response": [
             {
-              "id": "e6c6965e-0d56-40e3-9c57-50758fe2f946",
+              "id": "fd5bf2a1-0818-4f37-876d-9b96fe179d2f",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1186,7 +1340,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"mWFw91ecow@qbkAFTacgHK.gh\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"ynG-e@DoGRkPuDzvoYgZmXHAFnjLy.iiu\",\n  \"password\": \"stringstring\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\",\n  \"foto_url\": \"http://JoMiBNhDKljgLGoUX.jecZSt7GtT9KZHgr2dO5xcDJz1gCuOLOxa3Fo5+wvxR1XqbsKvfifk4ZA,XWwShNf2LJi\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1207,7 +1361,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "09d42477-5fb0-4f41-8bbe-9cd5b5dda426",
+              "id": "73830395-035f-405e-b50c-0992a23e35fa",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -1224,7 +1378,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"mWFw91ecow@qbkAFTacgHK.gh\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"ynG-e@DoGRkPuDzvoYgZmXHAFnjLy.iiu\",\n  \"password\": \"stringstring\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\",\n  \"foto_url\": \"http://JoMiBNhDKljgLGoUX.jecZSt7GtT9KZHgr2dO5xcDJz1gCuOLOxa3Fo5+wvxR1XqbsKvfifk4ZA,XWwShNf2LJi\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1245,7 +1399,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e6d1eba3-c3c7-48b3-8c5f-f44e306bb932",
+              "id": "6556a03a-bd92-4a22-8ee6-2b7ace340cd3",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -1262,7 +1416,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"mWFw91ecow@qbkAFTacgHK.gh\",\n  \"password\": \"string\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\"\n}",
+                  "raw": "{\n  \"nome\": \"string\",\n  \"email\": \"ynG-e@DoGRkPuDzvoYgZmXHAFnjLy.iiu\",\n  \"password\": \"stringstring\",\n  \"crmv\": \"string\",\n  \"telefone\": \"string\",\n  \"foto_url\": \"http://JoMiBNhDKljgLGoUX.jecZSt7GtT9KZHgr2dO5xcDJz1gCuOLOxa3Fo5+wvxR1XqbsKvfifk4ZA,XWwShNf2LJi\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1289,7 +1443,7 @@
           }
         },
         {
-          "id": "c29263ec-611d-4e9c-915e-8602d3bd857d",
+          "id": "067c8039-6856-484f-842d-2981d435bc0e",
           "name": "Excluir minha conta de veterinário",
           "request": {
             "name": "Excluir minha conta de veterinário",
@@ -1309,7 +1463,7 @@
           },
           "response": [
             {
-              "id": "9e44674a-36aa-405c-a73e-1a79f1d197da",
+              "id": "ee867555-8977-4927-8fa2-bd29855e1c7c",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1338,7 +1492,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "441679d7-267b-4c83-8e7a-6697afc943bb",
+              "id": "74c1eae5-5f03-43b9-8b0b-35a7e7ef317a",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -1368,7 +1522,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "5bb62539-08cd-43f9-a60e-74238070a459",
+              "id": "46489d9d-9133-4e36-93ba-09e69e6aef71",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -1404,7 +1558,7 @@
           }
         },
         {
-          "id": "7eac5f23-f8a4-42e2-9c27-ddda32d847e6",
+          "id": "da364501-9845-488c-ad15-6e593fb9b675",
           "name": "Dashboard do vet: pets atendidos (paginado, com busca)",
           "request": {
             "name": "Dashboard do vet: pets atendidos (paginado, com busca)",
@@ -1441,7 +1595,7 @@
           },
           "response": [
             {
-              "id": "fd730a7f-68da-4514-9ea1-4d402da0701f",
+              "id": "0c7a62d5-b680-4be9-b5eb-5d7cfbd9b92d",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1484,7 +1638,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "afedc892-165e-4f76-af43-36b5e4ecc479",
+              "id": "81a56d20-8107-4156-909c-44bd957654f3",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -1528,7 +1682,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "43fc2214-5508-4593-941a-39b709200510",
+              "id": "512ab46a-881c-4d61-9812-f2979dbdc9cf",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -1578,7 +1732,7 @@
           }
         },
         {
-          "id": "c73c61d9-221e-47de-b43b-1fab6d6beec3",
+          "id": "53110d84-3d9d-48a9-9ef6-cdfd0bcc673d",
           "name": "Adicionar à minha lista o pet cuja carteira foi lida no QR",
           "request": {
             "name": "Adicionar à minha lista o pet cuja carteira foi lida no QR",
@@ -1621,7 +1775,7 @@
           },
           "response": [
             {
-              "id": "40387731-e0bf-447c-aa6c-728f551d678d",
+              "id": "5c22386b-05e3-4f15-83f8-b678c5ac0d04",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1660,12 +1814,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"pet_id\": \"string\",\n  \"pet_nome\": \"string\",\n  \"adicionado_em\": \"2017-12-05T01:19:07.128Z\",\n  \"novo\": false\n}",
+              "body": "{\n  \"pet_id\": \"string\",\n  \"pet_nome\": \"string\",\n  \"adicionado_em\": \"1978-08-08T09:29:50.251Z\",\n  \"novo\": true\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8b95b035-beb1-41c2-b7ea-b95fc6f0feed",
+              "id": "bf28b43b-f7b3-4df4-9fe6-1e055a956ee4",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -1704,7 +1858,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3104fdd8-d17f-4a65-8173-9773122b2999",
+              "id": "e28edb65-9300-419f-9d14-5fc409bcaa4a",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -1743,7 +1897,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "385ba0fe-ee8e-4453-8a3b-a710779c79b7",
+              "id": "b37af253-fb40-4b4c-963c-93c0d8bf1a28",
               "name": "Carteira não encontrada",
               "originalRequest": {
                 "url": {
@@ -1788,7 +1942,7 @@
           }
         },
         {
-          "id": "5daffd85-ce7d-4fed-9915-48b97ae2594b",
+          "id": "fbfc19de-7099-420c-a80d-1a7f1228b56b",
           "name": "Tirar o pet da minha lista",
           "request": {
             "name": "Tirar o pet da minha lista",
@@ -1821,7 +1975,7 @@
           },
           "response": [
             {
-              "id": "6d5345b9-4e89-4b98-bf9a-05cd95dd3848",
+              "id": "1876a1ba-f030-422b-adbb-af222c4c922a",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1860,7 +2014,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "187e8fbd-2cce-4b2a-9599-b1b3cb683b59",
+              "id": "39e71018-54b2-410d-a6aa-c626698ad29d",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -1900,7 +2054,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3a0aaac2-2706-48a6-b79f-4c1cc48146d3",
+              "id": "b8584248-c8fe-426e-b722-76f37c863d25",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -1940,7 +2094,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "72668956-fecf-485b-82c3-2d117fcb448c",
+              "id": "6f61a052-89fc-449e-8aa3-32d7463ad0b6",
               "name": "Pet não está na lista",
               "originalRequest": {
                 "url": {
@@ -1989,7 +2143,7 @@
       "event": []
     },
     {
-      "id": "ad2a4509-5ce6-4cf3-96ca-3c62c7fd5044",
+      "id": "6da2b58d-ba42-40cb-977c-4f31025252fb",
       "name": "appointments",
       "description": {
         "content": "",
@@ -1997,7 +2151,7 @@
       },
       "item": [
         {
-          "id": "a90a7819-735c-4984-9740-2da7a9ddc00b",
+          "id": "f064fb7f-9748-4925-963e-42b1aba6cff9",
           "name": "Agendar compromisso do pet (sincroniza com Google Calendar)",
           "request": {
             "name": "Agendar compromisso do pet (sincroniza com Google Calendar)",
@@ -2025,7 +2179,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 9101.66495649928,\n  \"location\": \"string\",\n  \"pet_id\": \"76808897-4561-235e-c797-75a33c1ab84a\"\n}",
+              "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 6806.30877759913,\n  \"location\": \"string\",\n  \"pet_id\": \"6fd22ae7-c7aa-f6c4-5fb7-dc6eca048c1b\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2035,7 +2189,7 @@
           },
           "response": [
             {
-              "id": "306db97e-61df-42db-ac16-9b88a2891e8a",
+              "id": "a03e3ae4-04a2-41f5-ac2f-979a1102dd81",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2056,7 +2210,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 9101.66495649928,\n  \"location\": \"string\",\n  \"pet_id\": \"76808897-4561-235e-c797-75a33c1ab84a\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 6806.30877759913,\n  \"location\": \"string\",\n  \"pet_id\": \"6fd22ae7-c7aa-f6c4-5fb7-dc6eca048c1b\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2077,7 +2231,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "7b781629-7b81-4277-9ffa-05aa643e8ca5",
+              "id": "8d8ea917-0cbb-4d28-ab96-7c61f19cbdc1",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -2093,7 +2247,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 9101.66495649928,\n  \"location\": \"string\",\n  \"pet_id\": \"76808897-4561-235e-c797-75a33c1ab84a\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 6806.30877759913,\n  \"location\": \"string\",\n  \"pet_id\": \"6fd22ae7-c7aa-f6c4-5fb7-dc6eca048c1b\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2114,7 +2268,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "2c09d44b-d527-47ca-b8fe-499d82f6942c",
+              "id": "912dc049-392e-446a-8c04-18a3b33725c5",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -2130,7 +2284,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 9101.66495649928,\n  \"location\": \"string\",\n  \"pet_id\": \"76808897-4561-235e-c797-75a33c1ab84a\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"description\": \"string\",\n  \"duration_minutes\": 6806.30877759913,\n  \"location\": \"string\",\n  \"pet_id\": \"6fd22ae7-c7aa-f6c4-5fb7-dc6eca048c1b\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2157,7 +2311,7 @@
           }
         },
         {
-          "id": "7a195421-702d-438e-b9ad-5685a33b8029",
+          "id": "e32b92d8-4dc1-4ddb-aeef-c2c6b809a7c9",
           "name": "Listar compromissos do tutor autenticado",
           "request": {
             "name": "Listar compromissos do tutor autenticado",
@@ -2189,7 +2343,7 @@
           },
           "response": [
             {
-              "id": "d09dd3fb-b65f-4005-8d76-480c454fe762",
+              "id": "e086d842-e33f-48aa-bdd7-79680c144d19",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2228,7 +2382,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "eabdeedd-273f-4fec-b16f-74252627ba03",
+              "id": "d44c7235-2bb2-4ae7-84fd-3252f62d3385",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -2262,7 +2416,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "7e9738b5-6189-4533-ae6d-ddd47172e761",
+              "id": "141eba1d-2319-4efa-a652-ba86b2f491fd",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -2302,7 +2456,7 @@
           }
         },
         {
-          "id": "cde4cd6d-8b32-455e-a28e-85ca5040b4e8",
+          "id": "44fa1eac-6179-40c8-92a4-f175d3553714",
           "name": "Buscar compromisso por id",
           "request": {
             "name": "Buscar compromisso por id",
@@ -2336,7 +2490,7 @@
           },
           "response": [
             {
-              "id": "31e85541-a8c6-48b3-a340-80e1cda7971e",
+              "id": "a81e24c2-c4c8-4b72-afd9-ae2e04f59a3b",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2379,7 +2533,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "182c737e-f3c0-45f1-b36e-28cf78cf07f0",
+              "id": "e29e850f-0a34-4ff1-b628-108755b3a9f8",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -2417,7 +2571,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "ac7a8797-6631-4c3a-af89-a4ea4082e16d",
+              "id": "39ecd6a1-ebde-44da-8926-16647bc79feb",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -2455,7 +2609,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3e0c9997-1dc5-4df9-bfa8-3169ef662c96",
+              "id": "c60845a3-7f71-42cd-8e94-8192b3dca42c",
               "name": "Compromisso não encontrado",
               "originalRequest": {
                 "url": {
@@ -2499,7 +2653,7 @@
           }
         },
         {
-          "id": "39b43876-2e8a-4f6f-95ef-da1aa5ca4e83",
+          "id": "06b93ce5-dea3-48a5-8726-e047de249e42",
           "name": "Atualizar compromisso",
           "request": {
             "name": "Atualizar compromisso",
@@ -2536,7 +2690,7 @@
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 4221.500690837649,\n  \"location\": \"string\",\n  \"pet_id\": \"c9ea47f3-8764-61cd-ac12-44f9cafae0a4\"\n}",
+              "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 8867.099700602783,\n  \"location\": \"string\",\n  \"pet_id\": \"e6f036e3-31c2-f929-10f9-35de9ca633b1\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2546,7 +2700,7 @@
           },
           "response": [
             {
-              "id": "d347f7e2-ce33-4bee-8cbb-476b65679523",
+              "id": "e2f70fbc-813b-45c7-99a1-9a6fee59ac4a",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2576,7 +2730,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 4221.500690837649,\n  \"location\": \"string\",\n  \"pet_id\": \"c9ea47f3-8764-61cd-ac12-44f9cafae0a4\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 8867.099700602783,\n  \"location\": \"string\",\n  \"pet_id\": \"e6f036e3-31c2-f929-10f9-35de9ca633b1\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2597,7 +2751,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "2a7029ac-a438-4632-9ca6-82f5c5d7a20e",
+              "id": "3651e8be-04cb-4a30-9308-074e48740e68",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -2622,7 +2776,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 4221.500690837649,\n  \"location\": \"string\",\n  \"pet_id\": \"c9ea47f3-8764-61cd-ac12-44f9cafae0a4\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 8867.099700602783,\n  \"location\": \"string\",\n  \"pet_id\": \"e6f036e3-31c2-f929-10f9-35de9ca633b1\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2643,7 +2797,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "476ba7f2-067e-47b7-a4b3-4110b969f3b9",
+              "id": "d1a6eec6-d609-411c-8a2e-69fdf61c5052",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -2668,7 +2822,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 4221.500690837649,\n  \"location\": \"string\",\n  \"pet_id\": \"c9ea47f3-8764-61cd-ac12-44f9cafae0a4\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 8867.099700602783,\n  \"location\": \"string\",\n  \"pet_id\": \"e6f036e3-31c2-f929-10f9-35de9ca633b1\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2689,7 +2843,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e151de65-54dc-4aa4-8a4e-0b7037d12b14",
+              "id": "757454f3-cf5e-4847-b782-e5d7beffbf86",
               "name": "Compromisso não encontrado",
               "originalRequest": {
                 "url": {
@@ -2714,7 +2868,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 4221.500690837649,\n  \"location\": \"string\",\n  \"pet_id\": \"c9ea47f3-8764-61cd-ac12-44f9cafae0a4\"\n}",
+                  "raw": "{\n  \"title\": \"string\",\n  \"description\": \"string\",\n  \"scheduled_at\": \"string\",\n  \"duration_minutes\": 8867.099700602783,\n  \"location\": \"string\",\n  \"pet_id\": \"e6f036e3-31c2-f929-10f9-35de9ca633b1\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2741,7 +2895,7 @@
           }
         },
         {
-          "id": "c2fbfbd9-f738-4885-ac22-d76e95ce98d0",
+          "id": "35e83d4e-9fb2-4c70-86bc-2d3d215331d1",
           "name": "Cancelar compromisso",
           "request": {
             "name": "Cancelar compromisso",
@@ -2769,7 +2923,7 @@
           },
           "response": [
             {
-              "id": "45228436-22ce-4b72-8998-d50244c7bfc0",
+              "id": "13eb7dc7-f498-4a56-b945-ba0df6a10280",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2806,7 +2960,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "9e6d9852-46eb-4283-8791-f513fee9bcf2",
+              "id": "13dbbc75-fea0-48f2-b069-408039973103",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -2844,7 +2998,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "51a528b0-0015-441a-b08c-769957241d93",
+              "id": "24ae0429-bfad-4429-b6a6-a74ef3c8b915",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -2882,7 +3036,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "727a2d31-a5b5-4354-971e-3e8f3ae4807f",
+              "id": "bd1b551d-78b2-466a-9d14-ed4c197b0aa6",
               "name": "Compromisso não encontrado",
               "originalRequest": {
                 "url": {
@@ -2929,7 +3083,7 @@
       "event": []
     },
     {
-      "id": "7d62ba61-2224-4590-928d-aad5e57ac65c",
+      "id": "760b8a9d-a33e-4b2a-a8d9-e0f86f2a28a3",
       "name": "calendar",
       "description": {
         "content": "",
@@ -2937,7 +3091,7 @@
       },
       "item": [
         {
-          "id": "e7efb024-d35a-4337-b78b-bbc0d46c1fea",
+          "id": "0f967bad-30c6-4ff7-bc1b-19d92a9cd561",
           "name": "Obter URL de autorização OAuth do Google Calendar",
           "request": {
             "name": "Obter URL de autorização OAuth do Google Calendar",
@@ -2963,7 +3117,7 @@
           },
           "response": [
             {
-              "id": "70b142b4-51ac-4d17-8219-2442beef9a1a",
+              "id": "b5f39172-27f0-4038-9db5-40768961a433",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2998,7 +3152,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "5c36facc-7606-41e3-b88e-34883e3e5ef6",
+              "id": "2f0a616d-7777-435d-9539-ef30c53eb9db",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -3028,7 +3182,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "a5869668-659b-48a0-a550-a5c6a9480bae",
+              "id": "5a40e131-a69c-4305-88cd-4d9aa33d806c",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -3064,7 +3218,7 @@
           }
         },
         {
-          "id": "8ace27f5-cafb-409a-baab-17c52d935762",
+          "id": "fa2baf63-2a62-4a62-8cfc-2167d19a7fc5",
           "name": "Callback OAuth do Google (redirecionamento do consentimento)",
           "request": {
             "name": "Callback OAuth do Google (redirecionamento do consentimento)",
@@ -3088,7 +3242,7 @@
                   "disabled": false,
                   "key": "state",
                   "value": "string",
-                  "description": "(Required) Id do tutor originador do fluxo"
+                  "description": "(Required) State assinado emitido em GET /calendar/connect"
                 },
                 {
                   "disabled": false,
@@ -3106,7 +3260,7 @@
           },
           "response": [
             {
-              "id": "74482ef3-010c-4ae7-9e59-fe13ac4d3986",
+              "id": "e9235359-10c2-462d-92ab-d52ca31e6738",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3154,7 +3308,7 @@
           }
         },
         {
-          "id": "64498f69-a987-4bc1-99e6-d9fe64fc8505",
+          "id": "c01e4d79-da3a-4bdf-8ded-79e525d81cf9",
           "name": "Status da conexão com o Google Calendar",
           "request": {
             "name": "Status da conexão com o Google Calendar",
@@ -3174,7 +3328,7 @@
           },
           "response": [
             {
-              "id": "f886a39d-3f61-425b-8ada-d64da6d0cd9b",
+              "id": "826c9c07-8462-43e0-80a5-26dbc3f8b496",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3203,7 +3357,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "127e3a57-4ec3-4b04-8116-c15a1435fb33",
+              "id": "791d7014-4a8a-48b2-9cb0-28dcc9ecb437",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -3233,7 +3387,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "8b6f7098-43ca-4a7a-a2c1-a69b230a96ad",
+              "id": "a8f81174-c455-4618-b805-45a1da1743d7",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -3269,7 +3423,7 @@
           }
         },
         {
-          "id": "69e6d173-994c-4149-ac05-1a6dc9b8c35e",
+          "id": "4b9918fd-8e7d-4cf7-8e20-2265a2020ca9",
           "name": "Desconectar Google Calendar (remove tokens do tutor)",
           "request": {
             "name": "Desconectar Google Calendar (remove tokens do tutor)",
@@ -3289,7 +3443,7 @@
           },
           "response": [
             {
-              "id": "212d04c5-8a04-4580-84be-544c211bd86f",
+              "id": "b5970f7d-26b9-4e91-884b-b37cacdc5045",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3318,7 +3472,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "420dad6b-07e8-4901-ab62-e4ebedc37d8c",
+              "id": "7d0eae36-1378-40be-856a-c0de882db13b",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -3348,7 +3502,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "5905f6ce-0042-43c5-97e7-b842f96f472e",
+              "id": "59ecf3b4-dc70-433c-ae36-e47e97c3a727",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -3384,7 +3538,7 @@
           }
         },
         {
-          "id": "acc0df5b-44a6-4569-9509-1bffc8dbb9e3",
+          "id": "8849b9a5-6123-4985-a9ee-0b5e0a08cf52",
           "name": "Sincronizar compromissos pendentes com o Google Calendar",
           "request": {
             "name": "Sincronizar compromissos pendentes com o Google Calendar",
@@ -3404,7 +3558,7 @@
           },
           "response": [
             {
-              "id": "d40b5b51-e4e0-40b6-8bea-654e69e6a080",
+              "id": "db248cef-6faa-41fa-943c-7e95bbc12e5e",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3433,7 +3587,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "ebd67e16-165e-4df7-b08a-55a386c439ad",
+              "id": "007da285-b057-4dcd-8664-b24c3425ae1f",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -3463,7 +3617,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "323d0676-9a01-4ca8-bf54-8239dc99054b",
+              "id": "412838c2-e220-42b5-82ab-5b067cc744c3",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -3502,7 +3656,7 @@
       "event": []
     },
     {
-      "id": "25d634a8-357e-4d0c-a52b-d23badaeb9ac",
+      "id": "3f51a159-b679-49be-a5df-83091eda3791",
       "name": "cards",
       "description": {
         "content": "",
@@ -3510,7 +3664,7 @@
       },
       "item": [
         {
-          "id": "1bdf11e3-bb33-4203-82b1-83e6a193a82f",
+          "id": "2b08f611-d593-41bd-aba0-fea4b9d60631",
           "name": "Carteira digital do pet (visão do tutor dono)",
           "request": {
             "name": "Carteira digital do pet (visão do tutor dono)",
@@ -3545,7 +3699,7 @@
           },
           "response": [
             {
-              "id": "8b329ece-3dde-4067-87ea-6c0ce799f564",
+              "id": "655dec06-048f-4d7d-a6d6-e9043140e5a5",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3584,12 +3738,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"pet_id\": \"string\",\n  \"pet_name\": \"string\",\n  \"species\": \"BIRD\",\n  \"sex\": \"MALE\",\n  \"tutor_id\": \"string\",\n  \"tutor_name\": \"string\",\n  \"vaccines_count\": 9934.711302237158,\n  \"upcoming_vaccines_count\": 2504.7745958229207,\n  \"dewormings_count\": 7213.014736189613,\n  \"upcoming_dewormings_count\": 7347.5927510069,\n  \"medications_count\": 9559.897271245673,\n  \"active_medications_count\": 3208.2811479384222,\n  \"issued_at\": \"2012-04-30T13:27:02.445Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 8889.176004737319,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\",\n  \"public_url\": \"string\"\n}",
+              "body": "{\n  \"pet_id\": \"string\",\n  \"pet_name\": \"string\",\n  \"species\": \"BIRD\",\n  \"sex\": \"MALE\",\n  \"tutor_id\": \"string\",\n  \"tutor_name\": \"string\",\n  \"vaccines_count\": 2947.490612875273,\n  \"upcoming_vaccines_count\": 3018.5342026229623,\n  \"dewormings_count\": 4121.370384621307,\n  \"upcoming_dewormings_count\": 9273.500083006233,\n  \"medications_count\": 547.6599898068147,\n  \"active_medications_count\": 2330.8917819490994,\n  \"issued_at\": \"2015-02-18T09:43:44.843Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 2573.216720591641,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\",\n  \"public_url\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "ea1cfe1a-a7cf-4791-bfdc-8554f46e2cf6",
+              "id": "1d19da01-c5bd-4f9f-a43b-beeb6e4698d1",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -3628,7 +3782,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "998c3e1a-416b-4bef-9517-83a277d89e12",
+              "id": "7adb4f76-b2b3-4322-9f32-7c7b5b95777f",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -3667,7 +3821,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "ed9b321b-2e52-4037-aac3-091a2424859c",
+              "id": "568853af-106a-4c55-bc14-e1c02a498b04",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -3712,7 +3866,7 @@
           }
         },
         {
-          "id": "7eafdbdf-caf4-4925-969c-0856c0421ff0",
+          "id": "52354a27-34b8-4dbb-8b2d-8fc8fb419751",
           "name": "Carteira clínica por token do QR (veterinário com CRMV verificado)",
           "request": {
             "name": "Carteira clínica por token do QR (veterinário com CRMV verificado)",
@@ -3750,7 +3904,7 @@
           },
           "response": [
             {
-              "id": "cebba017-fcc7-4d96-ac40-651a3f25e90b",
+              "id": "e3cbd1f2-5e2f-41e7-9ece-5eef5627731a",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3789,12 +3943,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"clinical_notes\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_nome\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"diagnostico\": \"string\",\n      \"created_at\": \"2025-01-29T19:39:31.071Z\",\n      \"updated_at\": \"1949-10-08T04:06:52.423Z\",\n      \"google_place_id\": \"string\",\n      \"prescricao\": \"string\",\n      \"observacoes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_nome\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"diagnostico\": \"string\",\n      \"created_at\": \"1960-08-23T18:52:14.084Z\",\n      \"updated_at\": \"1970-04-20T21:57:18.301Z\",\n      \"google_place_id\": \"string\",\n      \"prescricao\": \"string\",\n      \"observacoes\": \"string\"\n    }\n  ],\n  \"accessed_by_crmv\": \"string\",\n  \"pet_id\": \"string\",\n  \"pet_name\": \"string\",\n  \"species\": \"BIRD\",\n  \"sex\": \"FEMALE\",\n  \"tutor_name\": \"string\",\n  \"vaccines\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1989-09-24T12:13:28.905Z\",\n      \"updated_at\": \"1970-02-21T00:34:01.997Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1964-07-01T20:53:30.043Z\",\n      \"updated_at\": \"2009-10-11T14:57:21.321Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"dewormings\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1963-05-17T08:02:24.451Z\",\n      \"updated_at\": \"1949-10-24T12:07:05.177Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1964-03-19T09:21:34.140Z\",\n      \"updated_at\": \"2014-11-03T16:52:06.413Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"medications\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"1989-06-02T17:12:34.626Z\",\n      \"updated_at\": \"1977-09-12T23:10:31.883Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"1959-07-18T13:35:19.646Z\",\n      \"updated_at\": \"2020-12-11T10:23:12.770Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"issued_at\": \"2007-03-27T03:26:13.661Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 5479.369450991436,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
+              "body": "{\n  \"clinical_notes\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_nome\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"diagnostico\": \"string\",\n      \"created_at\": \"1946-12-07T19:29:39.444Z\",\n      \"updated_at\": \"2000-07-22T18:16:21.669Z\",\n      \"google_place_id\": \"string\",\n      \"prescricao\": \"string\",\n      \"observacoes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_nome\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"diagnostico\": \"string\",\n      \"created_at\": \"1953-08-06T12:20:20.746Z\",\n      \"updated_at\": \"1960-10-23T11:50:58.742Z\",\n      \"google_place_id\": \"string\",\n      \"prescricao\": \"string\",\n      \"observacoes\": \"string\"\n    }\n  ],\n  \"accessed_by_crmv\": \"string\",\n  \"pet_id\": \"string\",\n  \"pet_name\": \"string\",\n  \"species\": \"BIRD\",\n  \"sex\": \"MALE\",\n  \"tutor_name\": \"string\",\n  \"vaccines\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1964-05-18T15:21:12.453Z\",\n      \"updated_at\": \"1963-01-30T23:33:48.594Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"2022-11-15T20:53:40.582Z\",\n      \"updated_at\": \"1967-09-19T00:05:05.595Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"dewormings\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"2001-10-02T14:42:13.413Z\",\n      \"updated_at\": \"1970-01-01T17:39:03.246Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1988-10-30T08:04:47.375Z\",\n      \"updated_at\": \"1986-10-24T19:09:18.472Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"medications\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"2025-05-02T20:11:48.789Z\",\n      \"updated_at\": \"1955-07-27T06:43:57.501Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"2015-05-28T01:00:39.585Z\",\n      \"updated_at\": \"1958-08-29T21:09:13.706Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"issued_at\": \"2016-06-03T02:40:50.042Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 249.1690998313234,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\",\n  \"tutor_phone\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d08900cb-d6fd-4cda-a539-873afd93e551",
+              "id": "f0006815-14d7-4fc1-ae98-7e8e3f25fd26",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -3833,7 +3987,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "f9a4695d-8fc5-4fbd-a1f4-604dc9dc7531",
+              "id": "68c5b6fe-e58a-4c0b-a175-b06847268fd9",
               "name": "CRMV não verificado\n\nCRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -3872,7 +4026,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "415a559d-4d0e-4a39-a8ab-f41f0d0e6f57",
+              "id": "37a37171-ee60-4269-8766-739a2a36d785",
               "name": "Carteira não encontrada",
               "originalRequest": {
                 "url": {
@@ -3917,7 +4071,7 @@
           }
         },
         {
-          "id": "833c6d0e-02fa-4235-872f-5b15c0a24eb1",
+          "id": "407f20cd-7a8b-4c91-a8a4-9f7df82d53d6",
           "name": "Carteira pública por token do QR Code (sem autenticação)",
           "request": {
             "name": "Carteira pública por token do QR Code (sem autenticação)",
@@ -3954,7 +4108,7 @@
           },
           "response": [
             {
-              "id": "257ca2aa-b066-4dd7-b5ce-9cd9805c41da",
+              "id": "67ac66a5-4642-4841-9439-40418c52cc9c",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -3992,12 +4146,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"pet_id\": \"string\",\n  \"pet_name\": \"string\",\n  \"species\": \"BIRD\",\n  \"sex\": \"FEMALE\",\n  \"tutor_name\": \"string\",\n  \"vaccines\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1982-11-07T03:30:09.080Z\",\n      \"updated_at\": \"2005-02-11T03:57:35.041Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"2023-02-15T00:33:18.782Z\",\n      \"updated_at\": \"1985-03-26T20:36:29.849Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"dewormings\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1980-11-14T20:43:06.569Z\",\n      \"updated_at\": \"1960-12-19T17:49:23.112Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1974-05-20T11:33:50.547Z\",\n      \"updated_at\": \"2005-09-24T01:12:21.166Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"medications\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"1959-05-28T12:24:28.460Z\",\n      \"updated_at\": \"2005-08-03T15:52:42.977Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"1968-02-23T04:42:43.929Z\",\n      \"updated_at\": \"2021-08-29T14:05:39.916Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"issued_at\": \"1980-08-23T01:01:09.649Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 9777.96328619064,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
+              "body": "{\n  \"pet_id\": \"string\",\n  \"pet_name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"MALE\",\n  \"tutor_name\": \"string\",\n  \"vaccines\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"2001-09-09T18:41:29.892Z\",\n      \"updated_at\": \"2018-11-24T11:33:18.576Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"vaccine_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"1977-11-24T23:46:08.341Z\",\n      \"updated_at\": \"1976-05-09T01:39:15.129Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"dewormings\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"2001-09-19T07:28:20.694Z\",\n      \"updated_at\": \"2010-12-15T14:26:33.575Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"product_name\": \"string\",\n      \"applied_at\": \"string\",\n      \"created_at\": \"2025-08-19T13:59:16.557Z\",\n      \"updated_at\": \"2017-04-27T19:33:41.736Z\",\n      \"next_dose_at\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"medications\": [\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"2008-05-18T20:29:27.795Z\",\n      \"updated_at\": \"2012-02-28T05:53:25.867Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"pet_id\": \"string\",\n      \"medication_name\": \"string\",\n      \"dosage\": \"string\",\n      \"frequency\": \"string\",\n      \"start_date\": \"string\",\n      \"created_at\": \"2023-08-25T16:47:53.211Z\",\n      \"updated_at\": \"2022-08-21T22:45:23.983Z\",\n      \"veterinario_id\": \"string\",\n      \"veterinario_crmv\": \"string\",\n      \"veterinarian_name\": \"string\",\n      \"end_date\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"issued_at\": \"1948-05-02T21:09:56.683Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 9365.795830704881,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\",\n  \"tutor_phone\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "9103927f-754a-4f4e-a43e-4fa5bd37e8c9",
+              "id": "62c18ce4-9d43-44fa-be9d-07425cfe9a8c",
               "name": "Carteira não encontrada",
               "originalRequest": {
                 "url": {
@@ -4035,7 +4189,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "38df6e92-55fa-4096-b8a6-0d12f57832ef",
+              "id": "30b5233f-0db4-46db-b13d-0b385e0fa3e9",
               "name": "Limite de requisições excedido",
               "originalRequest": {
                 "url": {
@@ -4082,7 +4236,7 @@
       "event": []
     },
     {
-      "id": "90426ca3-6bb1-41c1-a0b1-bb7ab98a8466",
+      "id": "f7a47b7c-f1c2-4b46-8044-5ddc28857522",
       "name": "tutors",
       "description": {
         "content": "",
@@ -4090,7 +4244,7 @@
       },
       "item": [
         {
-          "id": "cc547ee8-b805-423d-a143-d45a2c0ef24d",
+          "id": "9bde153f-82ec-4664-afc6-77fd90217d16",
           "name": "Dados do tutor autenticado",
           "request": {
             "name": "Dados do tutor autenticado",
@@ -4106,11 +4260,17 @@
               "query": [],
               "variable": []
             },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "method": "GET"
           },
           "response": [
             {
-              "id": "e6395321-e708-47dd-887d-9ba7812996fe",
+              "id": "22e78938-0424-459d-ac6b-e07d0e9b9e69",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4123,6 +4283,12 @@
                   "query": [],
                   "variable": []
                 },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "method": "GET",
                 "body": {}
               },
@@ -4131,15 +4297,15 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "413474b1-9a87-4e8a-ba9d-8a8a8ff6aea8",
+              "id": "ea46a067-2a6b-4dfb-afe7-d1d66be1c6dc",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -4169,7 +4335,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "4c65af35-c9c9-4945-81d4-84c65b81a665",
+              "id": "13380d21-de15-4555-8763-3b46af97a714",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -4205,7 +4371,7 @@
           }
         },
         {
-          "id": "0624ac13-4f91-4a69-af8b-bdbb51241b85",
+          "id": "a8b55c56-a7fd-4561-9d58-9f0fe9b4c764",
           "name": "Atualizar dados do tutor autenticado",
           "request": {
             "name": "Atualizar dados do tutor autenticado",
@@ -4225,12 +4391,16 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
               }
             ],
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"string\",\n  \"email\": \"aj7@JlzUDkgCOMdpXbfAFfSCtUqeVPIkqTzG.yvvn\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://XnUzUXIkjgDNggLwyrlfcrfEQJB.bhJ4CIaSJYqW24HAmTgEU7oxk,J0zH50+sbfDVYd,05,Q\"\n}",
+              "raw": "{\n  \"name\": \"string\",\n  \"email\": \"LnbeKqcctX7NC6@eQOXOlKDxdvGCUbOixMUpNSXnSai.rcs\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://ggbckSHHPhUaQcdUbLXPOiczatcpFF.kvoTi6PT7VMVTBwhjHNGimT4.-e8\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4240,7 +4410,7 @@
           },
           "response": [
             {
-              "id": "02a0e910-eb3e-4c50-aef3-7ebe25abe1aa",
+              "id": "f49bf9c5-d00e-431d-88c2-184691fee657",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4253,10 +4423,16 @@
                   "query": [],
                   "variable": []
                 },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"aj7@JlzUDkgCOMdpXbfAFfSCtUqeVPIkqTzG.yvvn\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://XnUzUXIkjgDNggLwyrlfcrfEQJB.bhJ4CIaSJYqW24HAmTgEU7oxk,J0zH50+sbfDVYd,05,Q\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"LnbeKqcctX7NC6@eQOXOlKDxdvGCUbOixMUpNSXnSai.rcs\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://ggbckSHHPhUaQcdUbLXPOiczatcpFF.kvoTi6PT7VMVTBwhjHNGimT4.-e8\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4269,15 +4445,15 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "c9b4321e-0e25-44bc-ab57-aa36f6e7872a",
+              "id": "ced074ec-b9e1-462e-a5c5-5514d4d68321",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -4294,7 +4470,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"aj7@JlzUDkgCOMdpXbfAFfSCtUqeVPIkqTzG.yvvn\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://XnUzUXIkjgDNggLwyrlfcrfEQJB.bhJ4CIaSJYqW24HAmTgEU7oxk,J0zH50+sbfDVYd,05,Q\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"LnbeKqcctX7NC6@eQOXOlKDxdvGCUbOixMUpNSXnSai.rcs\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://ggbckSHHPhUaQcdUbLXPOiczatcpFF.kvoTi6PT7VMVTBwhjHNGimT4.-e8\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4315,7 +4491,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "53512df1-001e-4159-bfb9-1079ebaa3079",
+              "id": "3609071c-4a21-4dd6-ac1e-f345b8c6c61d",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -4332,7 +4508,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"aj7@JlzUDkgCOMdpXbfAFfSCtUqeVPIkqTzG.yvvn\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://XnUzUXIkjgDNggLwyrlfcrfEQJB.bhJ4CIaSJYqW24HAmTgEU7oxk,J0zH50+sbfDVYd,05,Q\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"LnbeKqcctX7NC6@eQOXOlKDxdvGCUbOixMUpNSXnSai.rcs\",\n  \"phone\": \"string\",\n  \"profile_image_url\": \"http://ggbckSHHPhUaQcdUbLXPOiczatcpFF.kvoTi6PT7VMVTBwhjHNGimT4.-e8\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4359,10 +4535,128 @@
           }
         },
         {
-          "id": "5f790419-00fa-4fad-b540-581782d310b0",
-          "name": "Buscar tutor por id (visão do vet)",
+          "id": "c8d566f2-670e-48ad-b4a6-0d2278167afa",
+          "name": "Excluir definitivamente a conta do tutor autenticado",
           "request": {
-            "name": "Buscar tutor por id (visão do vet)",
+            "name": "Excluir definitivamente a conta do tutor autenticado",
+            "description": {
+              "content": "Apaga a conta e tudo que depende dela: pets, prontuário, carteira digital, agendamentos e notificações. Não há desfazer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tutors",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "96fb7219-d406-4ce7-9269-02502d69acc4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tutors",
+                    "me"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "35f97491-0925-4bc9-bea6-7112a1c8c889",
+              "name": "Token ausente ou inválido",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tutors",
+                    "me"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bf5bbe11-1a79-4ea5-b1bd-8c9930772aa0",
+              "name": "Requer papel TUTOR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tutors",
+                    "me"
+                  ],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "20791c78-e4f7-4f72-9150-51db61bfa75e",
+          "name": "Buscar tutor por id (vet que atende algum pet dele)",
+          "request": {
+            "name": "Buscar tutor por id (vet que atende algum pet dele)",
             "description": {},
             "url": {
               "path": [
@@ -4383,11 +4677,17 @@
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "method": "GET"
           },
           "response": [
             {
-              "id": "55499a6d-9ac9-4076-8f64-9f200a86a833",
+              "id": "22741bf3-eb4b-47bf-8119-08f3f4ba9c2c",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4408,6 +4708,12 @@
                     }
                   ]
                 },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "method": "GET",
                 "body": {}
               },
@@ -4416,15 +4722,15 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "cc835a33-683e-4b15-8beb-348a32de2ef4",
+              "id": "a1b8eda3-1942-4315-b1d4-a3636543233b",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -4462,8 +4768,8 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "817237a6-cc1c-417f-8041-740d084e85c7",
-              "name": "Requer papel VET",
+              "id": "bfcf2120-afbb-42c0-8565-01bdbc84cdd9",
+              "name": "Tutor fora da lista de atendidos\n\nRequer papel VET",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4500,7 +4806,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "a3aad73a-35e1-4fc1-9539-4fe648e24070",
+              "id": "6d897740-62df-4d69-b6c0-ff708c5b8c8e",
               "name": "Tutor não encontrado",
               "originalRequest": {
                 "url": {
@@ -4547,7 +4853,7 @@
       "event": []
     },
     {
-      "id": "64e2a74c-0eb1-4ce6-980b-91cbbaaa4b4e",
+      "id": "b80583ff-7571-4183-801f-e4a51b9dce38",
       "name": "pets",
       "description": {
         "content": "",
@@ -4555,7 +4861,7 @@
       },
       "item": [
         {
-          "id": "8f51095d-6d48-413f-a4cf-539eaeb3bcae",
+          "id": "bf0bac1b-422a-4395-9f64-3b5a46458dee",
           "name": "Cadastrar pet do tutor autenticado",
           "request": {
             "name": "Cadastrar pet do tutor autenticado",
@@ -4583,7 +4889,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 2990.7188096163286,\n  \"photo_url\": \"https://BcpjDGmcpWJXzLURyKze.fcgikNZ\"\n}",
+              "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 5258.636397985458,\n  \"photo_url\": \"http://qKPLdaVDwwsukstgBSPrDlvCC.jkunu0eTE9QEl4rP\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4593,7 +4899,7 @@
           },
           "response": [
             {
-              "id": "c5ca2818-29ed-4069-9029-63a2d0f164d3",
+              "id": "eaedf8c4-73b9-47aa-8980-115eb7ace2db",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4614,7 +4920,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 2990.7188096163286,\n  \"photo_url\": \"https://BcpjDGmcpWJXzLURyKze.fcgikNZ\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 5258.636397985458,\n  \"photo_url\": \"http://qKPLdaVDwwsukstgBSPrDlvCC.jkunu0eTE9QEl4rP\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4630,12 +4936,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"MALE\",\n  \"tutor_id\": \"string\",\n  \"created_at\": \"1999-05-07T03:58:31.763Z\",\n  \"updated_at\": \"2001-09-09T08:32:08.515Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 563.462499480234,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"tutor_id\": \"string\",\n  \"created_at\": \"1972-05-04T11:10:05.544Z\",\n  \"updated_at\": \"2011-08-03T23:14:57.072Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 6854.436050456506,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d7d480de-5963-4aae-b69b-f86cdd11865b",
+              "id": "5f0c15b9-7cd1-4ebf-adb9-95ff81e9d1ab",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -4651,7 +4957,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 2990.7188096163286,\n  \"photo_url\": \"https://BcpjDGmcpWJXzLURyKze.fcgikNZ\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 5258.636397985458,\n  \"photo_url\": \"http://qKPLdaVDwwsukstgBSPrDlvCC.jkunu0eTE9QEl4rP\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4672,7 +4978,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "47becda4-8b24-48f1-9b75-5dada661d413",
+              "id": "4c21c6b1-4ac5-4079-b1f4-86c7b2ddc311",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -4688,7 +4994,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 2990.7188096163286,\n  \"photo_url\": \"https://BcpjDGmcpWJXzLURyKze.fcgikNZ\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 5258.636397985458,\n  \"photo_url\": \"http://qKPLdaVDwwsukstgBSPrDlvCC.jkunu0eTE9QEl4rP\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4715,7 +5021,7 @@
           }
         },
         {
-          "id": "cf297bc8-9f95-4842-be12-678a8f90f696",
+          "id": "d737a8a7-544b-4d18-bd23-a9e981bc74c4",
           "name": "Listar pets do tutor autenticado",
           "request": {
             "name": "Listar pets do tutor autenticado",
@@ -4740,7 +5046,7 @@
           },
           "response": [
             {
-              "id": "a191d561-222d-4db9-ace4-c7710b6aa9c6",
+              "id": "e626980f-e551-486c-a7e4-5f3455bd89d9",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4769,12 +5075,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"species\": \"OTHER\",\n    \"sex\": \"FEMALE\",\n    \"tutor_id\": \"string\",\n    \"created_at\": \"1988-12-02T01:40:02.126Z\",\n    \"updated_at\": \"1980-11-16T20:38:16.646Z\",\n    \"breed\": \"string\",\n    \"birth_date\": \"string\",\n    \"weight\": 7154.537874719253,\n    \"photo_url\": \"string\",\n    \"qr_code_url\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"species\": \"DOG\",\n    \"sex\": \"MALE\",\n    \"tutor_id\": \"string\",\n    \"created_at\": \"1965-04-28T13:06:13.032Z\",\n    \"updated_at\": \"2000-05-07T08:37:53.562Z\",\n    \"breed\": \"string\",\n    \"birth_date\": \"string\",\n    \"weight\": 7847.246194709446,\n    \"photo_url\": \"string\",\n    \"qr_code_url\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"species\": \"CAT\",\n    \"sex\": \"MALE\",\n    \"tutor_id\": \"string\",\n    \"created_at\": \"1965-11-29T09:51:50.894Z\",\n    \"updated_at\": \"1983-03-29T01:05:07.197Z\",\n    \"breed\": \"string\",\n    \"birth_date\": \"string\",\n    \"weight\": 1501.5507953270546,\n    \"photo_url\": \"string\",\n    \"qr_code_url\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"species\": \"DOG\",\n    \"sex\": \"MALE\",\n    \"tutor_id\": \"string\",\n    \"created_at\": \"1981-04-11T00:45:03.136Z\",\n    \"updated_at\": \"1947-11-12T20:29:30.573Z\",\n    \"breed\": \"string\",\n    \"birth_date\": \"string\",\n    \"weight\": 8937.47382487596,\n    \"photo_url\": \"string\",\n    \"qr_code_url\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "afd65643-51a9-4957-a06c-1f1d0f153bf5",
+              "id": "d02b981c-3a01-44c1-b5d7-1b37e73fd349",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -4803,7 +5109,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "818b6987-e42f-476b-93d2-b763a71d9cc9",
+              "id": "a37ad5a6-2d7b-4364-b368-fb8fc560aa2a",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -4838,7 +5144,7 @@
           }
         },
         {
-          "id": "f123bfe3-1495-4c22-aa88-0207a50856c1",
+          "id": "e56519f3-361d-4ba7-8b60-e7010d1f1c00",
           "name": "Buscar pet por id (tutor dono ou vet)",
           "request": {
             "name": "Buscar pet por id (tutor dono ou vet)",
@@ -4872,7 +5178,7 @@
           },
           "response": [
             {
-              "id": "6b0aa0f8-686a-4ec8-b3a1-a5af663c563f",
+              "id": "98d72992-6664-4a9c-8384-1099777a49c2",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -4910,12 +5216,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"MALE\",\n  \"tutor_id\": \"string\",\n  \"created_at\": \"1999-05-07T03:58:31.763Z\",\n  \"updated_at\": \"2001-09-09T08:32:08.515Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 563.462499480234,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"tutor_id\": \"string\",\n  \"created_at\": \"1972-05-04T11:10:05.544Z\",\n  \"updated_at\": \"2011-08-03T23:14:57.072Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 6854.436050456506,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "71cf1255-8c7d-46aa-a9b7-6c4e45a948d8",
+              "id": "04705859-ce33-47cc-8606-30161fdb8ceb",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -4953,7 +5259,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "018b38a4-150c-4deb-a7c3-c6d8047d2e69",
+              "id": "9f7cfdc9-97d7-4b9f-bff8-9646b92af154",
               "name": "Requer papel TUTOR ou VET",
               "originalRequest": {
                 "url": {
@@ -4991,7 +5297,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "ceddd94b-c959-4e32-8647-46dc65424340",
+              "id": "aacbc5e8-0265-41ad-b14e-ff64eb9a53e6",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -5035,7 +5341,7 @@
           }
         },
         {
-          "id": "a77cca1c-9c16-4915-a11a-16962ffe42fc",
+          "id": "d5b9a386-437e-41cb-a365-43f5fc17ec01",
           "name": "Atualizar pet do tutor autenticado",
           "request": {
             "name": "Atualizar pet do tutor autenticado",
@@ -5072,7 +5378,7 @@
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"FEMALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 1873.805016037622,\n  \"photo_url\": \"http://frkYbOuLlyaLsiYk.odpz3mSjzfQDAw7x+J0OkuLvW1XVoBXvxAfnDNAxT834sfZDxrAIhT\"\n}",
+              "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"MALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 3246.383060496604,\n  \"photo_url\": \"http://GHQROWtSXnixKFDrXlWtSFobmxqAEh.tbjrfTm\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5082,7 +5388,7 @@
           },
           "response": [
             {
-              "id": "9f80b89c-7de4-4b93-a22a-ee017897268d",
+              "id": "bccfbbe8-8d63-4970-907f-7b8f197b00b3",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5112,7 +5418,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"FEMALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 1873.805016037622,\n  \"photo_url\": \"http://frkYbOuLlyaLsiYk.odpz3mSjzfQDAw7x+J0OkuLvW1XVoBXvxAfnDNAxT834sfZDxrAIhT\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"MALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 3246.383060496604,\n  \"photo_url\": \"http://GHQROWtSXnixKFDrXlWtSFobmxqAEh.tbjrfTm\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5128,12 +5434,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"MALE\",\n  \"tutor_id\": \"string\",\n  \"created_at\": \"1999-05-07T03:58:31.763Z\",\n  \"updated_at\": \"2001-09-09T08:32:08.515Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 563.462499480234,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"sex\": \"FEMALE\",\n  \"tutor_id\": \"string\",\n  \"created_at\": \"1972-05-04T11:10:05.544Z\",\n  \"updated_at\": \"2011-08-03T23:14:57.072Z\",\n  \"breed\": \"string\",\n  \"birth_date\": \"string\",\n  \"weight\": 6854.436050456506,\n  \"photo_url\": \"string\",\n  \"qr_code_url\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "70df5e28-e8f2-479c-961c-7d018a6339f9",
+              "id": "3d6b0523-580d-4e8c-924b-4dc976bf997c",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -5158,7 +5464,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"FEMALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 1873.805016037622,\n  \"photo_url\": \"http://frkYbOuLlyaLsiYk.odpz3mSjzfQDAw7x+J0OkuLvW1XVoBXvxAfnDNAxT834sfZDxrAIhT\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"MALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 3246.383060496604,\n  \"photo_url\": \"http://GHQROWtSXnixKFDrXlWtSFobmxqAEh.tbjrfTm\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5179,7 +5485,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "1fcfbfff-96c4-46e2-afd5-d819224ba6e6",
+              "id": "ff919c82-e92f-4519-97cb-961b4879d0c0",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -5204,7 +5510,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"FEMALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 1873.805016037622,\n  \"photo_url\": \"http://frkYbOuLlyaLsiYk.odpz3mSjzfQDAw7x+J0OkuLvW1XVoBXvxAfnDNAxT834sfZDxrAIhT\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"MALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 3246.383060496604,\n  \"photo_url\": \"http://GHQROWtSXnixKFDrXlWtSFobmxqAEh.tbjrfTm\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5225,7 +5531,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3a158b90-624c-44a9-8245-9626e910c0c4",
+              "id": "a20236e4-9002-4792-8204-8c6acc18296f",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -5250,7 +5556,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"FEMALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 1873.805016037622,\n  \"photo_url\": \"http://frkYbOuLlyaLsiYk.odpz3mSjzfQDAw7x+J0OkuLvW1XVoBXvxAfnDNAxT834sfZDxrAIhT\"\n}",
+                  "raw": "{\n  \"name\": \"string\",\n  \"species\": \"OTHER\",\n  \"breed\": \"string\",\n  \"sex\": \"MALE\",\n  \"birth_date\": \"string\",\n  \"weight\": 3246.383060496604,\n  \"photo_url\": \"http://GHQROWtSXnixKFDrXlWtSFobmxqAEh.tbjrfTm\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5277,7 +5583,7 @@
           }
         },
         {
-          "id": "4482071f-3c1d-4ec6-be15-832f5ac53468",
+          "id": "a73a99bf-55cc-45f5-b630-5a4aeec9ed47",
           "name": "Remover pet do tutor autenticado",
           "request": {
             "name": "Remover pet do tutor autenticado",
@@ -5305,7 +5611,7 @@
           },
           "response": [
             {
-              "id": "5fb6d5b6-fa6d-4cd0-b29d-005daa0effe1",
+              "id": "c4f82eed-95fc-4168-8d06-1f98e6c2e02f",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5342,7 +5648,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "f49a2bf4-e11c-4b1a-9183-1b3575b7f84a",
+              "id": "b52897f4-5c77-47eb-9e27-40dcb9a9fe6e",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -5380,7 +5686,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "4df3a2cc-aa26-41ee-8258-95c635943cbc",
+              "id": "00c5bebe-7136-489c-a254-eae4fcb7519e",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -5418,7 +5724,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "c05a3d5b-917a-4947-969e-f1bee3b0868d",
+              "id": "b35417fa-c684-4fb5-8683-cc876392c830",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -5462,7 +5768,7 @@
           }
         },
         {
-          "id": "34ad1244-f06e-44cf-b7c2-cc29949b28a6",
+          "id": "fe54a444-f6a8-44a9-a15c-2fd145fa31c1",
           "name": "Reenfileirar geração do QR Code da carteira (assíncrono)",
           "request": {
             "name": "Reenfileirar geração do QR Code da carteira (assíncrono)",
@@ -5491,7 +5797,7 @@
           },
           "response": [
             {
-              "id": "fa3af9fd-1c8d-4114-86a3-3d7f379371b8",
+              "id": "3541370d-5547-4b15-8a46-a62aaf2e67c7",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5529,7 +5835,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "9604857a-55a7-482f-a225-3dfa676b8e02",
+              "id": "27a85772-9aab-4877-b2bc-be36697fd91c",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -5568,7 +5874,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "16f11f9c-7452-4fd0-9f99-69b56870e564",
+              "id": "e62f8df3-a776-4f4a-be3b-cbe81d78f6f4",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -5607,7 +5913,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "89563456-3526-47d1-a830-f1392bd12605",
+              "id": "c1e3b398-eed4-483c-aa86-75f2ea0e9d4e",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -5655,7 +5961,7 @@
       "event": []
     },
     {
-      "id": "ff67d4ba-33de-4589-9563-f5f09db33067",
+      "id": "912c5ed3-2036-4ef0-81ef-25ebc075a821",
       "name": "vaccines",
       "description": {
         "content": "",
@@ -5663,7 +5969,7 @@
       },
       "item": [
         {
-          "id": "7aacb4b3-0561-4b40-ade6-4e2daa2ae87c",
+          "id": "7325018f-92aa-4d34-b645-17917907cbf9",
           "name": "Registrar vacina no prontuário do pet",
           "request": {
             "name": "Registrar vacina no prontuário do pet",
@@ -5701,7 +6007,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pet_id\": \"8b64c5fa-87b3-2ced-31a4-039e8252c0af\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "raw": "{\n  \"pet_id\": \"0ba78eca-6761-bd1d-e4e4-b3a9914e8edf\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5711,7 +6017,7 @@
           },
           "response": [
             {
-              "id": "bb04e458-4943-4c58-9438-7a0b7df7dac0",
+              "id": "9500572a-b325-46c3-b393-81bfae2d99d8",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5742,7 +6048,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"8b64c5fa-87b3-2ced-31a4-039e8252c0af\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"0ba78eca-6761-bd1d-e4e4-b3a9914e8edf\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5758,12 +6064,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"1987-06-26T02:45:44.002Z\",\n  \"updated_at\": \"1969-01-14T20:18:48.548Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"2024-06-10T23:28:52.203Z\",\n  \"updated_at\": \"1973-07-19T08:06:13.636Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "81da09fd-73ba-4ecc-8cc8-267d4dc2f532",
+              "id": "bef8edc4-1f83-4289-aaa7-12cabbf76c1e",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -5789,7 +6095,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"8b64c5fa-87b3-2ced-31a4-039e8252c0af\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"0ba78eca-6761-bd1d-e4e4-b3a9914e8edf\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5810,7 +6116,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e203ad0f-5ca4-4e92-a261-71aa261f9596",
+              "id": "c0c5a670-6cb7-4448-ac13-239d5ffda692",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -5836,7 +6142,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"8b64c5fa-87b3-2ced-31a4-039e8252c0af\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"0ba78eca-6761-bd1d-e4e4-b3a9914e8edf\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5857,7 +6163,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "014992f3-5d48-4ffb-9d07-b3f4b25200bf",
+              "id": "ad0d6f47-4f14-4cc4-b73d-e3beb2cc9322",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -5883,7 +6189,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"8b64c5fa-87b3-2ced-31a4-039e8252c0af\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"0ba78eca-6761-bd1d-e4e4-b3a9914e8edf\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5910,7 +6216,7 @@
           }
         },
         {
-          "id": "44d9317a-10c9-46eb-b02a-d01d5ff987f8",
+          "id": "1457943b-b980-4365-8e28-391849aa9fa4",
           "name": "Listar vacinas do pet",
           "request": {
             "name": "Listar vacinas do pet",
@@ -5945,7 +6251,7 @@
           },
           "response": [
             {
-              "id": "c0099292-7ebc-4e32-b389-d90e8e6002b6",
+              "id": "87f64242-4b39-4d51-a96d-4b23993f4209",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5984,12 +6290,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"vaccine_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"1946-08-30T00:59:53.675Z\",\n    \"updated_at\": \"1958-12-15T19:28:10.154Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"vaccine_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"1955-09-27T07:54:22.372Z\",\n    \"updated_at\": \"2003-12-07T09:18:53.099Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"vaccine_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"1963-01-26T10:47:14.953Z\",\n    \"updated_at\": \"1974-06-05T04:32:34.424Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"vaccine_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"1960-09-17T05:00:49.347Z\",\n    \"updated_at\": \"1974-10-23T19:22:47.581Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "4ffffb84-ae2c-41de-93b9-62aaf53d10d9",
+              "id": "69e885ca-857c-42b5-a499-6ae676499cfd",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -6028,7 +6334,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "1a084832-9fcf-4387-bcb3-cc5f996ea729",
+              "id": "1c7aa1ed-137d-48d8-ac7b-2df4819f433f",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -6067,7 +6373,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "74f8546a-e21a-4e97-9d66-d5bfccbcf367",
+              "id": "e692b457-843b-4f56-bca1-fd4e0f47d542",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -6112,7 +6418,7 @@
           }
         },
         {
-          "id": "46c59910-f9b1-4398-b202-3a99be5042ab",
+          "id": "d2976091-f5d5-45de-a789-e31223579f25",
           "name": "Atualizar registro de vacina",
           "request": {
             "name": "Atualizar registro de vacina",
@@ -6149,7 +6455,7 @@
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pet_id\": \"e85df2de-8817-e388-7620-4833a1c7ab2a\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "raw": "{\n  \"pet_id\": \"fe5ad612-7bb0-71a8-b6c4-363d651cdbf5\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -6159,7 +6465,7 @@
           },
           "response": [
             {
-              "id": "95de17cb-68da-4a95-aa53-d8d05e0f1462",
+              "id": "046874ea-cfcb-41e2-bf52-84dfb558366c",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -6189,7 +6495,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e85df2de-8817-e388-7620-4833a1c7ab2a\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"fe5ad612-7bb0-71a8-b6c4-363d651cdbf5\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6205,12 +6511,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"1987-06-26T02:45:44.002Z\",\n  \"updated_at\": \"1969-01-14T20:18:48.548Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"2024-06-10T23:28:52.203Z\",\n  \"updated_at\": \"1973-07-19T08:06:13.636Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "c33092d3-f0b1-408e-a564-b495cb67822e",
+              "id": "5ae36994-0ba5-43bc-93ce-9b84de8b3520",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -6235,7 +6541,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e85df2de-8817-e388-7620-4833a1c7ab2a\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"fe5ad612-7bb0-71a8-b6c4-363d651cdbf5\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6256,7 +6562,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e26c3f29-c154-4a2e-974e-c5afb97196ab",
+              "id": "a66797bd-0383-4998-860b-fa0964940b60",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -6281,7 +6587,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e85df2de-8817-e388-7620-4833a1c7ab2a\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"fe5ad612-7bb0-71a8-b6c4-363d651cdbf5\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6302,7 +6608,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "7249847f-4ab1-4cde-9608-a08c93dc71ad",
+              "id": "bcc6c097-9792-419d-981d-0e84cd68c8c2",
               "name": "Registro não encontrado",
               "originalRequest": {
                 "url": {
@@ -6327,7 +6633,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e85df2de-8817-e388-7620-4833a1c7ab2a\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"fe5ad612-7bb0-71a8-b6c4-363d651cdbf5\",\n  \"vaccine_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6354,7 +6660,7 @@
           }
         },
         {
-          "id": "af197775-bc37-4a6e-8922-adec925ecb5e",
+          "id": "313c7f11-e276-4fd6-8ab3-0f0989d733cc",
           "name": "Remover registro de vacina",
           "request": {
             "name": "Remover registro de vacina",
@@ -6382,7 +6688,7 @@
           },
           "response": [
             {
-              "id": "5e69bf00-35c9-4625-ba8d-8006218c40d3",
+              "id": "8228b785-ce86-436a-998e-a9138e3fddda",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -6419,7 +6725,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "0e4e4e9f-4386-4450-b760-8b49d55f2e22",
+              "id": "9848e4ce-0629-4617-b164-4f9e229b6bda",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -6457,7 +6763,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "1af34075-9249-4bb0-976f-8b2badeed714",
+              "id": "b4b30586-beb7-42cf-adfe-651fa84e2045",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -6495,7 +6801,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "9ce9a20e-f21b-411f-9a1b-6d19fbf1316f",
+              "id": "7110b112-e078-481c-8e75-4415faba00d0",
               "name": "Registro não encontrado",
               "originalRequest": {
                 "url": {
@@ -6542,7 +6848,7 @@
       "event": []
     },
     {
-      "id": "4287b04d-f73a-476c-a557-927973927a21",
+      "id": "d66afe48-3e30-4d95-ba61-21b1d5006aea",
       "name": "historico-clinico",
       "description": {
         "content": "",
@@ -6550,7 +6856,7 @@
       },
       "item": [
         {
-          "id": "483bc214-07d9-4a9d-a2b8-e72426346dc5",
+          "id": "c7580761-a870-482d-ab07-5f6b9ba771f9",
           "name": "Histórico clínico completo do pet",
           "request": {
             "name": "Histórico clínico completo do pet",
@@ -6582,7 +6888,7 @@
           },
           "response": [
             {
-              "id": "f5d17df5-a153-4364-a61d-92637a843113",
+              "id": "234efc8e-1a49-4845-9288-90bcd7389fd2",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -6620,7 +6926,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "01c4fce9-363e-48c8-887c-29996e954d8a",
+              "id": "6c486365-9d3f-49a6-827f-bcaffe704f6e",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -6659,7 +6965,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "c8ad5491-368d-49e7-8085-293a98421168",
+              "id": "410a82c7-d9bc-4a7d-ac17-c22a3491fdeb",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -6698,7 +7004,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "30ebbe83-b289-4915-aa94-4e986402197e",
+              "id": "f8bbe768-b9d8-4586-afd8-8e719ac0d1cf",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -6746,7 +7052,7 @@
       "event": []
     },
     {
-      "id": "db2d0dfa-9145-48ec-a9ea-a9f1a6ef574d",
+      "id": "506df6b2-dd47-4c30-a195-97d63f9a7d89",
       "name": "dewormings",
       "description": {
         "content": "",
@@ -6754,7 +7060,7 @@
       },
       "item": [
         {
-          "id": "8644e1b3-ad34-4c73-83fe-943328d41fcf",
+          "id": "913e972c-d0d2-492a-8a49-27b35629ac0c",
           "name": "Registrar vermífugo no prontuário do pet",
           "request": {
             "name": "Registrar vermífugo no prontuário do pet",
@@ -6792,7 +7098,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pet_id\": \"80866bb8-5611-975c-067f-135bd86a7e50\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "raw": "{\n  \"pet_id\": \"63d7838c-8c0d-c26c-40f2-17e1d6636ebb\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -6802,7 +7108,7 @@
           },
           "response": [
             {
-              "id": "59440ed6-321f-46cf-b0e2-ff2894439bf1",
+              "id": "b041db65-3ead-4fb5-80e1-1034597877e5",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -6833,7 +7139,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"80866bb8-5611-975c-067f-135bd86a7e50\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"63d7838c-8c0d-c26c-40f2-17e1d6636ebb\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6849,12 +7155,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"1969-01-15T14:35:21.486Z\",\n  \"updated_at\": \"1964-12-06T20:51:21.394Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"1952-08-13T16:12:24.696Z\",\n  \"updated_at\": \"1958-02-24T09:46:33.780Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "f8c452d6-0315-4f2c-8990-c313a5f8bf9d",
+              "id": "32ea8e2d-d5ad-43ca-aadf-c874b5d0d0e7",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -6880,7 +7186,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"80866bb8-5611-975c-067f-135bd86a7e50\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"63d7838c-8c0d-c26c-40f2-17e1d6636ebb\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6901,7 +7207,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "12a19585-f6af-48aa-a945-42f7d73f5944",
+              "id": "09b60791-f79b-45da-aeb6-9046df82ebee",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -6927,7 +7233,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"80866bb8-5611-975c-067f-135bd86a7e50\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"63d7838c-8c0d-c26c-40f2-17e1d6636ebb\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6948,7 +7254,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "2d0bf63f-3eec-4ccc-b199-3c2a25c021f0",
+              "id": "659a40a7-0e07-494e-9849-c9c0ba41d9fc",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -6974,7 +7280,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"80866bb8-5611-975c-067f-135bd86a7e50\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"63d7838c-8c0d-c26c-40f2-17e1d6636ebb\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7001,7 +7307,7 @@
           }
         },
         {
-          "id": "562830dc-e080-4a64-a3aa-9c1e8038052a",
+          "id": "0ce5bf2d-3087-427b-8e7f-3c71260407f2",
           "name": "Listar vermífugos do pet",
           "request": {
             "name": "Listar vermífugos do pet",
@@ -7036,7 +7342,7 @@
           },
           "response": [
             {
-              "id": "3015679a-6470-4ce1-87b6-78f95dc1921b",
+              "id": "cb7c5a2c-1353-4422-a203-c47cf106adbf",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -7075,12 +7381,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"product_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"1999-09-03T12:05:15.143Z\",\n    \"updated_at\": \"2012-02-03T01:30:01.897Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"product_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"1992-09-04T06:21:55.925Z\",\n    \"updated_at\": \"1964-10-28T01:57:38.488Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"product_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"2005-12-07T18:35:11.924Z\",\n    \"updated_at\": \"1994-08-18T21:43:39.377Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"product_name\": \"string\",\n    \"applied_at\": \"string\",\n    \"created_at\": \"2004-01-16T14:50:24.074Z\",\n    \"updated_at\": \"1960-09-07T00:52:32.613Z\",\n    \"next_dose_at\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"notes\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "fd07208b-2f41-4159-9a38-9bf5ff7d4a45",
+              "id": "acd87eaa-9d7d-4776-83a5-1621baaf7499",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -7119,7 +7425,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "ae591a1b-0b7a-41df-ac09-9053d63feda2",
+              "id": "639ad55a-aeec-45cd-b2cb-1be66bc1a90b",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -7158,7 +7464,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "b6c4b683-717d-4f64-98a7-f84a40ac3ba0",
+              "id": "e5dbd885-cfde-4fb8-b6e9-0b00da88ba42",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -7203,7 +7509,7 @@
           }
         },
         {
-          "id": "5fb6cb11-8f6e-462a-ac1c-e5a250e5999c",
+          "id": "674af787-74ea-44ca-b8ca-feae7bdbed53",
           "name": "Atualizar registro de vermífugo",
           "request": {
             "name": "Atualizar registro de vermífugo",
@@ -7240,7 +7546,7 @@
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pet_id\": \"7307cf15-3c3c-6d92-7b13-26f231fd60c5\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "raw": "{\n  \"pet_id\": \"ac01e743-5c67-be45-9d97-e3de2773c15f\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -7250,7 +7556,7 @@
           },
           "response": [
             {
-              "id": "3589b6ad-947c-4f65-91d7-af6cd37a0aa8",
+              "id": "2605e61f-6b3c-4519-80b2-b1733fbc0cbf",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -7280,7 +7586,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7307cf15-3c3c-6d92-7b13-26f231fd60c5\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"ac01e743-5c67-be45-9d97-e3de2773c15f\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7296,12 +7602,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"1969-01-15T14:35:21.486Z\",\n  \"updated_at\": \"1964-12-06T20:51:21.394Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"created_at\": \"1952-08-13T16:12:24.696Z\",\n  \"updated_at\": \"1958-02-24T09:46:33.780Z\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"notes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "13d42459-4238-445d-acb8-d055549e6a0c",
+              "id": "71089262-8c3f-40f8-8935-c5d439e7a580",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -7326,7 +7632,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7307cf15-3c3c-6d92-7b13-26f231fd60c5\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"ac01e743-5c67-be45-9d97-e3de2773c15f\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7347,7 +7653,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "a10ec1e4-ee87-426f-9d4c-2fa94573ac8f",
+              "id": "8f78c3b1-0aea-4f3b-8bf2-22120d104d5b",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -7372,7 +7678,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7307cf15-3c3c-6d92-7b13-26f231fd60c5\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"ac01e743-5c67-be45-9d97-e3de2773c15f\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7393,7 +7699,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "ee0f1089-ac9d-4fc8-8e3e-eb8eccffa7c8",
+              "id": "e61048e7-14c7-4573-a7ca-fde74823f2b4",
               "name": "Registro não encontrado",
               "originalRequest": {
                 "url": {
@@ -7418,7 +7724,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7307cf15-3c3c-6d92-7b13-26f231fd60c5\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"ac01e743-5c67-be45-9d97-e3de2773c15f\",\n  \"product_name\": \"string\",\n  \"applied_at\": \"string\",\n  \"next_dose_at\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7445,7 +7751,7 @@
           }
         },
         {
-          "id": "3c236fd3-3c4a-4700-b966-ca58fdbeb057",
+          "id": "8947cfe1-79f4-46f6-8619-d03044c73361",
           "name": "Remover registro de vermífugo",
           "request": {
             "name": "Remover registro de vermífugo",
@@ -7473,7 +7779,7 @@
           },
           "response": [
             {
-              "id": "2f0d70d8-d0eb-40ca-ad10-19815d27391f",
+              "id": "11260324-83d3-43a8-93c8-75e0f6ef207a",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -7510,7 +7816,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "3847a55e-e54b-4733-9769-62c38287035b",
+              "id": "37ed8377-51ab-4ea6-b296-ef58b4249e03",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -7548,7 +7854,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "0f8ee006-5909-4353-9ba7-faf32afe9dab",
+              "id": "e657473b-f0bc-4958-864c-b07865b11ffd",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -7586,7 +7892,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "826ea9bb-ecd8-429b-bf07-b7ba64193527",
+              "id": "1a92be2b-1159-4a29-b047-f6b7e4518dfd",
               "name": "Registro não encontrado",
               "originalRequest": {
                 "url": {
@@ -7633,7 +7939,7 @@
       "event": []
     },
     {
-      "id": "26fca647-51c8-4f2c-bab7-81aec96f0675",
+      "id": "ea216878-0f80-4dbb-9788-e17967eaaedc",
       "name": "medications",
       "description": {
         "content": "",
@@ -7641,7 +7947,7 @@
       },
       "item": [
         {
-          "id": "b653eda4-bf60-41df-baea-e673672e3b6a",
+          "id": "f25d3194-5e2e-406a-86a0-e7d8d4d156e2",
           "name": "Registrar medicação no prontuário do pet",
           "request": {
             "name": "Registrar medicação no prontuário do pet",
@@ -7679,7 +7985,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pet_id\": \"7a42b2b4-403c-ba72-407f-edae0f3e67a8\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "raw": "{\n  \"pet_id\": \"6a9a0c45-b2c0-e019-3a82-9cd685a815e4\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -7689,7 +7995,7 @@
           },
           "response": [
             {
-              "id": "fde5fbf7-4f25-4ceb-ad5e-d2da7502f99a",
+              "id": "c893834a-1534-4ae4-ae58-3bfd47914b7d",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -7720,7 +8026,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7a42b2b4-403c-ba72-407f-edae0f3e67a8\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"6a9a0c45-b2c0-e019-3a82-9cd685a815e4\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7736,12 +8042,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"created_at\": \"2001-12-26T12:33:16.247Z\",\n  \"updated_at\": \"1999-01-17T15:32:23.015Z\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"end_date\": \"string\",\n  \"notes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"created_at\": \"1949-10-22T21:52:19.040Z\",\n  \"updated_at\": \"1994-12-14T12:28:15.523Z\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"end_date\": \"string\",\n  \"notes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8e33cf0e-bd9e-43d1-9f9b-8d9a3b321570",
+              "id": "63846076-fd78-498e-ac74-d3be582aca8b",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -7767,7 +8073,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7a42b2b4-403c-ba72-407f-edae0f3e67a8\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"6a9a0c45-b2c0-e019-3a82-9cd685a815e4\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7788,7 +8094,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "547a6969-839f-49ba-9f36-002b6b8560ff",
+              "id": "bdca3c4f-f71f-44e2-b570-20c087adfffe",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -7814,7 +8120,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7a42b2b4-403c-ba72-407f-edae0f3e67a8\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"6a9a0c45-b2c0-e019-3a82-9cd685a815e4\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7835,7 +8141,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "0ab7a918-a578-4821-b9df-528ffba51ec2",
+              "id": "308bde4b-93b8-4d43-882a-2e0cf99e579e",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -7861,7 +8167,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"7a42b2b4-403c-ba72-407f-edae0f3e67a8\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"6a9a0c45-b2c0-e019-3a82-9cd685a815e4\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -7888,7 +8194,7 @@
           }
         },
         {
-          "id": "cfa34848-81fa-44d4-896e-c7eb7954037f",
+          "id": "5afb17a4-ce95-4140-b88e-4c16f1d92249",
           "name": "Listar medicações do pet",
           "request": {
             "name": "Listar medicações do pet",
@@ -7923,7 +8229,7 @@
           },
           "response": [
             {
-              "id": "7273b97b-fd6b-46d8-97a8-ec7a06089750",
+              "id": "c0956bf2-7d32-4ec4-804c-ed7d4cf53b4c",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -7962,12 +8268,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"medication_name\": \"string\",\n    \"dosage\": \"string\",\n    \"frequency\": \"string\",\n    \"start_date\": \"string\",\n    \"created_at\": \"1989-05-20T00:45:47.389Z\",\n    \"updated_at\": \"1991-04-03T03:35:29.300Z\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"end_date\": \"string\",\n    \"notes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"medication_name\": \"string\",\n    \"dosage\": \"string\",\n    \"frequency\": \"string\",\n    \"start_date\": \"string\",\n    \"created_at\": \"1953-07-01T21:05:59.648Z\",\n    \"updated_at\": \"1992-07-30T00:49:26.883Z\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"end_date\": \"string\",\n    \"notes\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"medication_name\": \"string\",\n    \"dosage\": \"string\",\n    \"frequency\": \"string\",\n    \"start_date\": \"string\",\n    \"created_at\": \"2009-03-09T01:43:56.543Z\",\n    \"updated_at\": \"1952-11-07T02:41:56.152Z\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"end_date\": \"string\",\n    \"notes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"medication_name\": \"string\",\n    \"dosage\": \"string\",\n    \"frequency\": \"string\",\n    \"start_date\": \"string\",\n    \"created_at\": \"2003-01-01T11:39:13.169Z\",\n    \"updated_at\": \"1946-09-06T08:37:54.976Z\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"veterinarian_name\": \"string\",\n    \"end_date\": \"string\",\n    \"notes\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "9a1679ca-634d-4ae4-ac16-b7f0545e50f1",
+              "id": "6e8bd7bb-9d4a-44c2-9d36-4fb28ad1ac05",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -8006,7 +8312,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "0c83219c-b7aa-41b3-94ad-21936aeaad4b",
+              "id": "28084035-4c2a-4d25-8364-81ec189732c3",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -8045,7 +8351,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "db4704f4-7dcd-4431-aa95-a37e18993a58",
+              "id": "13c0c635-0ca6-4543-85b6-78aa8b9c39ab",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -8090,7 +8396,7 @@
           }
         },
         {
-          "id": "5e536dec-f071-4f7e-949b-450a942852af",
+          "id": "7eb4a2b9-be21-414f-9bd5-e4966dcfa928",
           "name": "Atualizar registro de medicação",
           "request": {
             "name": "Atualizar registro de medicação",
@@ -8127,7 +8433,7 @@
             "method": "PATCH",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pet_id\": \"e675f715-25f7-158e-2dd0-798b7172bfce\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "raw": "{\n  \"pet_id\": \"9e18665a-4bbc-f4ca-004c-c31af78d0b15\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -8137,7 +8443,7 @@
           },
           "response": [
             {
-              "id": "c1c6597e-15d1-4e54-9213-35f45377e6a0",
+              "id": "8afce23c-8150-46f5-b6c9-080f33172a90",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -8167,7 +8473,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e675f715-25f7-158e-2dd0-798b7172bfce\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"9e18665a-4bbc-f4ca-004c-c31af78d0b15\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -8183,12 +8489,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"created_at\": \"2001-12-26T12:33:16.247Z\",\n  \"updated_at\": \"1999-01-17T15:32:23.015Z\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"end_date\": \"string\",\n  \"notes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"created_at\": \"1949-10-22T21:52:19.040Z\",\n  \"updated_at\": \"1994-12-14T12:28:15.523Z\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"end_date\": \"string\",\n  \"notes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "5e716233-735c-4f13-bd4d-fdbc37ae73e0",
+              "id": "d36a2f66-5a15-4cc0-917d-4c9a7bba4da4",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -8213,7 +8519,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e675f715-25f7-158e-2dd0-798b7172bfce\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"9e18665a-4bbc-f4ca-004c-c31af78d0b15\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -8234,7 +8540,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "af3bac0a-6f08-46b5-8f81-8d24ee9b963d",
+              "id": "d744f965-bba8-40d8-a854-eda7bcfc6b64",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -8259,7 +8565,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e675f715-25f7-158e-2dd0-798b7172bfce\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"9e18665a-4bbc-f4ca-004c-c31af78d0b15\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -8280,7 +8586,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "fd9dbd7a-c1cf-4815-8a10-967ac5a9e614",
+              "id": "44354c14-ec8b-4d65-a397-d4fff0725269",
               "name": "Registro não encontrado",
               "originalRequest": {
                 "url": {
@@ -8305,7 +8611,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pet_id\": \"e675f715-25f7-158e-2dd0-798b7172bfce\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
+                  "raw": "{\n  \"pet_id\": \"9e18665a-4bbc-f4ca-004c-c31af78d0b15\",\n  \"medication_name\": \"string\",\n  \"dosage\": \"string\",\n  \"frequency\": \"string\",\n  \"start_date\": \"string\",\n  \"end_date\": \"string\",\n  \"veterinarian_name\": \"string\",\n  \"notes\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -8332,7 +8638,7 @@
           }
         },
         {
-          "id": "1913bc81-3a8e-4777-87d1-fe5c3e899855",
+          "id": "cb03c91f-e02a-4a7a-974d-ece2040bcad9",
           "name": "Remover registro de medicação",
           "request": {
             "name": "Remover registro de medicação",
@@ -8360,7 +8666,7 @@
           },
           "response": [
             {
-              "id": "6e968788-905c-4760-9e28-ddabc35d6db8",
+              "id": "ba5fc65f-b45d-4738-9722-78c4617bfa85",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -8397,7 +8703,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "613fde8e-bb40-4ba0-aa72-a4f3f72d6dd9",
+              "id": "c3bea06b-59c4-4086-8199-856f2561b297",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -8435,7 +8741,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "362a2199-13d3-49ba-ae67-061f110282ec",
+              "id": "b76acb10-43dc-4b84-af35-df396b2b1cb8",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -8473,7 +8779,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "517332f1-3355-495b-b9f2-42404addedde",
+              "id": "bebf6012-7671-4d9b-9ef0-527005967c0c",
               "name": "Registro não encontrado",
               "originalRequest": {
                 "url": {
@@ -8520,7 +8826,7 @@
       "event": []
     },
     {
-      "id": "f4f41919-4e7e-49bf-9603-e78d59cac6d1",
+      "id": "1f5e117a-1292-4cfb-a663-039ec984ce73",
       "name": "upload",
       "description": {
         "content": "",
@@ -8528,7 +8834,7 @@
       },
       "item": [
         {
-          "id": "87674294-74ec-4660-ba79-0f8e1b160c1f",
+          "id": "361df437-042a-45ff-9c6d-8ed8fc6c4f5e",
           "name": "Upload de imagem para o S3 (máx. 5MB)",
           "request": {
             "name": "Upload de imagem para o S3 (máx. 5MB)",
@@ -8571,7 +8877,7 @@
           },
           "response": [
             {
-              "id": "e2e5a501-74fe-40ed-8e48-0dec9804f95f",
+              "id": "49e10a45-f38d-44e2-8978-80ad731a4b9e",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -8617,7 +8923,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "12d76be8-f416-4708-98ed-746172191be8",
+              "id": "cb754ffc-27cf-40fa-bd0a-b5873428a3e0",
               "name": "Arquivo ausente, tipo inválido, acima de 5MB ou pasta inválida",
               "originalRequest": {
                 "url": {
@@ -8664,7 +8970,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "4c1d2ced-33d7-448c-801c-9a07f596d437",
+              "id": "c0f3503e-bee7-440a-9834-55fe5eabf926",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -8711,7 +9017,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "413325f6-beab-4cd2-ade2-29b00b119514",
+              "id": "574e0fae-92cf-4dd4-a32a-fa4c9e1c09fc",
               "name": "Requer papel TUTOR ou VET",
               "originalRequest": {
                 "url": {
@@ -8767,7 +9073,7 @@
       "event": []
     },
     {
-      "id": "9cd91145-cee7-4970-ad89-3c9f7fbccbff",
+      "id": "2930d240-388c-456b-97fa-31009810cec5",
       "name": "clinicas",
       "description": {
         "content": "",
@@ -8775,7 +9081,7 @@
       },
       "item": [
         {
-          "id": "d9e72c7c-7022-4826-bee3-b0a1c4341dff",
+          "id": "8bb56a67-d6ed-4016-889f-6b766e58282a",
           "name": "Buscar clínicas veterinárias próximas (Google Places)",
           "request": {
             "name": "Buscar clínicas veterinárias próximas (Google Places)",
@@ -8792,25 +9098,25 @@
                 {
                   "disabled": false,
                   "key": "lat",
-                  "value": "8802.198235633412",
+                  "value": "2604.667917632587",
                   "description": "(Required) "
                 },
                 {
                   "disabled": false,
                   "key": "lng",
-                  "value": "8802.198235633412",
+                  "value": "2604.667917632587",
                   "description": "(Required) "
                 },
                 {
                   "disabled": false,
                   "key": "radiusKm",
-                  "value": "34.948163687122516",
+                  "value": "21.687163703602984",
                   "description": "(Required) "
                 },
                 {
                   "disabled": false,
                   "key": "openNow",
-                  "value": "true"
+                  "value": "false"
                 },
                 {
                   "disabled": false,
@@ -8830,7 +9136,7 @@
           },
           "response": [
             {
-              "id": "7f07a351-aa9d-441b-aec4-a230dab925d1",
+              "id": "5ea81207-c856-4dba-84c9-25da6184873d",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -8843,15 +9149,15 @@
                   "query": [
                     {
                       "key": "lat",
-                      "value": "8802.198235633412"
+                      "value": "2604.667917632587"
                     },
                     {
                       "key": "lng",
-                      "value": "8802.198235633412"
+                      "value": "2604.667917632587"
                     },
                     {
                       "key": "radiusKm",
-                      "value": "34.948163687122516"
+                      "value": "21.687163703602984"
                     },
                     {
                       "key": "openNow",
@@ -8881,12 +9187,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"placeId\": \"string\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"coordinates\": {\n      \"lat\": 3697.4999036463887,\n      \"lng\": 6801.736480579393\n    },\n    \"distanceMeters\": 3392.3474073749494,\n    \"phone\": \"string\",\n    \"rating\": 8592.290961214896,\n    \"userRatingCount\": 8993.783294167728,\n    \"openNow\": false,\n    \"weekdayHours\": [\n      \"string\",\n      \"string\"\n    ],\n    \"photoUrl\": \"string\",\n    \"websiteUrl\": \"string\",\n    \"googleMapsUrl\": \"string\",\n    \"types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"businessStatus\": \"string\"\n  },\n  {\n    \"placeId\": \"string\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"coordinates\": {\n      \"lat\": 8815.994106580358,\n      \"lng\": 1686.1058537426034\n    },\n    \"distanceMeters\": 154.99861591648622,\n    \"phone\": \"string\",\n    \"rating\": 3994.9958333076183,\n    \"userRatingCount\": 820.539742003431,\n    \"openNow\": true,\n    \"weekdayHours\": [\n      \"string\",\n      \"string\"\n    ],\n    \"photoUrl\": \"string\",\n    \"websiteUrl\": \"string\",\n    \"googleMapsUrl\": \"string\",\n    \"types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"businessStatus\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"placeId\": \"string\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"coordinates\": {\n      \"lat\": 7473.518897157329,\n      \"lng\": 4863.343595030968\n    },\n    \"distanceMeters\": 2847.584066276857,\n    \"phone\": \"string\",\n    \"rating\": 5940.3183885172375,\n    \"userRatingCount\": 8783.426393194943,\n    \"openNow\": false,\n    \"weekdayHours\": [\n      \"string\",\n      \"string\"\n    ],\n    \"photoUrl\": \"string\",\n    \"websiteUrl\": \"string\",\n    \"googleMapsUrl\": \"string\",\n    \"types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"businessStatus\": \"string\"\n  },\n  {\n    \"placeId\": \"string\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"coordinates\": {\n      \"lat\": 353.6691401926073,\n      \"lng\": 4185.267668475227\n    },\n    \"distanceMeters\": 7806.366457071009,\n    \"phone\": \"string\",\n    \"rating\": 7099.1869049878205,\n    \"userRatingCount\": 6001.7220978879095,\n    \"openNow\": true,\n    \"weekdayHours\": [\n      \"string\",\n      \"string\"\n    ],\n    \"photoUrl\": \"string\",\n    \"websiteUrl\": \"string\",\n    \"googleMapsUrl\": \"string\",\n    \"types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"businessStatus\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "546eef5a-d524-44bf-b252-110d69a26098",
+              "id": "4433793c-cf7b-409f-a130-81a3288cdd00",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -8900,15 +9206,15 @@
                   "query": [
                     {
                       "key": "lat",
-                      "value": "8802.198235633412"
+                      "value": "2604.667917632587"
                     },
                     {
                       "key": "lng",
-                      "value": "8802.198235633412"
+                      "value": "2604.667917632587"
                     },
                     {
                       "key": "radiusKm",
-                      "value": "34.948163687122516"
+                      "value": "21.687163703602984"
                     },
                     {
                       "key": "openNow",
@@ -8937,7 +9243,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "83ac880c-e8db-46e3-bf4b-1750d3607fa5",
+              "id": "17031057-49d3-4dc9-a650-39182bfa1066",
               "name": "Requer papel TUTOR ou VET",
               "originalRequest": {
                 "url": {
@@ -8951,15 +9257,15 @@
                   "query": [
                     {
                       "key": "lat",
-                      "value": "8802.198235633412"
+                      "value": "2604.667917632587"
                     },
                     {
                       "key": "lng",
-                      "value": "8802.198235633412"
+                      "value": "2604.667917632587"
                     },
                     {
                       "key": "radiusKm",
-                      "value": "34.948163687122516"
+                      "value": "21.687163703602984"
                     },
                     {
                       "key": "openNow",
@@ -8994,7 +9300,7 @@
           }
         },
         {
-          "id": "af034b81-4b18-4164-9e23-52ec77b3bf1d",
+          "id": "ced320e4-9d0d-4570-8f2d-369d278a573c",
           "name": "Geocodificar endereço em lat/lng",
           "request": {
             "name": "Geocodificar endereço em lat/lng",
@@ -9027,7 +9333,7 @@
           },
           "response": [
             {
-              "id": "cef66291-4180-4687-8e1f-e84b5b0d342a",
+              "id": "86f35d05-3759-40ee-943d-c989fd3a37b0",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -9062,12 +9368,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"lat\": 7119.318482192891,\n  \"lng\": 8603.728872182044,\n  \"formattedAddress\": \"string\"\n}",
+              "body": "{\n  \"lat\": 2192.2486621139947,\n  \"lng\": 2609.891996498712,\n  \"formattedAddress\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "015f9f71-9115-479a-a48d-4a67793739d2",
+              "id": "a80aa68d-bea7-45b7-993a-b3c570693b1b",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -9102,7 +9408,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "8c8eb08e-248e-4e06-a3d3-75fbcc7c08c3",
+              "id": "53607ee9-f780-4d54-9d22-e411f2466e67",
               "name": "Requer papel TUTOR ou VET",
               "originalRequest": {
                 "url": {
@@ -9137,7 +9443,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "28b51aaa-9401-44d0-94db-1e597c875ea2",
+              "id": "4a287949-9d72-4cf9-8aef-dcf5fac41286",
               "name": "Endereço não encontrado",
               "originalRequest": {
                 "url": {
@@ -9181,7 +9487,7 @@
       "event": []
     },
     {
-      "id": "7c3f5ada-4012-4c8f-a178-cae8bd0e23a5",
+      "id": "023ad7c6-eb6f-4e55-8eaa-227ba86b410f",
       "name": "devices",
       "description": {
         "content": "",
@@ -9189,7 +9495,7 @@
       },
       "item": [
         {
-          "id": "f7c2bb88-dc5c-4f65-99aa-a021ead5db16",
+          "id": "41dd9e7c-8d81-40d3-a901-b6171dacac8d",
           "name": "Registrar token de device do tutor para push (FCM)",
           "request": {
             "name": "Registrar token de device do tutor para push (FCM)",
@@ -9223,7 +9529,7 @@
           },
           "response": [
             {
-              "id": "47e14290-bafd-4ff3-b09b-d9a455ed1839",
+              "id": "679f330b-b24f-4adc-9fcc-d35391063de3",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -9259,7 +9565,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "151e332a-3225-460e-91ed-ee4117db6248",
+              "id": "5a3be867-df3b-433b-8fdf-b7529555ef75",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -9296,7 +9602,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "cf82c86a-5eb6-49c8-8283-f886e6e8ad65",
+              "id": "a277e0e0-eef1-4100-96ec-449fdde62b0b",
               "name": "Requer papel TUTOR",
               "originalRequest": {
                 "url": {
@@ -9342,7 +9648,7 @@
       "event": []
     },
     {
-      "id": "7ffb3d29-9002-49b8-8dcb-1c753f7ec7ef",
+      "id": "b5c062a7-e08e-4e81-976a-edaf769073c5",
       "name": "clinical-notes",
       "description": {
         "content": "",
@@ -9350,7 +9656,7 @@
       },
       "item": [
         {
-          "id": "fe2841aa-8caf-4e0f-9bbd-133ec7282a0d",
+          "id": "e2843a62-5ade-4fd1-867e-2adc08fe9a67",
           "name": "Criar nota clínica no prontuário do pet (escrita reversa do vet)",
           "request": {
             "name": "Criar nota clínica no prontuário do pet (escrita reversa do vet)",
@@ -9398,7 +9704,7 @@
           },
           "response": [
             {
-              "id": "08b48b5c-26e4-4e4b-91af-41ea95e21c0f",
+              "id": "27d5e51c-bdea-4ec6-9bc6-c05790a937c6",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -9445,12 +9751,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_nome\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"diagnostico\": \"string\",\n  \"created_at\": \"2012-01-07T04:32:45.023Z\",\n  \"updated_at\": \"1968-01-31T17:14:16.672Z\",\n  \"google_place_id\": \"string\",\n  \"prescricao\": \"string\",\n  \"observacoes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_nome\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"diagnostico\": \"string\",\n  \"created_at\": \"2006-04-02T14:14:21.146Z\",\n  \"updated_at\": \"2011-07-24T04:34:03.898Z\",\n  \"google_place_id\": \"string\",\n  \"prescricao\": \"string\",\n  \"observacoes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "be67870f-b5fe-43e1-803d-6e9fc45f64e2",
+              "id": "4b815b8c-5738-4661-ac78-cb6fdd3f1557",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -9497,7 +9803,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "1ec93f16-49a5-4480-8aa3-5c6bd78a4e91",
+              "id": "581043b1-a60f-4f86-8b32-f38b4f87be88",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -9544,7 +9850,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "8f3d2ac4-a436-433c-bea3-59a442ca7f08",
+              "id": "99b83e27-8a22-45ce-94e6-2e933116bbb1",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -9597,7 +9903,7 @@
           }
         },
         {
-          "id": "5dd2c5e4-355b-4e12-9142-3c730ccef400",
+          "id": "d39aed7c-6fcf-4027-9fb4-5382436f33cb",
           "name": "Listar notas clínicas do pet",
           "request": {
             "name": "Listar notas clínicas do pet",
@@ -9632,7 +9938,7 @@
           },
           "response": [
             {
-              "id": "80c0ef6d-e2d6-4390-8b2b-e41d67487d0b",
+              "id": "4e205286-b74c-43bd-be18-3cb04929c6a3",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -9671,12 +9977,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_nome\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"diagnostico\": \"string\",\n    \"created_at\": \"2009-02-24T19:18:42.573Z\",\n    \"updated_at\": \"2007-10-04T21:33:42.491Z\",\n    \"google_place_id\": \"string\",\n    \"prescricao\": \"string\",\n    \"observacoes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_nome\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"diagnostico\": \"string\",\n    \"created_at\": \"2008-07-12T01:43:08.117Z\",\n    \"updated_at\": \"2018-12-16T15:06:11.226Z\",\n    \"google_place_id\": \"string\",\n    \"prescricao\": \"string\",\n    \"observacoes\": \"string\"\n  }\n]",
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_nome\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"diagnostico\": \"string\",\n    \"created_at\": \"1953-11-09T01:01:27.291Z\",\n    \"updated_at\": \"1953-05-04T03:36:18.764Z\",\n    \"google_place_id\": \"string\",\n    \"prescricao\": \"string\",\n    \"observacoes\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"pet_id\": \"string\",\n    \"veterinario_id\": \"string\",\n    \"veterinario_nome\": \"string\",\n    \"veterinario_crmv\": \"string\",\n    \"diagnostico\": \"string\",\n    \"created_at\": \"2020-06-25T03:32:01.334Z\",\n    \"updated_at\": \"2015-05-31T02:02:05.282Z\",\n    \"google_place_id\": \"string\",\n    \"prescricao\": \"string\",\n    \"observacoes\": \"string\"\n  }\n]",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d91edf43-d629-4aec-bba2-dd3d70553eea",
+              "id": "723574ea-9001-4249-aff6-c751a6e897e0",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -9715,7 +10021,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e9f4d67a-3688-42e7-80af-f27a5804dc3e",
+              "id": "b218d9d3-5693-4dc3-b8d8-31165ec37144",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -9754,7 +10060,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "1c6935a2-8e07-4c57-bf83-ad411e4a034c",
+              "id": "e3deab7d-01ab-46d1-94a8-f4433af4c027",
               "name": "Pet não encontrado",
               "originalRequest": {
                 "url": {
@@ -9799,7 +10105,7 @@
           }
         },
         {
-          "id": "c193d010-36f2-46a0-8e14-77d999dad656",
+          "id": "7e7c6f67-8642-4b54-aa01-43e1de508277",
           "name": "Buscar nota clínica por id",
           "request": {
             "name": "Buscar nota clínica por id",
@@ -9833,7 +10139,7 @@
           },
           "response": [
             {
-              "id": "7cd90914-0d3e-4f06-9c67-98690a7cb0f5",
+              "id": "418adf79-3512-4532-bb41-b13e99ed90cd",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -9871,12 +10177,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_nome\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"diagnostico\": \"string\",\n  \"created_at\": \"2012-01-07T04:32:45.023Z\",\n  \"updated_at\": \"1968-01-31T17:14:16.672Z\",\n  \"google_place_id\": \"string\",\n  \"prescricao\": \"string\",\n  \"observacoes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_nome\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"diagnostico\": \"string\",\n  \"created_at\": \"2006-04-02T14:14:21.146Z\",\n  \"updated_at\": \"2011-07-24T04:34:03.898Z\",\n  \"google_place_id\": \"string\",\n  \"prescricao\": \"string\",\n  \"observacoes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "aaf588fd-e291-4c39-a5b3-04e4d31846eb",
+              "id": "1040bd23-9e9b-42b6-b106-8f1ce68e068a",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -9914,7 +10220,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e85686da-f060-4936-b609-b1aaa30a5697",
+              "id": "5936f6d8-f3bc-4197-b269-b9028ad315f4",
               "name": "Requer papel TUTOR ou VET",
               "originalRequest": {
                 "url": {
@@ -9952,7 +10258,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "b6fc7d37-6bf4-4fd8-af8b-d6554a3f1fbb",
+              "id": "aefa5a4e-3247-43b1-abc9-dda312541504",
               "name": "Nota clínica não encontrada",
               "originalRequest": {
                 "url": {
@@ -9996,7 +10302,7 @@
           }
         },
         {
-          "id": "d11aaed1-5d81-41a0-bc6d-4a185fb14b2d",
+          "id": "54e6229d-424f-4a5e-83c8-74d7bd5c84d3",
           "name": "Editar nota clínica (somente o vet autor)",
           "request": {
             "name": "Editar nota clínica (somente o vet autor)",
@@ -10043,7 +10349,7 @@
           },
           "response": [
             {
-              "id": "9b8dbf94-2edc-48b6-828d-88ce2d5b2057",
+              "id": "8eb3c624-1618-4baf-a14c-ef4d9c2ae189",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -10089,12 +10395,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_nome\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"diagnostico\": \"string\",\n  \"created_at\": \"2012-01-07T04:32:45.023Z\",\n  \"updated_at\": \"1968-01-31T17:14:16.672Z\",\n  \"google_place_id\": \"string\",\n  \"prescricao\": \"string\",\n  \"observacoes\": \"string\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"pet_id\": \"string\",\n  \"veterinario_id\": \"string\",\n  \"veterinario_nome\": \"string\",\n  \"veterinario_crmv\": \"string\",\n  \"diagnostico\": \"string\",\n  \"created_at\": \"2006-04-02T14:14:21.146Z\",\n  \"updated_at\": \"2011-07-24T04:34:03.898Z\",\n  \"google_place_id\": \"string\",\n  \"prescricao\": \"string\",\n  \"observacoes\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "02a7f110-38c0-46e1-9746-de5059e58e80",
+              "id": "170c3dce-77fb-46f5-b325-98ca06563bed",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -10140,7 +10446,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "6e3afbd1-5c57-497b-8090-d6dc8120dd9a",
+              "id": "a2bc749d-e7fc-409f-8290-5cbfe5702a59",
               "name": "CRMV não verificado, ou papel sem permissão",
               "originalRequest": {
                 "url": {
@@ -10186,7 +10492,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "d3bf90f9-b1ec-471b-9af0-5d4f4514f0da",
+              "id": "c296df6d-4efc-4aef-954b-92f2b17adbb9",
               "name": "Nota clínica não encontrada",
               "originalRequest": {
                 "url": {
@@ -10238,7 +10544,7 @@
           }
         },
         {
-          "id": "dd9b5f3b-e154-4840-86c2-222ce32bce21",
+          "id": "02ab0572-89c6-468a-9af9-f7e6257f7206",
           "name": "Remover nota clínica (somente o vet autor)",
           "request": {
             "name": "Remover nota clínica (somente o vet autor)",
@@ -10266,7 +10572,7 @@
           },
           "response": [
             {
-              "id": "eac62984-5621-4521-a189-535d09934271",
+              "id": "d0c6627c-9c43-40a1-b7e8-3a9c380a2a9b",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -10303,7 +10609,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "44be78fd-5a7f-4f07-b228-0e8deeb4cfa9",
+              "id": "5fa0acc8-d228-4013-a5a4-0ca2d05b70dc",
               "name": "Token ausente ou inválido",
               "originalRequest": {
                 "url": {
@@ -10341,7 +10647,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "77332a9d-d327-4637-bd5b-2fa54edce55b",
+              "id": "93344fb0-b9bd-4aab-bd86-249f33d662f1",
               "name": "Requer papel VET",
               "originalRequest": {
                 "url": {
@@ -10379,7 +10685,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "72f3c67c-48fb-4f76-ba28-de599fa386b9",
+              "id": "4e2db136-2d5e-4eba-8135-0de86bb1e855",
               "name": "Nota clínica não encontrada",
               "originalRequest": {
                 "url": {
@@ -10435,7 +10741,7 @@
     }
   ],
   "info": {
-    "_postman_id": "8242ecbf-c94a-4fdd-83e6-3ef4ae11c082",
+    "_postman_id": "9186eee6-1d15-4c9f-9953-f87f4a45966d",
     "name": "PetCard API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
