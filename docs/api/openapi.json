@@ -85,6 +85,152 @@
         ]
       }
     },
+    "/auth/google": {
+      "post": {
+        "description": "Valida o ID token do Google e vincula (ou cria) a conta do tutor. Conta criada por aqui nasce com o e-mail verificado.",
+        "operationId": "AuthController_loginWithGoogle",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "401": {
+            "description": "ID token inválido"
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
+          }
+        },
+        "summary": "Login/cadastro do tutor com Google (ID token)",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/password/forgot": {
+      "post": {
+        "description": "Responde 202 exista ou não a conta — a rota não confirma quais e-mails estão cadastrados.",
+        "operationId": "AuthController_forgotPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": ""
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
+          }
+        },
+        "summary": "Solicitar link de redefinição de senha",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/password/reset": {
+      "post": {
+        "operationId": "AuthController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
+          }
+        },
+        "summary": "Redefinir a senha a partir do token do e-mail",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/email/verify": {
+      "post": {
+        "operationId": "AuthController_verifyEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyEmailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
+          }
+        },
+        "summary": "Confirmar o e-mail a partir do token do link",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/email/resend": {
+      "post": {
+        "operationId": "AuthController_resendVerification",
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Reenviar o e-mail de verificação ao tutor logado",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/auth/profile": {
       "get": {
         "operationId": "AuthController_getProfile",
@@ -102,6 +248,9 @@
           },
           "401": {
             "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Papel sem permissão para este recurso"
           }
         },
         "security": [
@@ -239,7 +388,7 @@
     },
     "/veterinarios/me/crmv/verificar": {
       "post": {
-        "description": "A consulta é paga por chamada: uma verificação dentro do prazo é reaproveitada. Use force=true para consultar de novo mesmo assim.",
+        "description": "A consulta é paga por chamada: uma verificação dentro do prazo é reaproveitada. Use force=true para consultar de novo mesmo assim. Rota com limite próprio, mais apertado que o das rotas de login.",
         "operationId": "VeterinarioController_verificarCrmv",
         "parameters": [
           {
@@ -267,6 +416,9 @@
           },
           "403": {
             "description": "Requer papel VET"
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
           }
         },
         "security": [
@@ -282,7 +434,7 @@
     },
     "/veterinarios/me": {
       "patch": {
-        "description": "Só o próprio veterinário altera o próprio cadastro — o id vem do token, não da rota. Trocar o CRMV zera a verificação: o registro novo precisa ser verificado antes de liberar dado clínico de novo.",
+        "description": "Só o próprio veterinário altera o próprio cadastro — o id vem do token, não da rota. Trocar o CRMV zera a verificação: o registro novo precisa ser verificado antes de liberar dado clínico de novo. Trocar a senha exige `senha_atual` e encerra as sessões abertas, inclusive a que fez a troca — é preciso entrar de novo.",
         "operationId": "VeterinarioController_updateMe",
         "parameters": [],
         "requestBody": {
@@ -307,7 +459,7 @@
             }
           },
           "401": {
-            "description": "Token ausente ou inválido"
+            "description": "Senha atual incorreta\n\nToken ausente ou inválido"
           },
           "403": {
             "description": "Requer papel VET"
@@ -452,7 +604,7 @@
     },
     "/veterinarios/me/pets/{petId}": {
       "delete": {
-        "description": "Remove só o vínculo. O pet, os registros clínicos e a trilha de ações permanecem — inclusive para outros veterinários.",
+        "description": "Remove só o vínculo. O pet, os registros clínicos e a trilha de ações permanecem — inclusive para outros veterinários. NÃO revoga o acesso à carteira clínica: o token do QR continua válido, e reabrir `GET /cards/:token/clinico` ou chamar `POST /veterinarios/me/pets` de novo recria o vínculo. A revogação de verdade é o tutor regerar o QR (`POST /pets/:id/qr-code`), que também invalida a tag física da coleira.",
         "operationId": "VeterinarioController_removerPet",
         "parameters": [
           {
@@ -486,6 +638,69 @@
         "summary": "Tirar o pet da minha lista",
         "tags": [
           "veterinarios"
+        ]
+      }
+    },
+    "/upload/image": {
+      "post": {
+        "operationId": "UploadController_uploadImage",
+        "parameters": [
+          {
+            "name": "folder",
+            "required": false,
+            "in": "query",
+            "description": "Pasta de destino no bucket (padrão: pets)",
+            "schema": {
+              "enum": [
+                "pets",
+                "tutors",
+                "vets"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "description": "Arquivo ausente, tipo inválido, acima de 5MB ou pasta inválida"
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR ou VET"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload de imagem para o S3 (máx. 5MB)",
+        "tags": [
+          "upload"
         ]
       }
     },
@@ -710,432 +925,6 @@
         ]
       }
     },
-    "/calendar/connect": {
-      "get": {
-        "operationId": "CalendarController_connect",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Obter URL de autorização OAuth do Google Calendar",
-        "tags": [
-          "calendar"
-        ]
-      }
-    },
-    "/calendar/callback": {
-      "get": {
-        "operationId": "CalendarController_callback",
-        "parameters": [
-          {
-            "name": "code",
-            "required": true,
-            "in": "query",
-            "description": "Código de autorização do Google",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "state",
-            "required": true,
-            "in": "query",
-            "description": "State assinado emitido em GET /calendar/connect",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "error",
-            "required": false,
-            "in": "query",
-            "description": "Preenchido pelo Google quando o consentimento é negado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Callback OAuth do Google (redirecionamento do consentimento)",
-        "tags": [
-          "calendar"
-        ]
-      }
-    },
-    "/calendar/status": {
-      "get": {
-        "operationId": "CalendarController_status",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Status da conexão com o Google Calendar",
-        "tags": [
-          "calendar"
-        ]
-      }
-    },
-    "/calendar/disconnect": {
-      "delete": {
-        "operationId": "CalendarController_disconnect",
-        "parameters": [],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Desconectar Google Calendar (remove tokens do tutor)",
-        "tags": [
-          "calendar"
-        ]
-      }
-    },
-    "/calendar/sync": {
-      "post": {
-        "operationId": "CalendarController_sync",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Sincronizar compromissos pendentes com o Google Calendar",
-        "tags": [
-          "calendar"
-        ]
-      }
-    },
-    "/cards/pets/{petId}": {
-      "get": {
-        "operationId": "CardController_getCardByPetId",
-        "parameters": [
-          {
-            "name": "petId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarteiraDigitalResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          },
-          "404": {
-            "description": "Pet não encontrado"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Carteira digital do pet (visão do tutor dono)",
-        "tags": [
-          "cards"
-        ]
-      }
-    },
-    "/cards/{token}/clinico": {
-      "get": {
-        "description": "Mesma carteira do QR, acrescida de medicações e notas clínicas — os dados que a carteira pública não expõe. Exige CRMV verificado (api#113).",
-        "operationId": "CardController_getClinicalCard",
-        "parameters": [
-          {
-            "name": "token",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarteiraDigitalClinicaResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "CRMV não verificado\n\nCRMV não verificado, ou papel sem permissão"
-          },
-          "404": {
-            "description": "Carteira não encontrada"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Carteira clínica por token do QR (veterinário com CRMV verificado)",
-        "tags": [
-          "cards"
-        ]
-      }
-    },
-    "/cards/{token}": {
-      "get": {
-        "operationId": "CardController_getPublicCard",
-        "parameters": [
-          {
-            "name": "token",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarteiraDigitalPublicResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Carteira não encontrada"
-          },
-          "429": {
-            "description": "Limite de requisições excedido"
-          }
-        },
-        "summary": "Carteira pública por token do QR Code (sem autenticação)",
-        "tags": [
-          "cards"
-        ]
-      }
-    },
-    "/tutors/me": {
-      "get": {
-        "operationId": "TutorController_getMe",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Dados do tutor autenticado",
-        "tags": [
-          "tutors"
-        ]
-      },
-      "patch": {
-        "operationId": "TutorController_updateMe",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTutorDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Atualizar dados do tutor autenticado",
-        "tags": [
-          "tutors"
-        ]
-      },
-      "delete": {
-        "description": "Apaga a conta e tudo que depende dela: pets, prontuário, carteira digital, agendamentos e notificações. Não há desfazer.",
-        "operationId": "TutorController_removeMe",
-        "parameters": [],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Excluir definitivamente a conta do tutor autenticado",
-        "tags": [
-          "tutors"
-        ]
-      }
-    },
-    "/tutors/{id}": {
-      "get": {
-        "operationId": "TutorController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Tutor fora da lista de atendidos\n\nRequer papel VET"
-          },
-          "404": {
-            "description": "Tutor não encontrado"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Buscar tutor por id (vet que atende algum pet dele)",
-        "tags": [
-          "tutors"
-        ]
-      }
-    },
     "/pets": {
       "post": {
         "operationId": "PetController_create",
@@ -1349,6 +1138,7 @@
     },
     "/pets/{id}/qr-code": {
       "post": {
+        "description": "Troca o token da carteira E o da tag da coleira, invalidando os dois QRs anteriores — inclusive a tag impressa presa no animal. É a única forma real de revogar o acesso de um veterinário à carteira clínica: tirar o pet da lista dele (`DELETE /veterinarios/me/pets/:petId`) não basta enquanto o token antigo continuar válido.",
         "operationId": "PetController_regenerateQrCode",
         "parameters": [
           {
@@ -1382,6 +1172,648 @@
         "summary": "Reenfileirar geração do QR Code da carteira (assíncrono)",
         "tags": [
           "pets"
+        ]
+      }
+    },
+    "/tutors/me": {
+      "get": {
+        "operationId": "TutorController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dados do tutor autenticado",
+        "tags": [
+          "tutors"
+        ]
+      },
+      "patch": {
+        "operationId": "TutorController_updateMe",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTutorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualizar dados do tutor autenticado",
+        "tags": [
+          "tutors"
+        ]
+      },
+      "delete": {
+        "description": "Apaga a conta e tudo que depende dela: pets, prontuário, carteira digital, agendamentos e notificações. Não há desfazer.",
+        "operationId": "TutorController_removeMe",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Excluir definitivamente a conta do tutor autenticado",
+        "tags": [
+          "tutors"
+        ]
+      }
+    },
+    "/tutors/{id}": {
+      "get": {
+        "operationId": "TutorController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Tutor fora da lista de atendidos\n\nRequer papel VET"
+          },
+          "404": {
+            "description": "Tutor não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Buscar tutor por id (vet que atende algum pet dele)",
+        "tags": [
+          "tutors"
+        ]
+      }
+    },
+    "/cards/pets/{petId}": {
+      "get": {
+        "operationId": "CardController_getCardByPetId",
+        "parameters": [
+          {
+            "name": "petId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarteiraDigitalResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          },
+          "404": {
+            "description": "Pet não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Carteira digital do pet (visão do tutor dono)",
+        "tags": [
+          "cards"
+        ]
+      }
+    },
+    "/cards/{token}/clinico": {
+      "get": {
+        "description": "Mesma carteira do QR, acrescida de medicações e notas clínicas — os dados que a carteira pública não expõe. Exige CRMV verificado (api#113). Não checa se o pet está na lista de atendidos deste veterinário (`PetAtendido`) — ter o token do QR e o CRMV verificado já autoriza a leitura; tirar o pet da lista com `DELETE /veterinarios/me/pets/:petId` não impede reabrir esta rota com o mesmo token.",
+        "operationId": "CardController_getClinicalCard",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarteiraDigitalClinicaResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado\n\nCRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Carteira não encontrada"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Carteira clínica por token do QR (veterinário com CRMV verificado)",
+        "tags": [
+          "cards"
+        ]
+      }
+    },
+    "/cards/{token}": {
+      "get": {
+        "operationId": "CardController_getPublicCard",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarteiraDigitalPublicResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Carteira não encontrada"
+          },
+          "429": {
+            "description": "Limite de requisições excedido"
+          }
+        },
+        "summary": "Carteira pública por token do QR Code (sem autenticação)",
+        "tags": [
+          "cards"
+        ]
+      }
+    },
+    "/coleira/pets/{petId}/scans": {
+      "get": {
+        "description": "Histórico de quem encontrou o pet, da leitura mais recente para a mais antiga (últimas 100). Coordenadas só aparecem quando quem escaneou consentiu.",
+        "operationId": "ColeiraController_getPetScans",
+        "parameters": [
+          {
+            "name": "petId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PetScanResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          },
+          "404": {
+            "description": "Pet não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Leituras do QR da coleira do pet (visão do tutor dono)",
+        "tags": [
+          "coleira"
+        ]
+      }
+    },
+    "/coleira/pets/{petId}/tag": {
+      "get": {
+        "operationId": "ColeiraController_getTag",
+        "parameters": [
+          {
+            "name": "petId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagColeiraResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          },
+          "404": {
+            "description": "Tag da coleira não encontrada"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "QR da coleira do pet (visão do tutor dono)",
+        "tags": [
+          "coleira"
+        ]
+      }
+    },
+    "/coleira/{token}/leitura": {
+      "post": {
+        "description": "Disparado ao abrir a página do achador. A localização é opcional: sem ela o tutor ainda é avisado de que o pet foi encontrado.",
+        "operationId": "ColeiraController_registrarLeitura",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrarLeituraDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PetScanResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tag da coleira não encontrada"
+          },
+          "429": {
+            "description": "Limite de requisições excedido"
+          }
+        },
+        "summary": "Registrar que alguém encontrou o pet (sem autenticação)",
+        "tags": [
+          "coleira"
+        ]
+      }
+    },
+    "/coleira/{token}": {
+      "get": {
+        "description": "Só o que ajuda a devolver o animal: identificação do pet e contato do tutor. Não expõe histórico clínico — para isso existe a carteira digital, com token e público próprios.",
+        "operationId": "ColeiraController_getPublic",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColeiraPublicResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tag da coleira não encontrada"
+          },
+          "429": {
+            "description": "Limite de requisições excedido"
+          }
+        },
+        "summary": "Dados do pet para quem encontrou (sem autenticação)",
+        "tags": [
+          "coleira"
+        ]
+      }
+    },
+    "/devices": {
+      "post": {
+        "operationId": "DevicesController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDeviceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Registrar token de device do tutor para push (FCM)",
+        "tags": [
+          "devices"
+        ]
+      }
+    },
+    "/calendar/connect": {
+      "get": {
+        "operationId": "CalendarController_connect",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Obter URL de autorização OAuth do Google Calendar",
+        "tags": [
+          "calendar"
+        ]
+      }
+    },
+    "/calendar/callback": {
+      "get": {
+        "operationId": "CalendarController_callback",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "query",
+            "description": "Código de autorização do Google",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "required": true,
+            "in": "query",
+            "description": "State assinado emitido em GET /calendar/connect",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "error",
+            "required": false,
+            "in": "query",
+            "description": "Preenchido pelo Google quando o consentimento é negado",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Callback OAuth do Google (redirecionamento do consentimento)",
+        "tags": [
+          "calendar"
+        ]
+      }
+    },
+    "/calendar/status": {
+      "get": {
+        "operationId": "CalendarController_status",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Status da conexão com o Google Calendar",
+        "tags": [
+          "calendar"
+        ]
+      }
+    },
+    "/calendar/disconnect": {
+      "delete": {
+        "operationId": "CalendarController_disconnect",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Desconectar Google Calendar (remove tokens do tutor)",
+        "tags": [
+          "calendar"
+        ]
+      }
+    },
+    "/calendar/sync": {
+      "post": {
+        "operationId": "CalendarController_sync",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sincronizar compromissos pendentes com o Google Calendar",
+        "tags": [
+          "calendar"
         ]
       }
     },
@@ -2000,68 +2432,6 @@
         ]
       }
     },
-    "/upload/image": {
-      "post": {
-        "operationId": "UploadController_uploadImage",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": false,
-            "in": "query",
-            "description": "Pasta de destino no bucket (padrão: pets)",
-            "schema": {
-              "enum": [
-                "pets",
-                "tutors"
-              ],
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "file"
-                ],
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          },
-          "400": {
-            "description": "Arquivo ausente, tipo inválido, acima de 5MB ou pasta inválida"
-          },
-          "401": {
-            "description": "Token ausente ou inválido"
-          },
-          "403": {
-            "description": "Requer papel TUTOR ou VET"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Upload de imagem para o S3 (máx. 5MB)",
-        "tags": [
-          "upload"
-        ]
-      }
-    },
     "/clinicas/places": {
       "get": {
         "operationId": "ClinicaController_findNearbyPlaces",
@@ -2131,6 +2501,9 @@
           },
           "403": {
             "description": "Requer papel TUTOR ou VET"
+          },
+          "429": {
+            "description": "Limite de requisições excedido"
           }
         },
         "security": [
@@ -2139,6 +2512,82 @@
           }
         ],
         "summary": "Buscar clínicas veterinárias próximas (Google Places)",
+        "tags": [
+          "clinicas"
+        ]
+      }
+    },
+    "/clinicas/autocomplete": {
+      "get": {
+        "description": "Alimenta o campo \"Local\" do agendamento. Devolve tanto estabelecimentos (petshop, clínica) quanto endereços, no máximo 5 por chamada.",
+        "operationId": "ClinicaController_autocomplete",
+        "parameters": [
+          {
+            "name": "input",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minLength": 3,
+              "maxLength": 200,
+              "type": "string"
+            }
+          },
+          {
+            "name": "lat",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "lng",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sessionToken",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "maxLength": 64,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaceSuggestionResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR ou VET"
+          },
+          "429": {
+            "description": "Limite de requisições excedido"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sugerir locais conforme o usuário digita (Google Places)",
         "tags": [
           "clinicas"
         ]
@@ -2179,6 +2628,9 @@
           },
           "404": {
             "description": "Endereço não encontrado"
+          },
+          "429": {
+            "description": "Limite de requisições excedido"
           }
         },
         "security": [
@@ -2192,39 +2644,34 @@
         ]
       }
     },
-    "/devices": {
-      "post": {
-        "operationId": "DevicesController_register",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDeviceDto"
-              }
+    "/clinicas/fotos/{token}": {
+      "get": {
+        "description": "O token vem pronto no `photoUrl` de GET /clinicas/places, assinado e com validade curta. Existe para a GOOGLE_MAPS_API_KEY nunca aparecer numa resposta da API — buscar a foto exigiria a chave.",
+        "operationId": "ClinicaController_foto",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           },
-          "401": {
-            "description": "Token ausente ou inválido"
+          "400": {
+            "description": "Token de foto inválido ou expirado"
           },
-          "403": {
-            "description": "Requer papel TUTOR"
+          "429": {
+            "description": "Limite de requisições excedido"
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Registrar token de device do tutor para push (FCM)",
+        "summary": "Servir a foto de uma clínica (proxy do Google Places)",
         "tags": [
-          "devices"
+          "clinicas"
         ]
       }
     },
@@ -2357,7 +2804,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel TUTOR ou VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Nota clínica não encontrada"
@@ -2446,7 +2893,7 @@
             "description": "Token ausente ou inválido"
           },
           "403": {
-            "description": "Requer papel VET"
+            "description": "CRMV não verificado, ou papel sem permissão"
           },
           "404": {
             "description": "Nota clínica não encontrada"
@@ -2495,9 +2942,7 @@
             "format": "email"
           },
           "password": {
-            "type": "string",
-            "minLength": 8,
-            "maxLength": 72
+            "type": "string"
           }
         },
         "required": [
@@ -2524,6 +2969,62 @@
           "password"
         ]
       },
+      "GoogleLoginDto": {
+        "type": "object",
+        "properties": {
+          "idToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "idToken"
+        ]
+      },
+      "ForgotPasswordDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "password"
+        ]
+      },
+      "VerifyEmailDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
       "CreateVeterinarioDto": {
         "type": "object",
         "properties": {
@@ -2538,9 +3039,7 @@
             "format": "email"
           },
           "password": {
-            "type": "string",
-            "minLength": 8,
-            "maxLength": 72
+            "type": "string"
           },
           "crmv": {
             "type": "string",
@@ -2574,7 +3073,11 @@
           },
           "password": {
             "type": "string",
-            "minLength": 8,
+            "description": "Mesma regra do cadastro — trocar a senha não pode enfraquecê-la."
+          },
+          "senha_atual": {
+            "type": "string",
+            "description": "Senha atual, exigida sempre que `password` vem no corpo.\n\nO token do veterinário vale 7 dias e a web o guarda em `localStorage`.\nSem esta prova, um token vazado bastava para trocar a senha — e a conta\nque dá acesso a dado clínico passava definitivamente para quem o roubou.\nNão tem regra de senha forte: é a senha que já existe, seja ela qual for.",
             "maxLength": 72
           },
           "crmv": {
@@ -2647,7 +3150,8 @@
           },
           "duration_minutes": {
             "type": "number",
-            "minimum": 15
+            "minimum": 15,
+            "maximum": 480
           },
           "location": {
             "type": "string"
@@ -2677,7 +3181,8 @@
           },
           "duration_minutes": {
             "type": "number",
-            "minimum": 15
+            "minimum": 15,
+            "maximum": 480
           },
           "location": {
             "type": "string"
@@ -2685,6 +3190,180 @@
           "pet_id": {
             "type": "string",
             "format": "uuid"
+          }
+        }
+      },
+      "CreatePetDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "species": {
+            "type": "string",
+            "enum": [
+              "DOG",
+              "CAT",
+              "BIRD",
+              "OTHER"
+            ]
+          },
+          "breed": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "birth_date": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Em kg. Faixa cobre de um filhote de ave (10g) a um cão de raça gigante.",
+            "minimum": 0.01,
+            "maximum": 120
+          },
+          "photo_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "name",
+          "species",
+          "sex"
+        ]
+      },
+      "PetResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "species": {
+            "enum": [
+              "DOG",
+              "CAT",
+              "BIRD",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "breed": {
+            "type": "string"
+          },
+          "sex": {
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ],
+            "type": "string"
+          },
+          "birth_date": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "photo_url": {
+            "type": "string"
+          },
+          "qr_code_url": {
+            "type": "string"
+          },
+          "tutor_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "species",
+          "sex",
+          "tutor_id",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "UpdatePetDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "species": {
+            "type": "string",
+            "enum": [
+              "DOG",
+              "CAT",
+              "BIRD",
+              "OTHER"
+            ]
+          },
+          "breed": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "birth_date": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Em kg. Faixa cobre de um filhote de ave (10g) a um cão de raça gigante.",
+            "minimum": 0.01,
+            "maximum": 120
+          },
+          "photo_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "UpdateTutorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "profile_image_url": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri"
           }
         }
       },
@@ -2786,10 +3465,12 @@
             "type": "string"
           },
           "veterinario_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Veterinário do PetCard que assinou a nota. Ausente quando a conta dele\nfoi excluída depois (ADR-009): a nota permanece, mas deixa de ter autor\nativo — e é essa ausência que a UI usa para não oferecer edição."
           },
           "veterinario_nome": {
-            "type": "string"
+            "type": "string",
+            "description": "Gravados na criação da nota, não derivados da conta — sobrevivem a ela."
           },
           "veterinario_crmv": {
             "type": "string"
@@ -2818,7 +3499,6 @@
         "required": [
           "id",
           "pet_id",
-          "veterinario_id",
           "veterinario_nome",
           "veterinario_crmv",
           "diagnostico",
@@ -3161,169 +3841,124 @@
           "issued_at"
         ]
       },
-      "UpdateTutorDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 120
-          },
-          "email": {
-            "type": "string",
-            "maxLength": 254,
-            "format": "email"
-          },
-          "phone": {
-            "type": "string",
-            "maxLength": 20
-          },
-          "profile_image_url": {
-            "type": "string",
-            "maxLength": 2048,
-            "format": "uri"
-          }
-        }
-      },
-      "CreatePetDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "species": {
-            "type": "string",
-            "enum": [
-              "DOG",
-              "CAT",
-              "BIRD",
-              "OTHER"
-            ]
-          },
-          "breed": {
-            "type": "string"
-          },
-          "sex": {
-            "type": "string",
-            "enum": [
-              "MALE",
-              "FEMALE"
-            ]
-          },
-          "birth_date": {
-            "type": "string"
-          },
-          "weight": {
-            "type": "number"
-          },
-          "photo_url": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "name",
-          "species",
-          "sex"
-        ]
-      },
-      "PetResponseDto": {
+      "PetScanResponseDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
           },
-          "name": {
+          "pet_id": {
             "type": "string"
           },
-          "species": {
-            "enum": [
-              "DOG",
-              "CAT",
-              "BIRD",
-              "OTHER"
-            ],
-            "type": "string"
-          },
-          "breed": {
-            "type": "string"
-          },
-          "sex": {
-            "enum": [
-              "MALE",
-              "FEMALE"
-            ],
-            "type": "string"
-          },
-          "birth_date": {
-            "type": "string"
-          },
-          "weight": {
+          "latitude": {
             "type": "number"
           },
-          "photo_url": {
-            "type": "string"
+          "longitude": {
+            "type": "number"
           },
-          "qr_code_url": {
-            "type": "string"
-          },
-          "tutor_id": {
-            "type": "string"
+          "accuracy_meters": {
+            "type": "number"
           },
           "created_at": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updated_at": {
-            "format": "date-time",
             "type": "string"
           }
         },
         "required": [
           "id",
-          "name",
-          "species",
-          "sex",
-          "tutor_id",
-          "created_at",
-          "updated_at"
+          "pet_id",
+          "created_at"
         ]
       },
-      "UpdatePetDto": {
+      "TagColeiraResponseDto": {
         "type": "object",
         "properties": {
-          "name": {
+          "pet_id": {
+            "type": "string"
+          },
+          "qr_code_url": {
+            "type": "string"
+          },
+          "public_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "pet_id",
+          "public_url"
+        ]
+      },
+      "RegistrarLeituraDto": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "accuracy_meters": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000
+          }
+        }
+      },
+      "ColeiraPublicResponseDto": {
+        "type": "object",
+        "properties": {
+          "pet_id": {
+            "type": "string"
+          },
+          "pet_name": {
             "type": "string"
           },
           "species": {
-            "type": "string",
-            "enum": [
-              "DOG",
-              "CAT",
-              "BIRD",
-              "OTHER"
-            ]
+            "type": "string"
           },
           "breed": {
             "type": "string"
           },
           "sex": {
-            "type": "string",
-            "enum": [
-              "MALE",
-              "FEMALE"
-            ]
-          },
-          "birth_date": {
             "type": "string"
           },
-          "weight": {
-            "type": "number"
-          },
           "photo_url": {
-            "type": "string",
-            "format": "uri"
+            "type": "string"
+          },
+          "tutor_name": {
+            "type": "string"
+          },
+          "tutor_phone": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "pet_id",
+          "pet_name",
+          "species",
+          "sex",
+          "tutor_name"
+        ]
+      },
+      "RegisterDeviceDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 4096
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "IOS",
+              "ANDROID"
+            ]
+          }
+        },
+        "required": [
+          "token",
+          "platform"
+        ]
       },
       "CreateVaccineRecordDto": {
         "type": "object",
@@ -3333,7 +3968,8 @@
             "format": "uuid"
           },
           "vaccine_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "applied_at": {
             "type": "string"
@@ -3342,10 +3978,12 @@
             "type": "string"
           },
           "veterinarian_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "notes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         },
         "required": [
@@ -3362,7 +4000,8 @@
             "format": "uuid"
           },
           "vaccine_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "applied_at": {
             "type": "string"
@@ -3371,10 +4010,12 @@
             "type": "string"
           },
           "veterinarian_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "notes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         }
       },
@@ -3386,7 +4027,8 @@
             "format": "uuid"
           },
           "product_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "applied_at": {
             "type": "string"
@@ -3395,10 +4037,12 @@
             "type": "string"
           },
           "veterinarian_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "notes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         },
         "required": [
@@ -3415,7 +4059,8 @@
             "format": "uuid"
           },
           "product_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "applied_at": {
             "type": "string"
@@ -3424,10 +4069,12 @@
             "type": "string"
           },
           "veterinarian_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "notes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         }
       },
@@ -3439,13 +4086,16 @@
             "format": "uuid"
           },
           "medication_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "dosage": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 60
           },
           "frequency": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 60
           },
           "start_date": {
             "type": "string"
@@ -3454,10 +4104,12 @@
             "type": "string"
           },
           "veterinarian_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "notes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         },
         "required": [
@@ -3476,13 +4128,16 @@
             "format": "uuid"
           },
           "medication_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "dosage": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 60
           },
           "frequency": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 60
           },
           "start_date": {
             "type": "string"
@@ -3491,10 +4146,12 @@
             "type": "string"
           },
           "veterinarian_name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 120
           },
           "notes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         }
       },
@@ -3573,6 +4230,28 @@
           "distanceMeters"
         ]
       },
+      "PlaceSuggestionResponseDto": {
+        "type": "object",
+        "properties": {
+          "placeId": {
+            "type": "string"
+          },
+          "mainText": {
+            "type": "string"
+          },
+          "secondaryText": {
+            "type": "string"
+          },
+          "fullText": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "placeId",
+          "mainText",
+          "fullText"
+        ]
+      },
       "GeocodeResponseDto": {
         "type": "object",
         "properties": {
@@ -3592,39 +4271,21 @@
           "formattedAddress"
         ]
       },
-      "RegisterDeviceDto": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "minLength": 10,
-            "maxLength": 4096
-          },
-          "platform": {
-            "type": "string",
-            "enum": [
-              "IOS",
-              "ANDROID"
-            ]
-          }
-        },
-        "required": [
-          "token",
-          "platform"
-        ]
-      },
       "CreateNotaClinicaDto": {
         "type": "object",
         "properties": {
           "diagnostico": {
             "type": "string",
-            "minLength": 3
+            "minLength": 3,
+            "maxLength": 2000
           },
           "prescricao": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           },
           "observacoes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           },
           "google_place_id": {
             "type": "string"
@@ -3639,13 +4300,16 @@
         "properties": {
           "diagnostico": {
             "type": "string",
-            "minLength": 3
+            "minLength": 3,
+            "maxLength": 2000
           },
           "prescricao": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           },
           "observacoes": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 2000
           }
         }
       }
