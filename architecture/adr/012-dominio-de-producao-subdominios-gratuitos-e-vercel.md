@@ -20,15 +20,16 @@ web sob um nome só, e (b) em que provedor o `petcard-web` (SPA Vite) seria hosp
 
 ### Sem domínio próprio — subdomínios gratuitos do Render e da Vercel
 
-Produção usa `https://petcard-api.onrender.com` (já existente) e `https://petcard-web.vercel.app`
-(novo, criado nesta issue). Nenhum dos dois exige configuração de DNS além da já provida pelo
+Produção usa `https://petcard-api.onrender.com` (já existente) e `https://petcard-web-dusky.vercel.app`
+(novo, criado nesta issue — o nome curto `petcard-web` já estava em uso por outra conta na Vercel,
+daí o sufixo `-dusky` gerado automaticamente). Nenhum dos dois exige configuração de DNS além da já provida pelo
 provedor — o próprio provedor emite certificado TLS automaticamente para seu subdomínio, então
 "DNS configurado" e "HTTPS ativo" (critérios da PC-105) ficam satisfeitos pela infraestrutura do
 Render/Vercel, sem exigir um registrador de domínio ou um painel de DNS separado.
 
 Consequência direta: as 5 env vars de produção da API que dependiam de domínio (ver ADR-011) usam
 esses dois subdomínios — `CORS_ORIGINS`, `PUBLIC_CARD_BASE_URL` e `PUBLIC_COLLAR_BASE_URL` apontam
-para `petcard-web.vercel.app`; `APP_DEEP_LINK_BASE` e `GOOGLE_CALENDAR_REDIRECT_URI` apontam para
+para `petcard-web-dusky.vercel.app`; `APP_DEEP_LINK_BASE` e `GOOGLE_CALENDAR_REDIRECT_URI` apontam para
 `petcard-api.onrender.com`.
 
 ### Web na Vercel, não no Render
@@ -66,7 +67,7 @@ da URL absoluta da API.
 
 **Contra, e assumido**
 
-- URLs de produção não são memoráveis nem "profissionais" (`petcard-web.vercel.app` em vez de um
+- URLs de produção não são memoráveis nem "profissionais" (`petcard-web-dusky.vercel.app` em vez de um
   domínio próprio) — aceitável para uma entrega de TCC, não seria para um produto real.
 - Trocar de subdomínio no futuro (se um domínio próprio for comprado depois da entrega) exige
   atualizar as 5 env vars da API de novo e a config de CORS — não é automático.
