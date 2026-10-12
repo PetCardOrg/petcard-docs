@@ -4,13 +4,15 @@ Este guia se aplica a TODOS os repositórios do ecossistema PetCard.
 
 ## Repositórios do Ecossistema
 
-| Repositório | Owner | Descrição |
-|---|---|---|
-| petcard-api | Álvaro | Backend NestJS |
-| petcard-web | Ricardo | Painel do Veterinário |
-| petcard-mobile | Ricardo | App do Tutor |
-| petcard-shared | Álvaro | Pacote npm compartilhado |
-| petcard-docs | Camila | Docs + Gestão do Projeto |
+| Repositório | Descrição |
+|---|---|
+| petcard-api | Backend NestJS |
+| petcard-web | Painel do Veterinário |
+| petcard-mobile | App do Tutor |
+| petcard-shared | Pacote npm compartilhado |
+| petcard-docs | Docs + Gestão do Projeto |
+
+Não há divisão fixa de responsabilidades por repositório: todos os integrantes atuam em todas as frentes, e as decisões de projeto são tomadas em conjunto.
 
 ## Estratégia de Branches
 
@@ -37,14 +39,14 @@ Tipos permitidos: feature/, fix/, chore/, docs/, test/, refactor/
    git pull origin develop
    git checkout -b feature/PC-027-modulo-auth
 4. Faça commits seguindo Conventional Commits:
-   feat(auth): implementa JWT strategy com Auth0
+   feat(auth): implementa estratégia JWT própria
    fix(pet): corrige validação de espécie no cadastro
    docs(readme): adiciona instruções do docker-compose
    test(pet): adiciona testes unitários do PetService
    chore(ci): configura workflow de lint
 5. Abra um Pull Request para develop:
    - Preencha o template de PR.
-   - Vincule a Issue (Closes camilampinheiro/petcard-api#27).
+   - Vincule a Issue (Closes PetCardOrg/petcard-api#27).
    - Solicite review de pelo menos 1 colega.
 6. Após aprovação e CI verde, faça squash-merge.
 7. Mova a Issue para "Done" no Kanban.
@@ -52,8 +54,8 @@ Tipos permitidos: feature/, fix/, chore/, docs/, test/, refactor/
 ### Referência Cross-Repo em PRs
 
 Como as issues podem estar em repos diferentes, use a sintaxe completa:
-   Closes camilampinheiro/petcard-api#27
-   Relates to camilampinheiro/petcard-shared#4
+   Closes PetCardOrg/petcard-api#27
+   Relates to PetCardOrg/petcard-shared#4
 
 ## Regras de Pull Request
 
