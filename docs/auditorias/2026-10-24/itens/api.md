@@ -74,7 +74,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Onde:** `src/modules/veterinario/crmv/infosimples-crmv.validator.ts:129` (devolve `nome`, mas ninguém compara), `crmv-verification.service.ts:179`, `auth.service.ts` (`registerVeterinario`, ~linha 281).
 - **Problema:** CRMV é público; nome do titular não é comparado com o nome cadastrado.
 - **Correção:** comparar `registro.nome` com o nome do cadastro, normalizando (minúsculas, sem acento, espaços colapsados). Se diferente → `valid: false` com motivo claro. Mesma regra na revalidação.
-- **⚠️ Decisão pendente (D3):** igualdade exata normalizada ou tolerância (ex.: primeiro + último nome)? Recomendação: primeiro e último nome iguais após normalização.
+- **Decisão D3 (2026-10-28):** primeiro e último nome iguais após normalização (sem acento, sem caixa, espaços colapsados); nomes do meio ignorados.
 - **Aceite:**
   - [ ] Função pura `nomesConferem(a, b)` com testes (acentos, caixa, nome do meio omitido, nome diferente).
   - [ ] Cadastro e revalidação usam a função.

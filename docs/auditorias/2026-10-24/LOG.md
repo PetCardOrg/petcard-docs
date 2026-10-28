@@ -19,7 +19,8 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 ## 2026-10-28 — alvaro-unifor (com Claude) — P1 (fechamento)
 - **Feito:** PetCardOrg/petcard-mobile#97 e PetCardOrg/petcard-docs#73 mergeados. MOB-02/03 ✅ em develop. **P1 completo em develop; issue #58 fechada.**
 - **Pendente fora do código:** `develop → main` da API e da web antes da gravação (PC-106) e o teste do API-01 com dois aparelhos em produção; cadastrar as variáveis do MOB-15 no EAS antes de qualquer build production.
-- **Próximo passo:** abrir o **P2** (#59) no `petcard-api`, começando pelo **API-05**, branch `fix/aud-p2-identidade-crmv`. Perguntar a **D3** antes do API-06 e conferir `CRMV_PROVIDER` no Render antes do merge do API-07.
+- **Decisões:** **D3** = primeiro + último nome, normalizados (alvaro-unifor). `CRMV_PROVIDER` **confirmado como definido** no Render de produção (alvaro-unifor), o que libera o merge do API-07.
+- **Próximo passo:** abrir o **P2** (#59) no `petcard-api`, começando pelo **API-05**, branch `fix/aud-p2-identidade-crmv`; depois API-06 (D3 decidida) e API-07.
 
 ## 2026-10-28 — alvaro-unifor (com Claude) — P1
 - **Feito:**
