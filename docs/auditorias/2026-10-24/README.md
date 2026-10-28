@@ -22,7 +22,7 @@ Atualizado em **2026-10-28**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 
 | Fase | Pacote | Repo(s) | Itens | Status | Issue |
 |------|--------|---------|-------|--------|-------|
-| 1 | **P1** Demo segura | api, web, mobile | API-01 · WEB-01, 02, 03, 08 · MOB-02, 03 | ⬜ | [#58](https://github.com/PetCardOrg/petcard-docs/issues/58) |
+| 1 | **P1** Demo segura | api, web, mobile | API-01 · WEB-01, 02, 03, 08 · MOB-02, 03 | 🟨 6/7 em develop (MOB-02/03 no mobile#97) | [#58](https://github.com/PetCardOrg/petcard-docs/issues/58) |
 | 1 | **P2** Identidade e CRMV | api | API-05, 06, 07 | ⬜ | [#59](https://github.com/PetCardOrg/petcard-docs/issues/59) |
 | 1 | **P3** Lembretes confiáveis | api | API-03, 02 (+15) | ⬜ | [#60](https://github.com/PetCardOrg/petcard-docs/issues/60) |
 | 2 | **P4** Rede de segurança do shared | shared | SH-05, 01, 04 | ⬜ | [#61](https://github.com/PetCardOrg/petcard-docs/issues/61) |

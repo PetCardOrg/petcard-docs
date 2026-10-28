@@ -11,15 +11,15 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 ## 🔴 Corrigir já
 
 ### API-01 · Rate limit conta o IP do proxy, não o do usuário
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-api#180
 - **Onde:** `src/main.ts` (não há `trust proxy` em nenhum arquivo do `src/`).
 - **Problema:** atrás do proxy do Render, todo mundo tem o mesmo `req.ip` e divide um balde só. O 11º login por minuto, somando todos os usuários, recebe 429.
 - **Correção:** `app.getHttpAdapter().getInstance().set('trust proxy', 1)` antes do `listen`. Usar `1` (um hop) e não `true`, para o cliente não forjar `X-Forwarded-For`.
 - **Aceite:**
-  - [ ] `trust proxy` = 1 configurado no bootstrap.
-  - [ ] Teste (e2e ou unit do bootstrap) provando que dois `X-Forwarded-For` distintos caem em baldes distintos.
-  - [ ] Nota no `README`/`CLAUDE.md` da API explicando o motivo.
-- **Resolução:** —
+  - [x] `trust proxy` = 1 configurado no bootstrap.
+  - [x] Teste (e2e ou unit do bootstrap) provando que dois `X-Forwarded-For` distintos caem em baldes distintos.
+  - [x] Nota no `README`/`CLAUDE.md` da API explicando o motivo.
+- **Resolução:** `trust proxy` = 1 em `src/common/http/trust-proxy.ts`, aplicado no início do `bootstrap`. Teste de integração `trust-proxy.spec.ts` (baldes distintos por IP; forjar o início do XFF não escapa). Nota no `CLAUDE.md` da API. **Pendente:** validar em produção com dois aparelhos em redes diferentes depois do `develop → main`; se o segundo for bloqueado, há mais de um proxy e o número sobe para 2.
 
 ### API-02 · Lembretes diários dependem do servidor estar acordado às 9h
 - **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P3 · **PR:** —
