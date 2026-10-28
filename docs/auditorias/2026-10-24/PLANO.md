@@ -41,7 +41,7 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 |--------|---------|-------|------------|
 | **P1** Demo segura | api, web, mobile | API-01 · WEB-01, WEB-02, WEB-03, WEB-08 · MOB-02, MOB-03 | 3 PRs independentes, todos pequenos. **Começar por aqui.** |
 | **P2** Identidade e CRMV | api | API-05, API-06, API-07 | API-07: conferir `CRMV_PROVIDER` no Render **antes** do merge. API-06 depende da decisão D3. |
-| **P3** Lembretes confiáveis | api | API-03, API-02 (+API-15 nos arquivos de reminder) | API-02 depende da decisão D1. Fazer o API-03 primeiro. |
+| **P3** Lembretes confiáveis | api | API-03, API-02 (+API-15 nos arquivos de reminder) | D1 decidida: Render gratuito, então disparo externo. Fazer o API-03 primeiro. |
 
 ### Fase 2 — `petcard-shared`
 | Pacote | Repo | Itens | Observação |
@@ -84,8 +84,8 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 
 | ID | Pergunta | Bloqueia | Recomendação | Decisão |
 |----|----------|----------|--------------|---------|
-| D1 | A produção do Render está no plano gratuito (dorme) ou pago (sempre ligado)? | API-02 | Supor gratuito: disparo externo por GitHub Actions `schedule` + execução no boot | — |
+| D1 | A produção do Render está no plano gratuito (dorme) ou pago (sempre ligado)? | API-02 | Supor gratuito: disparo externo por GitHub Actions `schedule` + execução no boot | **Gratuito (dorme)**: API-02 segue crítico. Decidido em 2026-10-28 pelo alvaro-unifor |
 | D2 | Conta só-Google: como reautenticar para trocar e-mail ou excluir a conta? | API-04, MOB-14 | `id_token` do Google recente (o app já tem o fluxo) | — |
 | D3 | Comparação do nome do CRMV: exata normalizada ou tolerante? | API-06 | Primeiro e último nome iguais, sem acento nem caixa | — |
 | D4 | Existe QR impresso com caminho sem `#` (`/card/xxx`)? | WEB-12 | Se ninguém souber, manter o código | — |
-| D5 | Onde acompanhar o status: issues do GitHub ou Trello? | todos | Issues do GitHub no `petcard-docs` (ver README) | — |
+| D5 | Onde acompanhar o status: issues do GitHub ou Trello? | todos | Issues do GitHub no `petcard-docs` (ver README) | **Issues do GitHub** (sem Trello). Decidido em 2026-10-28 pelo alvaro-unifor |

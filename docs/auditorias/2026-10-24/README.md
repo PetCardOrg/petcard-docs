@@ -22,20 +22,20 @@ Atualizado em **2026-10-28**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 
 | Fase | Pacote | Repo(s) | Itens | Status | Issue |
 |------|--------|---------|-------|--------|-------|
-| 1 | **P1** Demo segura | api, web, mobile | API-01 · WEB-01, 02, 03, 08 · MOB-02, 03 | ⬜ | — |
-| 1 | **P2** Identidade e CRMV | api | API-05, 06, 07 | ⬜ | — |
-| 1 | **P3** Lembretes confiáveis | api | API-03, 02 (+15) | ⏸️ parcial (D1) | — |
-| 2 | **P4** Rede de segurança do shared | shared | SH-05, 01, 04 | ⬜ | — |
-| 2 | **P5** Contratos do shared (0.24.0) | shared | SH-02, 03, 08 | ⬜ | — |
-| 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | ⬜ | — |
-| 3 | **P7** Robustez da API | api | API-08, 10 | ⬜ | — |
-| 3 | **P8** Filas | api | API-11, 09 | ⬜ | — |
-| 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13 | ⬜ | — |
-| 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | ⬜ | — |
-| 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 | ⬜ | — |
-| 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | ⬜ | — |
-| 6 | **P13** Desejáveis | api, shared | API-12–19, 21, 22 · SH-06 | ⬜ | — |
-| 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | — |
+| 1 | **P1** Demo segura | api, web, mobile | API-01 · WEB-01, 02, 03, 08 · MOB-02, 03 | ⬜ | [#58](https://github.com/PetCardOrg/petcard-docs/issues/58) |
+| 1 | **P2** Identidade e CRMV | api | API-05, 06, 07 | ⬜ | [#59](https://github.com/PetCardOrg/petcard-docs/issues/59) |
+| 1 | **P3** Lembretes confiáveis | api | API-03, 02 (+15) | ⬜ | [#60](https://github.com/PetCardOrg/petcard-docs/issues/60) |
+| 2 | **P4** Rede de segurança do shared | shared | SH-05, 01, 04 | ⬜ | [#61](https://github.com/PetCardOrg/petcard-docs/issues/61) |
+| 2 | **P5** Contratos do shared (0.24.0) | shared | SH-02, 03, 08 | ⬜ | [#62](https://github.com/PetCardOrg/petcard-docs/issues/62) |
+| 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | ⬜ | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
+| 3 | **P7** Robustez da API | api | API-08, 10 | ⬜ | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |
+| 3 | **P8** Filas | api | API-11, 09 | ⬜ | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
+| 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13 | ⬜ | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
+| 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | ⬜ | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
+| 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 | ⬜ | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
+| 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | ⬜ | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
+| 6 | **P13** Desejáveis | api, shared | API-12–19, 21, 22 · SH-06 | ⬜ | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
+| 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | [#71](https://github.com/PetCardOrg/petcard-docs/issues/71) |
 
 **Totais:** 59 itens (API 24 · shared 8 · web 13 · mobile 14, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos: 0.**
 

@@ -25,7 +25,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P3 · **PR:** —
 - **Onde:** `src/modules/reminder/dose-reminder.service.ts:44`, `src/modules/reminder/appointment-reminder.service.ts:39` (`@Cron EVERY_DAY_AT_9AM`); script pronto em `scripts/run-reminders.ts`.
 - **Problema:** no plano gratuito do Render o processo dorme; cron dentro do processo não executa e não há recuperação.
-- **⚠️ Decisão pendente (D1 no PLANO):** qual o plano real do Render em produção? Se for sempre ligado, o item vira 🟡.
+- **Decisão D1 (2026-10-28):** produção no plano **gratuito** do Render (dorme), então o item segue 🔴.
 - **Correção:** disparo externo (workflow `schedule` do GitHub Actions chamando um endpoint protegido por segredo, ou Render Cron Job rodando `scripts/run-reminders.ts`) **e** uma execução no boot (`onApplicationBootstrap`), pois a reivindicação torna repetições seguras.
 - **Aceite:**
   - [ ] Disparo externo documentado e configurado (anotar onde fica o segredo).

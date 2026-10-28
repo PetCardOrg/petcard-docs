@@ -27,5 +27,6 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
   - API-20: a API tem **cópia própria** do validador de senha (`src/common/crypto/password.validators.ts`), então o SH-02 sozinho não corrige a API.
   - WEB-14 / MOB-14: as telas precisam pedir `senha_atual` quando o API-04 entrar.
   - O lint com `--fix` no CI (SH-01) também aparece no `package.json` da API.
-- **Bloqueios:** decisões D1–D5 em aberto (ver PLANO).
+- **Decisões:** D1 = Render no plano gratuito (API-02 segue crítico). D5 = status nas issues do GitHub, sem Trello.
+- **Bloqueios:** D2, D3 e D4 em aberto (ver PLANO). Nenhuma bloqueia o P1.
 - **Próximo passo:** abrir o **P1**, começando por `petcard-api` → **API-01** (`trust proxy`), branch `fix/aud-p1-trust-proxy`.
