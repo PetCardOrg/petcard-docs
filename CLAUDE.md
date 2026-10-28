@@ -15,6 +15,7 @@ Documentação **canônica** e board centralizado da entrega do TCC. **Fonte-ún
 - ⚠️ **Sem `package.json`, sem lint, sem CI, sem hooks.** Nada roda nos PRs deste repo — a revisão é humana. Cuidar da formatação Markdown na mão.
 - **Docs em pt-BR.** Tabelas de índice em `docs/README.md` — ao adicionar artefato, registrar no índice.
 - **ADRs:** um arquivo por decisão, numeração sequencial; registrar decisões arquiteturais relevantes **antes de mergear** o código que as implementa. A análise do **api#116** (comunicação criptografada) vira um ADR aqui (alimenta a PC-107).
+- **Auditoria 2026-10 em execução:** ponto de entrada `docs/auditorias/2026-10-24/README.md` (protocolo em `COMO-CONTINUAR.md`, status nas issues `auditoria-2026-10`). Skill `/auditoria` em `.claude/skills/auditoria/`.
 - **Auditorias:** fechamento de item com checkbox `- [ ]` → `- [x]` + nota de resolução (precedente: P3 da auditoria delta).
 - Git flow, commits e regras cross-repo: ver `../CLAUDE.md`. PR mira `develop`. **Merge em `develop` não fecha issue** — fechar manualmente com comentário.
 
