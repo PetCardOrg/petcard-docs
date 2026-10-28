@@ -19,18 +19,18 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** —
 
 ### MOB-02 · Timeout de 10s vale também para upload de foto
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** 🟦 em PR (#97) · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
 - **Onde:** `src/services/api.ts:4` (`API_TIMEOUT_MS = 10000`), `src/services/upload.service.ts` (sem `timeout` próprio).
 - **Correção:** `{ timeout: 60000 }` na chamada de upload. Opcional: redimensionar com `expo-image-manipulator` (limite da API: 5 MB, ver API-10).
-- **Aceite:** [ ] teste: o upload chama `api.post` com `timeout: 60000`.
-- **Resolução:** —
+- **Aceite:** [x] teste: o upload chama `api.post` com `timeout: 60000`.
+- **Resolução:** `UPLOAD_TIMEOUT_MS` (60s) movido para `api.ts` e usado por foto e anexo. Teste `upload.service.test.ts`. Commit `4ac21fd`.
 
 ### MOB-03 · Build sem `EXPO_PUBLIC_API_URL` aponta para `localhost` em silêncio
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** 🟦 em PR (#97) · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
 - **Onde:** `src/services/api.ts:3,13`.
 - **Correção:** falhar o build no `app.config.ts` quando o perfil EAS for `preview`/`production` e a variável faltar (igual já é feito para a chave do Maps), e `console.error` em runtime se `!__DEV__` e a URL for o fallback.
-- **Aceite:** [ ] teste do `app.config.ts` (ou script) cobrindo a falha; [ ] `eas.json` conferido.
-- **Resolução:** —
+- **Aceite:** [x] teste do `app.config.ts` (ou script) cobrindo a falha; [x] `eas.json` conferido.
+- **Resolução:** `app.config.ts` lança erro nos perfis `preview`/`production` sem `EXPO_PUBLIC_API_URL`; `console.error` em runtime fora do dev. Teste `app.config.test.ts`. `eas.json` conferido; a variável existe nos ambientes preview e production do EAS. Commit `16fa3fd`.
 
 ### MOB-14 · Pedir senha atual ao trocar e-mail e ao excluir conta (derivado do SH-03/API-04)
 - **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
@@ -88,6 +88,17 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 | MOB-12 | Blocos `catch {}` que escondem erro | listar com `grep -rn "catch {}" src` e tratar ou comentar o porquê | P11 | ⬜ |
 | MOB-13 | Agendamento aceita data no passado | validação no formulário (e conferir no DTO do shared/API) | P11 | ⬜ |
 
+---
+
+## Itens derivados
+
+### MOB-15 · Ambiente `production` do EAS sem chave do Maps e client IDs do Google (derivado do MOB-03)
+- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 · **PR:** —
+- **Onde:** variáveis de ambiente do projeto no EAS (expo.dev). Em 2026-10-28, `eas env:list --environment production` mostrava só `EXPO_PUBLIC_API_URL`; o `preview` tem também `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY`, `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` e `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`.
+- **Problema:** um build `production` sai com o mapa em branco (o `app.config.ts` só avisa) e sem login Google.
+- **Correção:** cadastrar as variáveis no ambiente production (não é código). Avaliar transformar o aviso do Maps em erro nos perfis de distribuição, como no MOB-03.
+- **Aceite:** [ ] variáveis presentes no `env:list` de production; [ ] build production abre o mapa e faz login Google em aparelho.
+- **Resolução:** —
 ---
 
 ## Não verificado pela auditoria

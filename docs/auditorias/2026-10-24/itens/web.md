@@ -13,26 +13,26 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 ## 🔴 Deve corrigir
 
 ### WEB-01 · Cold start desloga o veterinário
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/contexts/AuthContext.tsx:37-38` (`.catch(() => localStorage.removeItem(TOKEN_KEY))`), `src/services/api.ts:4` (`API_TIMEOUT_MS = 10000`).
 - **Problema:** qualquer erro na validação do perfil (timeout, 500) apaga o token; o cold start do Render (~13s) é maior que o timeout.
 - **Correção:** apagar o token **só em 401**. Rede/5xx/timeout mantêm o token e mostram estado "reconectando/tentar de novo". Timeout da validação inicial ~30s (parâmetro `timeoutMs` do `apiFetch` já existe).
-- **Aceite:** [ ] teste: erro de rede mantém token; [ ] teste: 401 limpa token; [ ] teste: 500 mantém token.
-- **Resolução:** —
+- **Aceite:** [x] teste: erro de rede mantém token; [x] teste: 401 limpa token; [x] teste: 500 mantém token.
+- **Resolução:** Só 401 descarta o token; timeout/rede/5xx deixam `semConexao` e o `ProtectedRoute` mostra "Tentar de novo". Validação inicial com `API_COLD_START_TIMEOUT_MS` (30s). Commit `ff78371`.
 
 ### WEB-02 · "Achei o pet" diz que avisou o tutor mesmo quando falhou
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/pages/LostPet/LostPetPage.tsx:124-130` (`await registrarLeitura(...)` com erro engolido, depois `setLocalizacao(coordenadas ? "enviada" : ...)`), tipo `EstadoLocalizacao` na linha 28.
 - **Correção:** `registrarLeitura` devolve sucesso/falha; novo estado `"falhou"` com botão "tentar de novo" (timeout maior por causa do cold start). Textos no i18n.
-- **Aceite:** [ ] teste: falha da chamada → não mostra "avisamos o tutor"; [ ] teste: retry com sucesso → "enviada".
-- **Resolução:** —
+- **Aceite:** [x] teste: falha da chamada → não mostra "avisamos o tutor"; [x] teste: retry com sucesso → "enviada".
+- **Resolução:** Estado `falhou` com botão "Tentar avisar de novo"; `registrarLeitura` com timeout de 30s. Commit `b5c3210`. Textos fixos que ainda afirmam o aviso viraram o WEB-15.
 
 ### WEB-03 · Botão Voltar prende o vet na carteira
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/pages/PublicCard/PublicCardPage.tsx:193` (state `acessoVet: true`), `:220` (`lerRedirecionamentoVet(location.state).acessoVet`) e a navegação para `/vet/pets/:id`.
 - **Correção:** `navigate(..., { replace: true })` quando entra por `acessoVet`, ou limpar o state antes (`navigate(location.pathname, { replace: true, state: null })`).
-- **Aceite:** [ ] teste com `MemoryRouter`: QR → login → prontuário → Voltar não volta ao prontuário.
-- **Resolução:** —
+- **Aceite:** [x] teste com `MemoryRouter`: QR → login → prontuário → Voltar não volta ao prontuário.
+- **Resolução:** Na volta do login (`acessoVet`), a ida ao prontuário usa `replace`. Teste com `MemoryRouter` real (`PublicCardPage.voltar.test.tsx`), confirmado falhando sem a correção. Commit `5b303ff`.
 
 ### WEB-04 · Erro ao excluir registro nunca aparece
 - **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P9 · **PR:** —
@@ -75,11 +75,11 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** —
 
 ### WEB-08 · Parâmetros de URL sem `encodeURIComponent`
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P1 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/services/card.service.ts`, `coleira.service.ts`, `pet-profile.service.ts` (só `crmv.service.ts:68` codifica).
 - **Correção:** `encodeURIComponent` em cada segmento dinâmico (helper `path\`/pets/${id}\`` ou na assinatura dos services).
-- **Aceite:** [ ] teste: id `..%2Fveterinarios%2Fme` gera URL com o segmento codificado.
-- **Resolução:** —
+- **Aceite:** [x] teste: id `..%2Fveterinarios%2Fme` gera URL com o segmento codificado.
+- **Resolução:** Template marcado `caminho` em `api.ts`, aplicado em todos os services com rota dinâmica (card, coleira, pet-profile, anexo, dashboard). Commit `71cf44b`.
 
 ### WEB-09 · `VetPetProfilePage` com 1104 linhas e blocos repetidos
 - **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P10 (**depois do P9**) · **PR:** —
@@ -96,6 +96,17 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 | WEB-12 | Provável código morto `normalizePublicCardLocation` (`src/main.tsx:34-48`); não há `vercel.json` | **Antes de apagar:** confirmar com o time se existe QR impresso com caminho sem `#` (D4) | P10 | ⬜ |
 | WEB-13 | Trocar idioma refaz as 5 chamadas do perfil (`load` depende de `t`) | tirar `t` das dependências | P9 | ⬜ |
 
+---
+
+## Itens derivados
+
+### WEB-15 · Textos fixos da página do achador afirmam que o tutor já foi avisado (derivado do WEB-02)
+- **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P9 · **PR:** —
+- **Onde:** `src/i18n/locales/*/common.json`: `lostPet.hero.lead` ("Ela já foi avisada de que {{name}} foi encontrado"), `lostPet.steps.three` e `lostPet.contact.noPhone` ("já foi notificado/avisado").
+- **Problema:** aparecem antes do envio terminar e continuam na tela quando ele falha (estado `falhou` do WEB-02), contradizendo a mensagem de falha.
+- **Correção:** textos neutros ("Ligue para a pessoa abaixo") ou condicionados ao estado do aviso.
+- **Aceite:** [ ] teste: com o envio falhando, nenhum texto da página diz que o tutor foi avisado.
+- **Resolução:** —
 ---
 
 ## Não verificado pela auditoria
