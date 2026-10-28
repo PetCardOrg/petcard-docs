@@ -19,14 +19,14 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** —
 
 ### MOB-02 · Timeout de 10s vale também para upload de foto
-- **Status:** 🟦 em PR (#97) · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
 - **Onde:** `src/services/api.ts:4` (`API_TIMEOUT_MS = 10000`), `src/services/upload.service.ts` (sem `timeout` próprio).
 - **Correção:** `{ timeout: 60000 }` na chamada de upload. Opcional: redimensionar com `expo-image-manipulator` (limite da API: 5 MB, ver API-10).
 - **Aceite:** [x] teste: o upload chama `api.post` com `timeout: 60000`.
 - **Resolução:** `UPLOAD_TIMEOUT_MS` (60s) movido para `api.ts` e usado por foto e anexo. Teste `upload.service.test.ts`. Commit `4ac21fd`.
 
 ### MOB-03 · Build sem `EXPO_PUBLIC_API_URL` aponta para `localhost` em silêncio
-- **Status:** 🟦 em PR (#97) · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
 - **Onde:** `src/services/api.ts:3,13`.
 - **Correção:** falhar o build no `app.config.ts` quando o perfil EAS for `preview`/`production` e a variável faltar (igual já é feito para a chave do Maps), e `console.error` em runtime se `!__DEV__` e a URL for o fallback.
 - **Aceite:** [x] teste do `app.config.ts` (ou script) cobrindo a falha; [x] `eas.json` conferido.
