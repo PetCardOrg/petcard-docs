@@ -60,7 +60,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-05 · Login Google herda a senha de quem cadastrou o e-mail antes
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P2 · **PR:** —
+- **Status:** 🟦 em PR (#181) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/modules/auth/auth.service.ts` `googleLogin` (bloco `else if (tutor.googleId !== googleId || tutor.emailVerifiedAt === null)`, ~linha 162).
 - **Problema:** qualquer um cadastra `vitima@x.com` com senha própria (login não exige e-mail verificado). Quando a vítima entra com Google, as contas se unem e a senha do atacante continua valendo.
 - **Correção:** ao vincular conta com `emailVerifiedAt === null`, gravar `password: null` e `passwordChangedAt: new Date()` (derruba sessões do atacante).
@@ -70,7 +70,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-06 · Qualquer CRMV real passa, quem quer que o digite
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P2 · **PR:** —
+- **Status:** 🟦 em PR (#181) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/modules/veterinario/crmv/infosimples-crmv.validator.ts:129` (devolve `nome`, mas ninguém compara), `crmv-verification.service.ts:179`, `auth.service.ts` (`registerVeterinario`, ~linha 281).
 - **Problema:** CRMV é público; nome do titular não é comparado com o nome cadastrado.
 - **Correção:** comparar `registro.nome` com o nome do cadastro, normalizando (minúsculas, sem acento, espaços colapsados). Se diferente → `valid: false` com motivo claro. Mesma regra na revalidação.
@@ -82,7 +82,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-07 · Variável ausente em produção liga o verificador de CRMV falso
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P2 · **PR:** —
+- **Status:** 🟦 em PR (#181) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/config/…/crmv.config.ts` (`provider: process.env.CRMV_PROVIDER ?? 'stub'`), `veterinario.module.ts`.
 - **Correção:** com `NODE_ENV=production`, `CRMV_PROVIDER` obrigatório (falhar no boot como já fazem `JWT_SECRET`/CORS/SMTP). `stub` só se explícito, com `logger.warn` alto no boot.
 - **Aceite:**

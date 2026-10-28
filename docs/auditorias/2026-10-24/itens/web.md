@@ -107,6 +107,13 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Correção:** textos neutros ("Ligue para a pessoa abaixo") ou condicionados ao estado do aviso.
 - **Aceite:** [ ] teste: com o envio falhando, nenhum texto da página diz que o tutor foi avisado.
 - **Resolução:** —
+### WEB-16 · Recusa por nome divergente do CRMV manda "corrigir o CRMV" (derivado do API-06)
+- **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P9 · **PR:** —
+- **Onde:** `src/components/CrmvAviso/CrmvAviso.tsx` (`t("crmv.refused", { situacao })`) e o aviso pendente depois do cadastro (`VetRegisterPage` → dashboard).
+- **Problema:** com o API-06, a API grava a situação "Nome do cadastro não confere com o titular do CRMV". A web a exibe dentro de "O registro não foi aceito (situação: …). Corrija o CRMV e tente de novo.", mas o que precisa mudar é o nome. No cadastro, o vet só vê o aviso genérico de pendente, sem o motivo.
+- **Correção:** mensagem própria quando a situação for a de nome divergente, levando à edição do nome no perfil. Idealmente com um código estável no contrato (shared) em vez de comparar o texto.
+- **Aceite:** [ ] teste: situação de nome divergente mostra a mensagem própria; [ ] o aviso pós-cadastro mostra o motivo.
+- **Resolução:** —
 ---
 
 ## Não verificado pela auditoria

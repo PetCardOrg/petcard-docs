@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-28 — alvaro-unifor (com Claude) — P2
+- **Feito:** API-05, API-06 e API-07 implementados (1 commit cada) e em PR.
+  - API-05: vincular Google a conta de e-mail não verificado zera a senha e renova o `passwordChangedAt`.
+  - API-06: `nomesConferem` (D3: primeiro + último nome) aplicado no `verify()`, que serve ao cadastro e à revalidação. Situação gravada: "Nome do cadastro não confere com o titular do CRMV".
+  - API-07: boot falha em produção sem `CRMV_PROVIDER` ou com valor desconhecido; `stub` explícito sobe com aviso.
+- **PRs:** PetCardOrg/petcard-api#181 (aberto, aguardando review)
+- **Decisões:** D3 registrada no PLANO. `CRMV_PROVIDER` confirmado no Render pelo alvaro-unifor.
+- **Descobertas / itens derivados:** WEB-16, a mensagem da web para nome divergente (P9). É o 3º aceite do API-06, que fica em aberto até lá.
+- **Bloqueios:** nenhum. Antes do deploy, conferir que o valor no Render é exatamente `infosimples` ou `stub`.
+- **Próximo passo:** depois do merge do api#181, marcar API-05/06/07 em `itens/api.md`, no painel e na #59 e fechá-la (o aceite web do API-06 segue no WEB-16). Em seguida, o **P3** (#60) no `petcard-api`: começar pelo **API-03** (lembrete perdido quando a publicação no RabbitMQ falha), depois API-02 (disparo externo + execução no boot; D1 = Render gratuito).
+
 ## 2026-10-28 — alvaro-unifor (com Claude) — P1 (fechamento)
 - **Feito:** PetCardOrg/petcard-mobile#97 e PetCardOrg/petcard-docs#73 mergeados. MOB-02/03 ✅ em develop. **P1 completo em develop; issue #58 fechada.**
 - **Pendente fora do código:** `develop → main` da API e da web antes da gravação (PC-106) e o teste do API-01 com dois aparelhos em produção; cadastrar as variáveis do MOB-15 no EAS antes de qualquer build production.
