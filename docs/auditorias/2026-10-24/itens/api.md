@@ -34,14 +34,14 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-03 · Lembrete se perde se o RabbitMQ falhar na publicação
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P3 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P3 · **PR:** PetCardOrg/petcard-api#182
 - **Onde:** `src/modules/notification/notification.service.ts` (`schedulePush`, bloco `try/catch` do `publisher.publish`), teste `notification.service.spec.ts` (~linha 140) que trava o comportamento atual.
 - **Problema:** a falha de publicação só vai para o log; a função devolve a linha como se tivesse sido enviada, o lembrete grava `lastNotifiedAt` e nunca tenta de novo. A linha fica `PENDING` para sempre.
 - **Correção:** devolver só as notificações publicadas; marcar as que falharam como `FAILED` (`markFailed(id, 'ENQUEUE_FAILED')`). Se nenhuma foi publicada, devolver `[]` para o lembrete soltar a reivindicação.
 - **Aceite:**
-  - [ ] Teste antigo reescrito: publicação que falha → status `FAILED` e não entra no retorno.
-  - [ ] Teste do reminder: retorno vazio → reivindicação liberada (`lastNotifiedAt` não grava).
-- **Resolução:** —
+  - [x] Teste antigo reescrito: publicação que falha → status `FAILED` e não entra no retorno.
+  - [x] Teste do reminder: retorno vazio → reivindicação liberada (`lastNotifiedAt` não grava).
+- **Resolução:** api#182 (mergeado em 2026-10-29). `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação que não entrou na fila e devolve só as publicadas; retorno vazio faz o `DoseReminderService` soltar a reivindicação (`lastNotifiedAt` volta ao valor anterior).
 
 ### API-04 · Token roubado permite tomar a conta do tutor
 - **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
