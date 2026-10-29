@@ -16,6 +16,13 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-29 — camila — P2 (fechamento do status) e arranque do P3
+- **Feito:** api#181 conferido como **mergeado em 2026-10-28** (`44760dc` na `develop`; testes de API-05/06/07 presentes no diff). `itens/api.md` e o painel atualizados: API-05 e API-07 ✅ em develop; API-06 🟨 (falta só o aceite web, WEB-16 no P9). Os 5 repos sincronizados (`develop` local em fast-forward; nenhum commit local perdido).
+- **PRs:** PetCardOrg/petcard-docs (branch `docs/aud-status-2026-10-29`, ainda a abrir). Nenhum PR de auditoria aberto nos 5 repos.
+- **Decisões:** nenhuma nova. D2 e D4 seguem em aberto (não bloqueiam o P3).
+- **Bloqueios:** nenhum.
+- **Próximo passo:** mergeado o PR de status, **fechar a #59 com comentário** (ressalva: aceite web do API-06 vive no WEB-16, P9) ou mantê-la aberta até lá, a critério do time. Em seguida, **P3** (#60) no `petcard-api`, branch `fix/aud-p3-lembretes` a partir da `develop`: começar pelo **API-03** (lembrete perdido quando a publicação no RabbitMQ falha), depois API-02 (disparo externo + execução no boot; D1 = Render gratuito) e API-15 nos arquivos de reminder.
+
 ## 2026-10-28 — alvaro-unifor (com Claude) — P2
 - **Feito:** API-05, API-06 e API-07 implementados (1 commit cada) e em PR.
   - API-05: vincular Google a conta de e-mail não verificado zera a senha e renova o `passwordChangedAt`.
