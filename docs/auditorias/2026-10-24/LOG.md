@@ -16,6 +16,15 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-29 — camila — P3 (API-03 em develop)
+- **Feito:** #60 atribuída e comentada. Branch `fix/aud-p3-lembretes` (petcard-api, a partir da `develop`). **API-03** implementado em 1 commit (`b9b8ab4`): `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação cuja publicação falhou e devolve só as publicadas; retorno vazio faz o lembrete soltar a reivindicação. Testes: o antigo (que travava o comportamento errado) foi reescrito, mais um de falha parcial entre aparelhos e um do reminder. `npm test` 753 ✅, `build` ✅.
+- **PRs:** PetCardOrg/petcard-api#182 (mergeado em 2026-10-29)
+- **Descobertas / itens derivados:**
+  - `npm run build` falhou no `auth-token.service.ts` até rodar `npx prisma generate` (client do Prisma desatualizado na máquina; não é regressão).
+  - `npm run lint` (com `--fix`) reformatou 4 arquivos fora do escopo (`anexo.service.ts`, `routes-decorated.spec.ts`, `calendar-sync.message.ts`, `test/utils/acao-clinica.ts`), diferença de versão do prettier; revertidos, não entram no PR. Reforça o item do `--fix` no lint.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** em branch nova a partir da `develop`, **API-02** (disparo externo documentado + execução no boot com teste de idempotência 2×; D1 = Render gratuito) e **API-15** nos dois arquivos de reminder (trocar comentários de ECS/CloudWatch). Depois PR para a `develop` da API e atualização de `itens/api.md`, do painel e da #60 (a #60 só fecha com API-02 e API-15).
+
 ## 2026-10-29 — camila — P2 (fechamento do status) e arranque do P3
 - **Feito:** api#181 conferido como **mergeado em 2026-10-28** (`44760dc` na `develop`; testes de API-05/06/07 presentes no diff). `itens/api.md` e o painel atualizados: API-05 e API-07 ✅ em develop; API-06 🟨 (falta só o aceite web, WEB-16 no P9). Os 5 repos sincronizados (`develop` local em fast-forward; nenhum commit local perdido).
 - **PRs:** PetCardOrg/petcard-docs (branch `docs/aud-status-2026-10-29`, ainda a abrir). Nenhum PR de auditoria aberto nos 5 repos.
