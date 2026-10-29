@@ -60,35 +60,35 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-05 · Login Google herda a senha de quem cadastrou o e-mail antes
-- **Status:** 🟦 em PR (#181) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/modules/auth/auth.service.ts` `googleLogin` (bloco `else if (tutor.googleId !== googleId || tutor.emailVerifiedAt === null)`, ~linha 162).
 - **Problema:** qualquer um cadastra `vitima@x.com` com senha própria (login não exige e-mail verificado). Quando a vítima entra com Google, as contas se unem e a senha do atacante continua valendo.
 - **Correção:** ao vincular conta com `emailVerifiedAt === null`, gravar `password: null` e `passwordChangedAt: new Date()` (derruba sessões do atacante).
 - **Aceite:**
-  - [ ] Teste: tutor com senha e e-mail não verificado + `googleLogin` → `password` nulo e sessões antigas rejeitadas.
-  - [ ] Teste: tutor **já verificado** + `googleLogin` → senha preservada.
-- **Resolução:** —
+  - [x] Teste: tutor com senha e e-mail não verificado + `googleLogin` → `password` nulo e sessões antigas rejeitadas.
+  - [x] Teste: tutor **já verificado** + `googleLogin` → senha preservada.
+- **Resolução:** api#181 (mergeado em 2026-10-28). Vínculo Google de e-mail não verificado zera a senha e renova `passwordChangedAt`.
 
 ### API-06 · Qualquer CRMV real passa, quem quer que o digite
-- **Status:** 🟦 em PR (#181) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
+- **Status:** 🟨 em develop, falta o aceite web (WEB-16) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/modules/veterinario/crmv/infosimples-crmv.validator.ts:129` (devolve `nome`, mas ninguém compara), `crmv-verification.service.ts:179`, `auth.service.ts` (`registerVeterinario`, ~linha 281).
 - **Problema:** CRMV é público; nome do titular não é comparado com o nome cadastrado.
 - **Correção:** comparar `registro.nome` com o nome do cadastro, normalizando (minúsculas, sem acento, espaços colapsados). Se diferente → `valid: false` com motivo claro. Mesma regra na revalidação.
 - **Decisão D3 (2026-10-28):** primeiro e último nome iguais após normalização (sem acento, sem caixa, espaços colapsados); nomes do meio ignorados.
 - **Aceite:**
-  - [ ] Função pura `nomesConferem(a, b)` com testes (acentos, caixa, nome do meio omitido, nome diferente).
-  - [ ] Cadastro e revalidação usam a função.
+  - [x] Função pura `nomesConferem(a, b)` com testes (acentos, caixa, nome do meio omitido, nome diferente).
+  - [x] Cadastro e revalidação usam a função.
   - [ ] Mensagem de erro amigável chega à web (`VetRegisterPage`).
-- **Resolução:** —
+- **Resolução:** api#181 (mergeado em 2026-10-28). `nomesConferem` (D3) no `verify()`, usado em cadastro e revalidação. **Aceite web em aberto:** mensagem amigável na `VetRegisterPage` fica no WEB-16 (P9).
 
 ### API-07 · Variável ausente em produção liga o verificador de CRMV falso
-- **Status:** 🟦 em PR (#181) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/config/…/crmv.config.ts` (`provider: process.env.CRMV_PROVIDER ?? 'stub'`), `veterinario.module.ts`.
 - **Correção:** com `NODE_ENV=production`, `CRMV_PROVIDER` obrigatório (falhar no boot como já fazem `JWT_SECRET`/CORS/SMTP). `stub` só se explícito, com `logger.warn` alto no boot.
 - **Aceite:**
-  - [ ] Teste no `config.spec.ts`: produção sem a variável → erro; produção com `stub` explícito → sobe com aviso.
-  - [ ] **Antes do merge:** confirmar no painel do Render que `CRMV_PROVIDER` está definido (senão o deploy quebra). Registrar no LOG.
-- **Resolução:** —
+  - [x] Teste no `config.spec.ts`: produção sem a variável → erro; produção com `stub` explícito → sobe com aviso.
+  - [x] **Antes do merge:** confirmar no painel do Render que `CRMV_PROVIDER` está definido (senão o deploy quebra). Registrar no LOG.
+- **Resolução:** api#181 (mergeado em 2026-10-28). Produção sem `CRMV_PROVIDER` (ou valor desconhecido) falha no boot; `stub` explícito sobe com aviso. Variável conferida no Render pelo alvaro-unifor antes do merge.
 
 ---
 
