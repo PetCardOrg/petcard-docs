@@ -16,6 +16,24 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P4
+- **Feito:** #61 atribuída e comentada. Branch `test/aud-p4-rede-de-seguranca` no `petcard-shared`, 1 commit por item:
+  - **SH-05:** 25 testes com `node:test` em `test/` (fora do `dist`), rodando no CI; senha em bytes (SH-02) e `senha_atual` com e-mail (SH-03) ficam como `todo` até o P5. Mutação de conferência: trocar `>` por `>=` no `IsAfterDate` faz 1 teste falhar.
+  - **SH-01:** `lint:check` sem `--fix` no CI.
+  - **SH-04:** `scripts/check-version-bump.sh` no CI de PR; `publish.yaml` só trata `E404` como versão nova (testado contra o GitHub Packages: existente, inexistente, token inválido).
+  - Linha de base pedida em `itens/shared.md`: na `develop` (`f5b1b3e`), `npm run build` e o ESLint sem `--fix` **passavam**. O `dist` gerado depois da mudança ficou byte a byte igual ao de antes.
+  - Verificação final: `build` ✅ · `lint:check` ✅ · `npm test` 25 ✅ + 2 todo.
+- **PRs:** PetCardOrg/petcard-shared#81 (aberto, review pedido a camilampinheiro) · PetCardOrg/petcard-api#184 (aberto, a parte do SH-01 na API)
+- **Decisões:** nenhuma nova. D2 e D4 seguem em aberto (não bloqueiam o P5).
+- **Descobertas / itens derivados:**
+  - SH-01 nos outros repos: só a **API** rodava `npm run lint` (com `--fix`) no CI; **web** (`eslint .`) e **mobile** (`eslint . --ext .ts,.tsx`) já estavam certos. O lint da API passa sem `--fix` na `develop` atual.
+  - O TypeScript 6 não carrega mais `@types/*` por padrão: o `tsconfig.json` do shared passou a declarar `types: ["node"]` e o `tsconfig.build.json` fixa `types: []`, para o pacote seguir sem tipos de Node.
+  - O `@Type` do class-transformer exige `reflect-metadata` carregado; nos consumidores ele vem do Nest. Os testes carregam com `node --require reflect-metadata`.
+  - No Node 22+, `node --test <diretório>` não funciona (o argumento é glob): o script usa `.test-dist/test/*.test.js` sem aspas, que o `sh` do CI (Node 20) expande.
+  - O `package-lock.json` do shared estava com a versão raiz em 0.21.0; o PR corrige.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#81 e do api#184, marcar SH-05/01/04 ✅ em `itens/shared.md`, no painel e na #61 e **fechar a #61** (o aceite do SH-04 se confirma de vez no primeiro PR do P5, que muda `src/`). Em seguida, **P5** (#62) no `petcard-shared`, branch `fix/aud-p5-contratos` a partir da `develop`: SH-02 (senha em bytes; transformar o `todo` em teste), SH-03 (`senha_atual` com e-mail + `DeleteTutorDto`; idem), SH-08 (`MaxLength(2048)` no `photo_url`), bump **minor → 0.24.0**, depois `develop → main` e confirmar o publish.
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P3 (fechamento)
 - **Feito:** api#183 e docs#77 mergeados. API-02 e API-15 (arquivos de reminder) ✅ em develop. **P3 completo em develop; issue #60 fechada.**
   - Validação no staging (deploy automático da `develop`): `REMINDERS_TRIGGER_SECRET` criado no Render de staging; `POST /internal/reminders/run` → 204 e log dos dois serviços (0 lembretes na janela). O boot às 23h de Fortaleza pulou a execução, como projetado.

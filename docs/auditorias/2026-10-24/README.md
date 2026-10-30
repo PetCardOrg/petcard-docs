@@ -18,14 +18,14 @@ Execução das 4 auditorias de leitura feitas em **24/10/2026** (`petcard-api`, 
 
 ## Painel
 
-Atualizado em **2026-10-28**. Status: ⬜ pendente · 🟨 em andamento · 🟦 em PR · ✅ em develop · 🚀 em produção · ⏸️ bloqueado
+Atualizado em **2026-10-30**. Status: ⬜ pendente · 🟨 em andamento · 🟦 em PR · ✅ em develop · 🚀 em produção · ⏸️ bloqueado
 
 | Fase | Pacote | Repo(s) | Itens | Status | Issue |
 |------|--------|---------|-------|--------|-------|
 | 1 | **P1** Demo segura | api, web, mobile | API-01 · WEB-01, 02, 03, 08 · MOB-02, 03 | ✅ em develop (falta `develop → main` de api e web antes do vídeo) | [#58](https://github.com/PetCardOrg/petcard-docs/issues/58) |
 | 1 | **P2** Identidade e CRMV | api | API-05, 06, 07 | 🟨 em develop (API-05/07 ✅; API-06 aguarda o aceite web, WEB-16 no P9) | [#59](https://github.com/PetCardOrg/petcard-docs/issues/59) |
 | 1 | **P3** Lembretes confiáveis | api | API-03, 02 (+15) | ✅ em develop (api#182, api#183); variáveis cadastradas; falta `develop → main` da API e rodar o workflow uma vez | [#60](https://github.com/PetCardOrg/petcard-docs/issues/60) |
-| 2 | **P4** Rede de segurança do shared | shared | SH-05, 01, 04 | ⬜ | [#61](https://github.com/PetCardOrg/petcard-docs/issues/61) |
+| 2 | **P4** Rede de segurança do shared | shared | SH-05, 01, 04 | 🟦 em PR (shared#81; parte da API do SH-01 em api#184) | [#61](https://github.com/PetCardOrg/petcard-docs/issues/61) |
 | 2 | **P5** Contratos do shared (0.24.0) | shared | SH-02, 03, 08 | ⬜ | [#62](https://github.com/PetCardOrg/petcard-docs/issues/62) |
 | 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | ⬜ | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
 | 3 | **P7** Robustez da API | api | API-08, 10 | ⬜ | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |

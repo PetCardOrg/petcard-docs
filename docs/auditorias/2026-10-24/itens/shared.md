@@ -11,12 +11,12 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 ## 🟠 Deve corrigir
 
 ### SH-01 · Lint do CI nunca reprova (`--fix`)
-- **Status:** ⬜ pendente · **Fase:** 2 · **Pacote:** P4 · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81, PetCardOrg/petcard-api#184
 - **Onde:** `package.json` (`"lint": "eslint \"src/**/*.ts\" --fix"`), `.github/workflows/ci.yml:22` (`npm run lint`).
 - **Correção:** script `lint:check` sem `--fix`, usado no CI. `lint` com `--fix` fica para uso local.
-- **Aceite:** [ ] CI usa `lint:check`; [ ] PR de teste com arquivo mal formatado reprova (descrever no PR, sem commitar o arquivo ruim).
+- **Aceite:** [x] CI usa `lint:check`; [x] PR de teste com arquivo mal formatado reprova (descrever no PR, sem commitar o arquivo ruim).
 - **Também vale para:** a API tem o mesmo padrão (`"lint": "eslint ... --fix"` em `petcard-api/package.json:15`). Conferir o `ci.yml` da API, da web e do mobile e corrigir no mesmo espírito (anotar no LOG o que for encontrado).
-- **Resolução:** —
+- **Resolução:** script `lint:check` (sem `--fix`) no CI do shared e da API; arquivo mal formatado faz o script sair com 1 sem alterar nada. Web (`eslint .`) e mobile (`eslint . --ext .ts,.tsx`) já rodavam sem `--fix`. O lint da API passa sem `--fix` na `develop` atual, então a troca não deixa o CI vermelho.
 
 ### SH-02 · Limite de 72 bytes da senha conta caracteres
 - **Status:** ⬜ pendente · **Fase:** 2 · **Pacote:** P5 · **PR:** —
@@ -35,21 +35,21 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** —
 
 ### SH-04 · Versão sem bump não publica e ninguém é avisado
-- **Status:** ⬜ pendente · **Fase:** 2 · **Pacote:** P4 · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81
 - **Onde:** `.github/workflows/publish.yaml` (~33-44).
 - **Correção:**
   1. No `ci.yml`, em PR: se `git diff origin/<base>...HEAD -- src/` não está vazio e o `version` é igual ao da base → falha com mensagem clara.
   2. No `publish.yaml`: distinguir "versão existe" de "erro de rede" no `npm view` (checar se a saída é igual à versão; qualquer outro erro → falha).
-- **Aceite:** [ ] PR que muda `src/` sem bump reprova; [ ] PR só de docs passa.
-- **Resolução:** —
+- **Aceite:** [x] PR que muda `src/` sem bump reprova; [x] PR só de docs passa (validados com `scripts/check-version-bump.sh` num clone de teste; confirmar no primeiro PR real do P5).
+- **Resolução:** `scripts/check-version-bump.sh` roda no CI de PR (checkout com `fetch-depth: 0`). No `publish.yaml`, só `E404` vira "não publicada"; erro de rede/token falha o workflow e versão repetida gera `::warning::`. Testado contra o GitHub Packages (existente, inexistente, token inválido).
 
 ### SH-05 · Regras de validação sem nenhum teste
-- **Status:** ⬜ pendente · **Fase:** 2 · **Pacote:** P4 · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81
 - **Onde:** `src/validators/*` (`IsStrongPassword`, `normalizeEmail`, `IsNotFutureDate`, `IsAfterDate`, `IsOnOrAfterDate`, `HasDosageQuantity`).
 - **Correção:** `node:test` (embutido no Node 20+, sem dependência nova) com ~10+ casos, script `test`, rodando no CI. Atualizar o `CLAUDE.md` do shared ("Sem testes por design" deixa de valer).
 - **Casos mínimos:** senha sem número reprova; `normalizeEmail("  A@B.COM ")` → `a@b.com`; `next_dose_at == applied_at` reprova; `end_date == start_date` aprova; data futura reprova; senha > 72 bytes reprova; `senha_atual` exigida quando vem `email`.
 - **Fazer primeiro no P4**, para servir de rede de segurança para SH-02, SH-03 e SH-06.
-- **Resolução:** —
+- **Resolução:** 25 testes em `test/` (`node:test`, compilados por `tsconfig.test.json` para `.test-dist/`), rodando no CI. Os dois casos mínimos que dependem do P5 (senha > 72 bytes, `senha_atual` com `email`) estão como `todo`: **o SH-02 e o SH-03 devem transformá-los em testes de verdade.** Novas devDeps: `@types/node@^20` e `reflect-metadata`. `CLAUDE.md` atualizado.
 
 ---
 
