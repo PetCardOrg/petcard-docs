@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-29 — alvaro-unifor (com Claude) — P3 (API-02 e API-15 em PR)
+- **Feito:** o API-02 e o API-15 estavam commitados localmente (branch `fix/aud-p3-lembretes`, sem push) desde antes do merge do api#182; a versão local do API-03 ficou obsoleta e foi descartada. Branch nova `fix/aud-p3-disparo-externo` a partir da `develop`, com cherry-pick dos dois commits (conflito só no `dose-reminder.service.spec.ts`: ficaram o teste do API-03 e o da idempotência). Assumi a #60 junto com a camila, com aviso na issue.
+  - API-02: workflow `reminders.yml` (12:00 UTC + `workflow_dispatch`) → `POST /internal/reminders/run` com `X-Reminders-Secret`; execução no boot (9h–21h de Fortaleza); `REMINDERS_TRIGGER_SECRET` obrigatório em produção.
+  - API-15: comentários dos dois arquivos de reminder.
+  - `npm run lint` sem diff · `npm test` 768 ✅ · `npm run build` ✅. E2E não rodado (sem Postgres local).
+- **PRs:** PetCardOrg/petcard-api#183 (aberto, aguardando review)
+- **Decisões:** disparo externo pelo GitHub Actions (e não por Render Cron Job, que é pago).
+- **Descobertas / itens derivados:** o API-15 ainda cita CloudWatch no `.env.example` (~122) e no `config/mail.config.ts` (~48); fica para o P13, onde o item está listado.
+- **Bloqueios:** antes do deploy, criar `REMINDERS_TRIGGER_SECRET` no Render (sem ela o boot de produção falha) e os secrets `REMINDERS_TRIGGER_SECRET` e `REMINDERS_API_URL` no repo da API.
+- **Próximo passo:** depois do merge do api#183, marcar API-02 e API-15 (reminder) ✅ em `itens/api.md`, no painel e na #60, e **fechar a #60** (o aceite "configurado" do API-02 só se confirma com as variáveis no Render/Actions e uma execução manual do workflow depois do `develop → main`). Em seguida, **P4** (#61) no `petcard-shared`: rede de segurança (testes, lint do CI sem `--fix`, checagem de versão).
+
 ## 2026-10-29 — camila — P3 (API-03 em develop)
 - **Feito:** #60 atribuída e comentada. Branch `fix/aud-p3-lembretes` (petcard-api, a partir da `develop`). **API-03** implementado em 1 commit (`b9b8ab4`): `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação cuja publicação falhou e devolve só as publicadas; retorno vazio faz o lembrete soltar a reivindicação. Testes: o antigo (que travava o comportamento errado) foi reescrito, mais um de falha parcial entre aparelhos e um do reminder. `npm test` 753 ✅, `build` ✅.
 - **PRs:** PetCardOrg/petcard-api#182 (mergeado em 2026-10-29)
