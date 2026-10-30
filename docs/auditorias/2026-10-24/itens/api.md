@@ -22,16 +22,16 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** `trust proxy` = 1 em `src/common/http/trust-proxy.ts`, aplicado no início do `bootstrap`. Teste de integração `trust-proxy.spec.ts` (baldes distintos por IP; forjar o início do XFF não escapa). Nota no `CLAUDE.md` da API. **Pendente:** validar em produção com dois aparelhos em redes diferentes depois do `develop → main`; se o segundo for bloqueado, há mais de um proxy e o número sobe para 2.
 
 ### API-02 · Lembretes diários dependem do servidor estar acordado às 9h
-- **Status:** ⬜ pendente · **Fase:** 1 · **Pacote:** P3 · **PR:** —
+- **Status:** 🟦 em PR (PetCardOrg/petcard-api#183) · **Fase:** 1 · **Pacote:** P3 · **PR:** PetCardOrg/petcard-api#183
 - **Onde:** `src/modules/reminder/dose-reminder.service.ts:44`, `src/modules/reminder/appointment-reminder.service.ts:39` (`@Cron EVERY_DAY_AT_9AM`); script pronto em `scripts/run-reminders.ts`.
 - **Problema:** no plano gratuito do Render o processo dorme; cron dentro do processo não executa e não há recuperação.
 - **Decisão D1 (2026-10-28):** produção no plano **gratuito** do Render (dorme), então o item segue 🔴.
 - **Correção:** disparo externo (workflow `schedule` do GitHub Actions chamando um endpoint protegido por segredo, ou Render Cron Job rodando `scripts/run-reminders.ts`) **e** uma execução no boot (`onApplicationBootstrap`), pois a reivindicação torna repetições seguras.
 - **Aceite:**
-  - [ ] Disparo externo documentado e configurado (anotar onde fica o segredo).
-  - [ ] Execução no boot, com teste provando idempotência (rodar 2× não duplica push).
-  - [ ] Comentários de ECS/CloudWatch substituídos (resolve junto o API-15 nesses dois arquivos).
-- **Resolução:** —
+  - [ ] Disparo externo documentado e configurado (anotar onde fica o segredo). Documentado no PR, no `.env.example` e no `CLAUDE.md`; **falta configurar**: `REMINDERS_TRIGGER_SECRET` no Render e os secrets `REMINDERS_TRIGGER_SECRET` + `REMINDERS_API_URL` no repo da API (Actions).
+  - [x] Execução no boot, com teste provando idempotência (rodar 2× não duplica push).
+  - [x] Comentários de ECS/CloudWatch substituídos (resolve junto o API-15 nesses dois arquivos).
+- **Resolução:** api#183 (em review). Workflow `reminders.yml` (12:00 UTC + `workflow_dispatch`) chama `POST /internal/reminders/run` com `X-Reminders-Secret` (comparação em tempo constante; 404 sem segredo configurado). Execução no boot logo depois do `listen` (`main.ts`), só entre 9h e 21h de Fortaleza. `REMINDERS_TRIGGER_SECRET` obrigatório em produção (mín. 32 caracteres). Testes: boot e disparo simultâneos não duplicam push (dose e agendamento). Depois do `develop → main`, rodar o workflow uma vez manualmente.
 
 ### API-03 · Lembrete se perde se o RabbitMQ falhar na publicação
 - **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P3 · **PR:** PetCardOrg/petcard-api#182
@@ -131,7 +131,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 | API-12 | Container roda como root | `Dockerfile` | `USER node` antes do `ENTRYPOINT`; checar permissões de escrita | ⬜ |
 | API-13 | Erro de serviço externo vaza ou vira 500 | `places.service.ts` (~175), `infosimples-crmv.validator.ts` (~99) | logar corpo, responder genérico; `try/catch` no `response.json()` → 502 | ⬜ |
 | API-14 | Lembrete de dose triplicado | `dose-reminder.service.ts` | mapa modelo → delegate Prisma (~-60 linhas) | ⬜ |
-| API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | ⬜ |
+| API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | 🟦 reminder em PR (api#183); faltam `.env.example` (~122) e `mail.config.ts` (~48), no P13 |
 | API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | ⬜ |
 | API-17 | `googleapis` enorme para 1 uso | `google-calendar.service.ts` | `@googleapis/calendar` + `google-auth-library`. **Risco médio**: testar sync de calendário de ponta a ponta | ⬜ |
 
