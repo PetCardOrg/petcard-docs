@@ -19,7 +19,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** script `lint:check` (sem `--fix`) no CI do shared e da API; arquivo mal formatado faz o script sair com 1 sem alterar nada. Web (`eslint .`) e mobile (`eslint . --ext .ts,.tsx`) já rodavam sem `--fix`. O lint da API passa sem `--fix` na `develop` atual, então a troca não deixa o CI vermelho.
 
 ### SH-02 · Limite de 72 bytes da senha conta caracteres
-- **Status:** 🟦 em PR (#82) · **Fase:** 2 · **Pacote:** P5 · **PR:** PetCardOrg/petcard-shared#82
+- **Status:** ✅ em develop · **Fase:** 2 · **Pacote:** P5 · **PR:** PetCardOrg/petcard-shared#82
 - **Onde:** `src/validators/strong-password.validator.ts` (~22-35, `MaxLength(PASSWORD_MAX_LENGTH)`).
 - **Correção:** validador de bytes com `new TextEncoder().encode(v).length <= 72` (existe em Node, browser e React Native). Mensagem: explicar que acentos/emoji contam mais.
 - **Aceite:** [x] teste (SH-05) com 60 caracteres acentuados > 72 bytes reprovado; 72 ASCII aprovado.
@@ -27,7 +27,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** validador `maxBytes` no lugar do `MaxLength`, contando bytes UTF-8 por code point. Não usa `TextEncoder` porque o build (`lib: ES2020`, `types: []`) não tem os tipos dele; o resultado é igual, inclusive para surrogate solto (3 bytes). Testes: 117 bytes em 60 caracteres reprova, 72 bytes com acento passa, emoji conta 4. O nome da regra mudou de `maxLength` para `maxBytes`; nenhum consumidor depende dele (conferido com `grep`).
 
 ### SH-03 · Trocar e-mail não pede a senha atual
-- **Status:** 🟦 em PR (#82) · **Fase:** 2 · **Pacote:** P5 · **PR:** PetCardOrg/petcard-shared#82
+- **Status:** ✅ em develop · **Fase:** 2 · **Pacote:** P5 · **PR:** PetCardOrg/petcard-shared#82
 - **Onde:** `src/dtos/tutor/update-tutor.dto.ts` (~18-23), `src/dtos/veterinario/update-veterinario.dto.ts` (~26-30; `senha_atual` já existe na linha ~45, mas só é exigida para senha).
 - **Correção:** `@ValidateIf(o => o.email !== undefined || o.password !== undefined)` em `senha_atual` (vet); adicionar `senha_atual?` ao `UpdateTutorDto` com a mesma regra; criar `DeleteTutorDto { senha_atual?: string; google_id_token?: string }` para o `DELETE /tutors/me`.
 - **Desbloqueia:** API-04, MOB-14, WEB-14.
@@ -68,7 +68,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** —
 
 ### SH-08 · `photo_url` sem `MaxLength` e `auth0_id` sobrando
-- **Status:** 🟦 em PR (#82) a parte do `MaxLength` · ⬜ `auth0_id` (P14) · **Fase:** 2 (`MaxLength`) / 6 (`auth0_id`, breaking) · **Pacote:** P5 / P14 · **PR:** PetCardOrg/petcard-shared#82 (`MaxLength`)
+- **Status:** ✅ em develop a parte do `MaxLength` · ⬜ `auth0_id` (P14) · **Fase:** 2 (`MaxLength`) / 6 (`auth0_id`, breaking) · **Pacote:** P5 / P14 · **PR:** PetCardOrg/petcard-shared#82 (`MaxLength`)
 - **Onde:** `create-pet.dto.ts:44`, `update-pet.dto.ts:47` (`photo_url` sem `@MaxLength`); `tutor-response.dto.ts:5` (`auth0_id!: string`).
 - **Correção:** `@MaxLength(2048)` nos dois `photo_url` (não-breaking, P5). Remover `auth0_id` junto com SH-07 (breaking, P14), depois de confirmar com `grep` que nenhum consumidor usa.
 - **Resolução:** `MaxLength(2048)` nos dois `photo_url`, com 3 testes (P5). `auth0_id` segue para o P14.

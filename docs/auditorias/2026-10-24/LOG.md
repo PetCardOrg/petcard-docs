@@ -16,6 +16,13 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P5 (merge e release)
+- **Feito:** shared#82 e docs#81 mergeados. SH-02, SH-03 e SH-08 (`MaxLength`) ✅ em develop; checklist da #62 marcado. PR de release `develop → main` aberto, levando P4 + P5 para a 0.24.0.
+- **PRs:** PetCardOrg/petcard-shared#82 (mergeado) · PetCardOrg/petcard-docs#81 (mergeado) · PetCardOrg/petcard-shared#83 (aberto, `develop → main`)
+- **Decisões:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#83, conferir o workflow *Publish Package* na `main` e rodar `npm view @petcardorg/shared version` (deve dar `0.24.0`). Marcar a caixa do publish e a de status na #62, anotar no painel e **fechar a #62**. Em seguida, **P6** (#63): branch `fix/aud-p6-reautenticacao` na API a partir da `develop`, `npm install @petcardorg/shared@^0.24.0` e começar pelo API-20/API-04 (a API verifica `google_id_token` com a mesma lógica do login Google, exigindo `iat` recente e `sub` igual ao da conta).
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P5
 - **Feito:** D2 decidida. #62 atribuída e comentada. Branch `fix/aud-p5-contratos` no `petcard-shared`, 1 commit por item:
   - **SH-02:** validador `maxBytes` (bytes UTF-8 contados por code point; o build não tem os tipos do `TextEncoder`) no lugar do `MaxLength` da senha. O `todo` virou 3 testes (acento, limite exato, emoji).
