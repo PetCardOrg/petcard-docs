@@ -26,7 +26,7 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
   - O staging roda com `NODE_ENV=production` (vem do `Dockerfile`), então qualquer variável "obrigatória em produção" também derruba o staging. Ao adicionar uma, cadastrar nos dois Renders **antes** do merge na `develop`.
   - No PowerShell 5.1, `curl` é apelido do `Invoke-WebRequest`: usar `curl.exe` nos exemplos para o time.
   - FCM desligado no staging (`FCM_ENABLED=false`): lembrete ponta a ponta só dá para ver em produção ou ligando o FCM lá.
-- **Bloqueios / pendente fora do código:** `REMINDERS_TRIGGER_SECRET` no Render de **produção** antes do `develop → main` da API; depois do deploy, rodar Actions → "Lembretes diários" → *Run workflow* e conferir que fica verde.
+- **Bloqueios / pendente fora do código:** `REMINDERS_TRIGGER_SECRET` já cadastrado no Render de produção e os repository secrets no GitHub (alvaro-unifor). Falta o `develop → main` da API; depois do deploy, rodar Actions → "Lembretes diários" → *Run workflow* e conferir que fica verde.
 - **Próximo passo:** **P4** (#61) no `petcard-shared`, branch `test/aud-p4-rede-de-seguranca` a partir da `develop`: SH-05 (testes) → SH-01 (lint do CI sem `--fix`) → SH-04 (checagem de versão). Sem mudança em `src/`, então sem bump.
 
 ## 2026-10-29 — alvaro-unifor (com Claude) — P3 (API-02 e API-15 em PR)
