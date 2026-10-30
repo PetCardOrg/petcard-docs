@@ -11,7 +11,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 ## 🟠 Deve corrigir
 
 ### SH-01 · Lint do CI nunca reprova (`--fix`)
-- **Status:** 🟦 em PR · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81, PetCardOrg/petcard-api#184
+- **Status:** ✅ em develop · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81, PetCardOrg/petcard-api#184
 - **Onde:** `package.json` (`"lint": "eslint \"src/**/*.ts\" --fix"`), `.github/workflows/ci.yml:22` (`npm run lint`).
 - **Correção:** script `lint:check` sem `--fix`, usado no CI. `lint` com `--fix` fica para uso local.
 - **Aceite:** [x] CI usa `lint:check`; [x] PR de teste com arquivo mal formatado reprova (descrever no PR, sem commitar o arquivo ruim).
@@ -35,7 +35,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** —
 
 ### SH-04 · Versão sem bump não publica e ninguém é avisado
-- **Status:** 🟦 em PR · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81
+- **Status:** ✅ em develop · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81
 - **Onde:** `.github/workflows/publish.yaml` (~33-44).
 - **Correção:**
   1. No `ci.yml`, em PR: se `git diff origin/<base>...HEAD -- src/` não está vazio e o `version` é igual ao da base → falha com mensagem clara.
@@ -44,7 +44,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** `scripts/check-version-bump.sh` roda no CI de PR (checkout com `fetch-depth: 0`). No `publish.yaml`, só `E404` vira "não publicada"; erro de rede/token falha o workflow e versão repetida gera `::warning::`. Testado contra o GitHub Packages (existente, inexistente, token inválido).
 
 ### SH-05 · Regras de validação sem nenhum teste
-- **Status:** 🟦 em PR · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81
+- **Status:** ✅ em develop · **Fase:** 2 · **Pacote:** P4 · **PR:** PetCardOrg/petcard-shared#81
 - **Onde:** `src/validators/*` (`IsStrongPassword`, `normalizeEmail`, `IsNotFutureDate`, `IsAfterDate`, `IsOnOrAfterDate`, `HasDosageQuantity`).
 - **Correção:** `node:test` (embutido no Node 20+, sem dependência nova) com ~10+ casos, script `test`, rodando no CI. Atualizar o `CLAUDE.md` do shared ("Sem testes por design" deixa de valer).
 - **Casos mínimos:** senha sem número reprova; `normalizeEmail("  A@B.COM ")` → `a@b.com`; `next_dose_at == applied_at` reprova; `end_date == start_date` aprova; data futura reprova; senha > 72 bytes reprova; `senha_atual` exigida quando vem `email`.

@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P4 (fechamento)
+- **Feito:** shared#81, api#184 e docs#79 mergeados. SH-05, SH-01 e SH-04 ✅ em develop; CI do shared verde na `develop` (25 testes + 2 `todo`). **P4 completo; issue #61 fechada.**
+- **PRs:** PetCardOrg/petcard-shared#81 (mergeado) · PetCardOrg/petcard-api#184 (mergeado) · PetCardOrg/petcard-docs#79 (mergeado)
+- **Decisões:** nenhuma. O P5 **não foi iniciado** (a #62 segue sem responsável).
+- **Descobertas:** o login Google existe só para tutor; vet sempre tem senha. Então a D2 afeta só o `UpdateTutorDto`/`DeleteTutorDto`: com `id_token`, o DTO aceita `senha_atual` **ou** `google_id_token` (a API decide qual vale pela conta); com confirmação por e-mail, o DTO só ganha `senha_atual` e surge um fluxo novo. A regra do vet (`senha_atual` exigida com `email`) não depende da D2.
+- **Bloqueios:** **D2 em aberto**, bloqueia a parte do tutor no SH-03.
+- **Próximo passo:** decidir a **D2** com o usuário (registrar no PLANO e no LOG). Depois, **P5** (#62) no `petcard-shared`, branch `fix/aud-p5-contratos` a partir da `develop`: SH-02 (senha em bytes; transformar o `todo` em teste), SH-03 (vet + tutor conforme a D2 + `DeleteTutorDto`; idem), SH-08 (`MaxLength(2048)` no `photo_url`), bump **minor → 0.24.0**, `develop → main` e confirmar o publish. SH-02 e SH-08 podem andar antes da D2.
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P4
 - **Feito:** #61 atribuída e comentada. Branch `test/aud-p4-rede-de-seguranca` no `petcard-shared`, 1 commit por item:
   - **SH-05:** 25 testes com `node:test` em `test/` (fora do `dist`), rodando no CI; senha em bytes (SH-02) e `senha_atual` com e-mail (SH-03) ficam como `todo` até o P5. Mutação de conferência: trocar `>` por `>=` no `IsAfterDate` faz 1 teste falhar.
