@@ -102,11 +102,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** helper `enqueueCalendarSync` no `AppointmentService`, no molde do `enqueueQrCodeGeneration`, usado por `create`, `update` e `remove`. No `remove` a exclusão segue mesmo com a fila fora, mas o evento fica órfão no Google (a linha some e o `syncAllPending` não o vê); o log diz qual. A recuperação virou o **API-25**.
 
 ### API-09 · Retentativas da fila sem espera
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P8 (depois do API-11) · **PR:** —
+- **Status:** 🟦 em PR (#186) · **Fase:** 3 · **Pacote:** P8 (depois do API-11) · **PR:** PetCardOrg/petcard-api#186
 - **Onde:** `notification-push.consumer.ts:112`, `queue/qr-code.consumer.ts:70`, `calendar/calendar-sync.consumer.ts:154`.
 - **Correção:** `await sleep(1000 * 2 ** retryCount)` antes de republicar (seguro com `prefetchCount: 1`). Fazer **no `retryOrDlq` compartilhado do API-11**, não 3 vezes.
-- **Aceite:** [ ] teste do helper com timers falsos verificando o backoff; [ ] DLQ sem leitor documentada (ou criar item para um leitor).
-- **Resolução:** —
+- **Aceite:** [x] teste do helper com timers falsos verificando o backoff; [x] DLQ sem leitor documentada (ou criar item para um leitor).
+- **Resolução:** `retryOrDlq` espera `1000 * 2 ** retryCount` (1s/2s/4s) antes de republicar. A espera passa por `backoff.esperar`; os specs dos consumidores a substituem com um `spyOn` de uma linha, e `rmq.spec.ts` testa a espera real com timers falsos. A falta de leitor nas DLQs está documentada no `rmq.ts` e no `CLAUDE.md` da API (sem item novo para um leitor).
 
 ### API-10 · Upload sem throttle e arquivos nunca apagados
 - **Status:** 🟦 em PR (#185) · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
@@ -116,11 +116,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** `POST /upload/image` limitado a 10 por minuto **por usuário** (`LIMITE_DE_UPLOAD`, balde `auth` com teto próprio + `SkipThrottle` dos outros). O `UserThrottlerGuard` conta pelo `sub` do token, não pelo IP, para uma rede compartilhada não somar todo mundo num teto só. `UploadService.discardFile` (melhor esforço, só loga) é chamado ao trocar a foto de pet/tutor/vet, só quando ela muda, e ao excluir pet/tutor/vet; a exclusão do tutor apaga também as fotos dos pets, que saem em cascata. Anexos e PNGs de QR na cascata ficaram de fora: **API-26**.
 
 ### API-11 · Configuração das filas copiada em 4 lugares
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P8 · **PR:** —
+- **Status:** 🟦 em PR (#186) · **Fase:** 3 · **Pacote:** P8 · **PR:** PetCardOrg/petcard-api#186
 - **Onde:** `main.ts` (~60-110), `queue.module.ts` (~25-95), `rabbitmq-topology.service.ts`, 3 consumidores (`retryOrDlq`).
 - **Correção:** helper `rmqOptions(queue, dlx, dlqKey)` e um `retryOrDlq` compartilhado. Refactor puro: sem mudar comportamento (o backoff entra no API-09, commit separado).
-- **Aceite:** [ ] suíte unitária e e2e verdes sem mudar testes de comportamento.
-- **Resolução:** —
+- **Aceite:** [x] suíte unitária e e2e verdes sem mudar testes de comportamento.
+- **Resolução:** `src/modules/queue/rmq.ts`: lista `FILAS` (chaves de fila/DLX/DLQ das 3 filas) lida por `main.ts`, `queue.module.ts` e `rabbitmq-topology.service.ts`; `rmqOptions` com a parte comum; `retryOrDlq`/`getRetryCount` compartilhados, com ganchos `onRetry`/`onExhausted` para os logs e o `markFailed` de cada consumidor; `RETRY_HEADER` único. No commit do refactor, os testes dos consumidores passaram sem alteração (36 ✅); e2e local 81 ✅; boot com RabbitMQ real sem `PRECONDITION_FAILED` e filas com os mesmos argumentos.
 
 ---
 

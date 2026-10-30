@@ -16,6 +16,21 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P8 (e CI do P7)
+- **Feito:**
+  - **P7:** o CI do api#185 reprovou no e2e: o mock do `UploadService` em `test/utils/e2e-app.ts` não tinha `discardFile`. Corrigido num commit a mais (`test(e2e): …`); CI verde.
+  - **P8:** #65 atribuída e comentada. Branch `refactor/aud-p8-filas` na API:
+    - **API-11** (refactor puro, commit próprio): `rmq.ts` com `FILAS`, `rmqOptions`, `retryOrDlq`/`getRetryCount` e `RETRY_HEADER` únicos; `main.ts`, `queue.module.ts`, topologia e os 3 consumidores passam a usá-los. Testes dos consumidores sem alteração (36 ✅).
+    - **API-09:** espera `1000 * 2 ** retryCount` antes de republicar; `rmq.spec.ts` com timers falsos; specs dos consumidores trocam a espera por `spyOn(backoff, 'esperar')`. DLQ sem leitor documentada no `rmq.ts` e no `CLAUDE.md`.
+  - Verificação: `lint` ✅ · `npm test` 772 ✅ · `build` ✅ · **e2e local 81 ✅** (Postgres e RabbitMQ do `docker/`) · boot do `dist` com RabbitMQ real (banco `petcard_test`, `FCM_ENABLED=false`, CRMV `stub`, SMTP em porta morta): 3 consumidores, 3 `DLX/DLQ ready`, filas com os mesmos argumentos, sem `PRECONDITION_FAILED`. Containers desligados no fim. CI do api#186 verde.
+- **PRs:** PetCardOrg/petcard-api#185 (aberto, CI verde) · PetCardOrg/petcard-api#186 (aberto, CI verde) · review pedido a camilampinheiro nos dois
+- **Decisões:** nenhuma nova. Segue valendo: sem `develop → main`; P6 parado até a 0.24.0.
+- **Descobertas:**
+  - Dá para rodar o e2e local: `docker start petcard-postgres petcard-rabbitmq` (o banco `petcard_test` já existe). O `gas-postgres` de outro projeto usa a porta 5434, sem conflito.
+  - O `.env` de dev tem `FCM_ENABLED=true` e SMTP real, e o boot dispara lembretes entre 9h e 21h: para subir a API local sem efeito colateral, sobrescrever `DATABASE_URL` (banco de teste), `FCM_ENABLED=false`, `CRMV_PROVIDER=stub` e o SMTP na linha de comando.
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P9** (#66) no `petcard-web`, branch `fix/aud-p9-correcoes` a partir da `develop`, **sem o WEB-05** (depende do API-24, do P6): WEB-04, WEB-06, WEB-07, WEB-13 e o derivado **WEB-16** (mensagem de nome divergente do CRMV, que fecha o aceite do API-06 e permite fechar a #59). Em paralelo: depois dos merges do api#185 e do api#186, marcar API-08/10/11/09 ✅ e fechar a #64 e a #65; quando liberarem o `develop → main` do shared, mergear o shared#83, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P7
 - **Feito:** #64 atribuída e comentada. Branch `fix/aud-p7-robustez` na API, 1 commit por item:
   - **API-08:** `enqueueCalendarSync` captura a falha de publicação em `create`/`update`/`remove`; a linha fica `PENDING_*` e o `syncAllPending` recupera. No `remove` o evento fica órfão (vira o API-25).

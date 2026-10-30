@@ -29,7 +29,7 @@ Atualizado em **2026-10-30**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 2 | **P5** Contratos do shared (0.24.0) | shared | SH-02, 03, 08 | ✅ em develop (shared#82); release 0.24.0 em PR (shared#83, `develop → main`), falta o publish | [#62](https://github.com/PetCardOrg/petcard-docs/issues/62) |
 | 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | ⬜ | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
 | 3 | **P7** Robustez da API | api | API-08, 10 | 🟦 em PR (api#185) | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |
-| 3 | **P8** Filas | api | API-11, 09 | ⬜ | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
+| 3 | **P8** Filas | api | API-11, 09 | 🟦 em PR (api#186) | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
 | 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13 | ⬜ | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
 | 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | ⬜ | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
 | 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 | ⬜ | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
