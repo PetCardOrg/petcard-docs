@@ -85,7 +85,7 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 | ID | Pergunta | Bloqueia | Recomendação | Decisão |
 |----|----------|----------|--------------|---------|
 | D1 | A produção do Render está no plano gratuito (dorme) ou pago (sempre ligado)? | API-02 | Supor gratuito: disparo externo por GitHub Actions `schedule` + execução no boot | **Gratuito (dorme)**: API-02 segue crítico. Decidido em 2026-10-28 pelo alvaro-unifor |
-| D2 | Conta só-Google: como reautenticar para trocar e-mail ou excluir a conta? | API-04, MOB-14 | `id_token` do Google recente (o app já tem o fluxo) | — |
+| D2 | Conta só-Google: como reautenticar para trocar e-mail ou excluir a conta? | API-04, MOB-14 | `id_token` do Google recente (o app já tem o fluxo) | **`id_token` do Google obtido na hora**: o app reabre o login Google e manda o token na própria requisição (nada é guardado); a API exige token recente e do mesmo `sub`. Os DTOs do tutor aceitam `senha_atual` **ou** `google_id_token`. Decidido em 2026-10-30 pelo alvaro-unifor |
 | D3 | Comparação do nome do CRMV: exata normalizada ou tolerante? | API-06 | Primeiro e último nome iguais, sem acento nem caixa | **Primeiro + último nome**, sem acento nem caixa (nomes do meio ignorados). Decidido em 2026-10-28 pelo alvaro-unifor |
 | D4 | Existe QR impresso com caminho sem `#` (`/card/xxx`)? | WEB-12 | Se ninguém souber, manter o código | — |
 | D5 | Onde acompanhar o status: issues do GitHub ou Trello? | todos | Issues do GitHub no `petcard-docs` (ver README) | **Issues do GitHub** (sem Trello). Decidido em 2026-10-28 pelo alvaro-unifor |

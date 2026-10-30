@@ -16,6 +16,22 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P5
+- **Feito:** D2 decidida. #62 atribuída e comentada. Branch `fix/aud-p5-contratos` no `petcard-shared`, 1 commit por item:
+  - **SH-02:** validador `maxBytes` (bytes UTF-8 contados por code point; o build não tem os tipos do `TextEncoder`) no lugar do `MaxLength` da senha. O `todo` virou 3 testes (acento, limite exato, emoji).
+  - **SH-03:** vet exige `senha_atual` também com `email`. `UpdateTutorDto` ganhou `senha_atual?`/`google_id_token?` (um dos dois obrigatório com `email`). `DeleteTutorDto` novo (um dos dois obrigatório), exportado no barrel. O `todo` virou teste e entrou `test/tutor-reauth.test.ts`.
+  - **SH-08:** `MaxLength(2048)` no `photo_url` de `CreatePetDto`/`UpdatePetDto`.
+  - `chore(release): 0.24.0`.
+  - Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 41 ✅, 0 `todo` · CI do PR verde, com o `check-version-bump.sh` aceitando 0.23.0 → 0.24.0 (fecha de vez o aceite do SH-04).
+- **PRs:** PetCardOrg/petcard-shared#82 (aberto, review pedido a camilampinheiro)
+- **Decisões:** **D2 = `id_token` do Google obtido na hora**, enviado na própria requisição de trocar e-mail ou excluir a conta, sem guardar nada. A API exige token recente e do mesmo `sub`. Registrada no PLANO.
+- **Descobertas:**
+  - Os 3 consumidores estão em `^0.23.0`, que em 0.x **não** inclui a 0.24.0: nada muda neles até o P6 subir a dependência.
+  - O nome da regra da senha mudou de `maxLength` para `maxBytes`; nenhum consumidor depende dele (`grep`).
+  - Com `core.autocrlf=true`, `prettier --check` acusa os 47 arquivos por CRLF; usar `--end-of-line auto` para conferir localmente (o `lint:check` não sofre com isso).
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#82, abrir o PR `develop → main` do `petcard-shared`, conferir o `publish.yaml` e rodar `npm view @petcardorg/shared version` (deve dar `0.24.0`). Aí marcar SH-02/03/08 ✅ (+ a caixa do publish) em `itens/shared.md`, no painel e na #62, e **fechar a #62**. Em seguida, **P6** (#63): branch `fix/aud-p6-reautenticacao` na API a partir da `develop`, `npm install @petcardorg/shared@^0.24.0` e começar pelo API-20/API-04 (a API verifica `google_id_token` com a mesma lógica do login Google, exigindo `iat` recente e `sub` igual ao da conta).
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P4 (fechamento)
 - **Feito:** shared#81, api#184 e docs#79 mergeados. SH-05, SH-01 e SH-04 ✅ em develop; CI do shared verde na `develop` (25 testes + 2 `todo`). **P4 completo; issue #61 fechada.**
 - **PRs:** PetCardOrg/petcard-shared#81 (mergeado) · PetCardOrg/petcard-api#184 (mergeado) · PetCardOrg/petcard-docs#79 (mergeado)
