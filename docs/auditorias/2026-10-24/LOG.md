@@ -16,6 +16,19 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P3 (fechamento)
+- **Feito:** api#183 e docs#77 mergeados. API-02 e API-15 (arquivos de reminder) ✅ em develop. **P3 completo em develop; issue #60 fechada.**
+  - Validação no staging (deploy automático da `develop`): `REMINDERS_TRIGGER_SECRET` criado no Render de staging; `POST /internal/reminders/run` → 204 e log dos dois serviços (0 lembretes na janela). O boot às 23h de Fortaleza pulou a execução, como projetado.
+  - Repository secrets `REMINDERS_TRIGGER_SECRET` e `REMINDERS_API_URL` (`https://petcard-api.onrender.com`) orientados no GitHub da API.
+- **PRs:** PetCardOrg/petcard-api#183 (mergeado) · PetCardOrg/petcard-docs#77 (mergeado)
+- **Decisões:** staging usa um segredo **diferente** do de produção e não entra no workflow agendado (só tem o boot e o disparo manual).
+- **Descobertas / itens derivados:**
+  - O staging roda com `NODE_ENV=production` (vem do `Dockerfile`), então qualquer variável "obrigatória em produção" também derruba o staging. Ao adicionar uma, cadastrar nos dois Renders **antes** do merge na `develop`.
+  - No PowerShell 5.1, `curl` é apelido do `Invoke-WebRequest`: usar `curl.exe` nos exemplos para o time.
+  - FCM desligado no staging (`FCM_ENABLED=false`): lembrete ponta a ponta só dá para ver em produção ou ligando o FCM lá.
+- **Bloqueios / pendente fora do código:** `REMINDERS_TRIGGER_SECRET` no Render de **produção** antes do `develop → main` da API; depois do deploy, rodar Actions → "Lembretes diários" → *Run workflow* e conferir que fica verde.
+- **Próximo passo:** **P4** (#61) no `petcard-shared`, branch `test/aud-p4-rede-de-seguranca` a partir da `develop`: SH-05 (testes) → SH-01 (lint do CI sem `--fix`) → SH-04 (checagem de versão). Sem mudança em `src/`, então sem bump.
+
 ## 2026-10-29 — alvaro-unifor (com Claude) — P3 (API-02 e API-15 em PR)
 - **Feito:** o API-02 e o API-15 estavam commitados localmente (branch `fix/aud-p3-lembretes`, sem push) desde antes do merge do api#182; a versão local do API-03 ficou obsoleta e foi descartada. Branch nova `fix/aud-p3-disparo-externo` a partir da `develop`, com cherry-pick dos dois commits (conflito só no `dose-reminder.service.spec.ts`: ficaram o teste do API-03 e o da idempotência). Assumi a #60 junto com a camila, com aviso na issue.
   - API-02: workflow `reminders.yml` (12:00 UTC + `workflow_dispatch`) → `POST /internal/reminders/run` com `X-Reminders-Secret`; execução no boot (9h–21h de Fortaleza); `REMINDERS_TRIGGER_SECRET` obrigatório em produção.
