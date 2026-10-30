@@ -95,11 +95,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 ## 🟠 Deveria corrigir
 
 ### API-08 · Agendamento salvo, mas a API responde 500
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P7 · **PR:** —
+- **Status:** 🟦 em PR (#185) · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
 - **Onde:** `src/modules/appointment/appointment.service.ts:76,139,154` (`calendarSyncPublisher.publish` sem try/catch). Modelo: `PetService.enqueueQrCodeGeneration`.
 - **Correção:** capturar e logar a falha; a linha fica `PENDING_*` e o `syncAllPending` recupera.
-- **Aceite:** [ ] teste: publisher lança → create/update respondem 2xx e linha fica `PENDING_*`.
-- **Resolução:** —
+- **Aceite:** [x] teste: publisher lança → create/update respondem 2xx e linha fica `PENDING_*`.
+- **Resolução:** helper `enqueueCalendarSync` no `AppointmentService`, no molde do `enqueueQrCodeGeneration`, usado por `create`, `update` e `remove`. No `remove` a exclusão segue mesmo com a fila fora, mas o evento fica órfão no Google (a linha some e o `syncAllPending` não o vê); o log diz qual. A recuperação virou o **API-25**.
 
 ### API-09 · Retentativas da fila sem espera
 - **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P8 (depois do API-11) · **PR:** —
@@ -109,11 +109,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-10 · Upload sem throttle e arquivos nunca apagados
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P7 · **PR:** —
+- **Status:** 🟦 em PR (#185) · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
 - **Onde:** `src/modules/upload/upload.controller.ts:30` (`@Post('image')` sem `@Throttle`), `upload.service.ts` (`deleteFile` sem chamador).
 - **Correção:** `@Throttle` na rota (seguir o padrão `@SkipThrottle` dos outros controllers); chamar `deleteFile` ao trocar foto de pet/tutor/vet e ao excluir pet, tutor ou vet (falha no delete só loga).
-- **Aceite:** [ ] teste de throttle; [ ] testes de troca/exclusão chamando `deleteFile` com a chave antiga.
-- **Resolução:** —
+- **Aceite:** [x] teste de throttle; [x] testes de troca/exclusão chamando `deleteFile` com a chave antiga.
+- **Resolução:** `POST /upload/image` limitado a 10 por minuto **por usuário** (`LIMITE_DE_UPLOAD`, balde `auth` com teto próprio + `SkipThrottle` dos outros). O `UserThrottlerGuard` conta pelo `sub` do token, não pelo IP, para uma rede compartilhada não somar todo mundo num teto só. `UploadService.discardFile` (melhor esforço, só loga) é chamado ao trocar a foto de pet/tutor/vet, só quando ela muda, e ao excluir pet/tutor/vet; a exclusão do tutor apaga também as fotos dos pets, que saem em cascata. Anexos e PNGs de QR na cascata ficaram de fora: **API-26**.
 
 ### API-11 · Configuração das filas copiada em 4 lugares
 - **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P8 · **PR:** —
@@ -158,6 +158,20 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
 - **Contexto:** os DTOs do shared usam `@IsOptional()`, que já deixa `null` passar na validação. Falta confirmar que os services (`vaccine`, `deworming`, `medication`, `vet-note`) repassam `null` ao Prisma e não o descartam.
 - **Aceite:** [ ] teste por service: `PATCH { next_dose_at: null }` grava `NULL`; [ ] campos obrigatórios continuam rejeitando `null`.
+- **Resolução:** —
+
+### API-25 · Excluir agendamento com a fila fora deixa o evento órfão no Google
+- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Origem:** API-08 (P7). O `remove` publica o DELETE e apaga a linha; se a publicação falha, nada mais sabe do `google_event_id`.
+- **Correção:** exclusão lógica: marcar `PENDING_DELETE` (o status já existe no enum), esconder a linha das listagens e deixar o worker ou o `syncAllPending` apagar o evento e a linha.
+- **Aceite:** [ ] teste: publisher lança no DELETE → a linha fica `PENDING_DELETE`, some das listagens e o `syncAllPending` apaga o evento.
+- **Resolução:** —
+
+### API-26 · Anexos e PNGs de QR ficam no S3 quando pet ou tutor é excluído
+- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Origem:** API-10 (P7). `Anexo` sai em cascata com o pet (`onDelete: Cascade`), mas o `removePrivate` só roda na exclusão avulsa do anexo (`anexo.service.ts`). Os PNGs de QR da carteira e da coleira (`qr-code.consumer.ts`, `uploadBuffer`) também não são apagados.
+- **Correção:** antes de excluir pet ou tutor, ler as chaves dos anexos e as URLs dos QRs; depois, apagar por melhor esforço (`removePrivate` / `discardFile`).
+- **Aceite:** [ ] teste: excluir pet com anexo e QR chama a remoção das duas chaves.
 - **Resolução:** —
 
 ---
