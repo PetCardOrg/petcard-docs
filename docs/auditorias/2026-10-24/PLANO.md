@@ -59,7 +59,7 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 ### Fase 4 — `petcard-web`
 | Pacote | Itens | Observação |
 |--------|-------|------------|
-| **P9** Correções | WEB-04, WEB-05 (exige API-24), WEB-06, WEB-07, WEB-13 | |
+| **P9** Correções | WEB-04, WEB-05 (exige API-24), WEB-06, WEB-07, WEB-13 · derivados WEB-15, WEB-16 | |
 | **P10** Enxugar | WEB-09, WEB-11, WEB-12 | WEB-12 depende da D4. |
 
 ### Fase 5 — `petcard-mobile`
@@ -71,7 +71,7 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 ### Fase 6 — Desejáveis e breaking
 | Pacote | Itens | Observação |
 |--------|-------|------------|
-| **P13** Desejáveis | API-12, API-13, API-14, API-16, API-17, API-18, API-19, API-21, API-22, API-25, API-26 · SH-06 | API-17 tem risco: testar o sync do calendário de ponta a ponta. |
+| **P13** Desejáveis | API-12, API-13, API-14, API-16, API-17, API-18, API-19, API-21, API-22, API-25, API-26 · SH-06 · WEB-17 (depende de release do shared) | API-17 tem risco: testar o sync do calendário de ponta a ponta. |
 | **P14** Breaking v1.0.0 | SH-07, SH-08 (`auth0_id`) | Só junto da PC-108. Bump **major**. |
 
 ### Fechamento
