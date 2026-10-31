@@ -35,7 +35,7 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** Na volta do login (`acessoVet`), a ida ao prontuário usa `replace`. Teste com `MemoryRouter` real (`PublicCardPage.voltar.test.tsx`), confirmado falhando sem a correção. Commit `5b303ff`.
 
 ### WEB-04 · Erro ao excluir registro nunca aparece
-- **Status:** 🟦 em PR · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `VetPetProfilePage.tsx`, `handleDelete` e `handleDeleteNote` (gravam em `recordError`, que só é exibido dentro do modal).
 - **Correção:** estado `deleteError` com aviso visível na aba (fora do modal), limpo ao trocar de aba ou numa nova ação.
 - **Aceite:** [x] teste: delete com 403/500 mostra a mensagem e o item continua na lista.
@@ -61,14 +61,14 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 ## 🟠 Convém corrigir
 
 ### WEB-06 · "Hoje" errado à noite (UTC × local)
-- **Status:** 🟦 em PR · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `src/pages/VetPetProfile/healthRecordValidation.ts:29`, `:48`, `:100` (`toISOString().split("T")[0]`); testes `healthRecordValidation.test.ts:14-15` usam o mesmo padrão.
 - **Correção:** `hojeLocal()` com `toLocaleDateString("sv-SE")` (ou reaproveitar o `diaLocal` existente) num `utils/datas.ts`; usar no formulário e na validação.
 - **Aceite:** [x] teste com `vi.setSystemTime` às 23h em `America/Sao_Paulo` (o `vitest.config.ts` já fixa `TZ`).
 - **Resolução:** `src/utils/datas.ts` (`hojeLocal`, `diaIsoLocal`) no `emptyForm`, no `isValidDate` e na regra de aplicação no futuro; os testes deixaram de usar `toISOString`. Commit `f6c0fd4`.
 
 ### WEB-07 · Respostas atrasadas sobrescrevem as novas
-- **Status:** 🟦 em PR · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `VetDashboardPage.tsx` (efeitos de `[page]` e `[search]`), `VetPetProfilePage.tsx` (`load`).
 - **Correção:** um único efeito `[page, search]` com `AbortController` (ou a trava `cancelado` do `LostPetPage`); `apiFetch` aceitar `signal`.
 - **Aceite:** [x] teste: resposta de "a" chegando depois da de "ab" é descartada; [x] primeira carga faz 1 chamada.
@@ -94,21 +94,21 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 |----|------|----------|--------|--------|
 | WEB-11 | Duplicação: `SPECIES_COLORS` (2×), `formatDate` (3×), PATCH `/veterinarios/me` (`updateVeterinario` × `corrigirMeuCrmv`) | `src/utils/` + uma função de PATCH | P10 | ⬜ |
 | WEB-12 | Provável código morto `normalizePublicCardLocation` (`src/main.tsx:34-48`); não há `vercel.json` | **Antes de apagar:** confirmar com o time se existe QR impresso com caminho sem `#` (D4) | P10 | ⬜ |
-| WEB-13 | Trocar idioma refaz as 5 chamadas do perfil (`load` depende de `t`) | tirar `t` das dependências | P9 | 🟦 web#69 (commit `7e9a293`: mensagem padrão do bloqueio traduzida só na exibição) |
+| WEB-13 | Trocar idioma refaz as 5 chamadas do perfil (`load` depende de `t`) | tirar `t` das dependências | P9 | ✅ web#69 (commit `7e9a293`: mensagem padrão do bloqueio traduzida só na exibição) |
 
 ---
 
 ## Itens derivados
 
 ### WEB-15 · Textos fixos da página do achador afirmam que o tutor já foi avisado (derivado do WEB-02)
-- **Status:** 🟦 em PR · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `src/i18n/locales/*/common.json`: `lostPet.hero.lead` ("Ela já foi avisada de que {{name}} foi encontrado"), `lostPet.steps.three` e `lostPet.contact.noPhone` ("já foi notificado/avisado").
 - **Problema:** aparecem antes do envio terminar e continuam na tela quando ele falha (estado `falhou` do WEB-02), contradizendo a mensagem de falha.
 - **Correção:** textos neutros ("Ligue para a pessoa abaixo") ou condicionados ao estado do aviso.
 - **Aceite:** [x] teste: com o envio falhando, nenhum texto da página diz que o tutor foi avisado.
 - **Resolução:** Abertura, aviso de "sem telefone" e passo 3 reescritos de forma neutra (pt-BR e en-US); o estado real do aviso fica no bloco de localização. Teste com e sem telefone. Commit `d694151`.
 ### WEB-16 · Recusa por nome divergente do CRMV manda "corrigir o CRMV" (derivado do API-06)
-- **Status:** 🟦 em PR · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `src/components/CrmvAviso/CrmvAviso.tsx` (`t("crmv.refused", { situacao })`) e o aviso pendente depois do cadastro (`VetRegisterPage` → dashboard).
 - **Problema:** com o API-06, a API grava a situação "Nome do cadastro não confere com o titular do CRMV". A web a exibe dentro de "O registro não foi aceito (situação: …). Corrija o CRMV e tente de novo.", mas o que precisa mudar é o nome. No cadastro, o vet só vê o aviso genérico de pendente, sem o motivo.
 - **Correção:** mensagem própria quando a situação for a de nome divergente, levando à edição do nome no perfil. Idealmente com um código estável no contrato (shared) em vez de comparar o texto.

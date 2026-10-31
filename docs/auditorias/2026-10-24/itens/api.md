@@ -70,7 +70,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** api#181 (mergeado em 2026-10-28). Vínculo Google de e-mail não verificado zera a senha e renova `passwordChangedAt`.
 
 ### API-06 · Qualquer CRMV real passa, quem quer que o digite
-- **Status:** 🟨 em develop, falta o aceite web (WEB-16) · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
+- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
 - **Onde:** `src/modules/veterinario/crmv/infosimples-crmv.validator.ts:129` (devolve `nome`, mas ninguém compara), `crmv-verification.service.ts:179`, `auth.service.ts` (`registerVeterinario`, ~linha 281).
 - **Problema:** CRMV é público; nome do titular não é comparado com o nome cadastrado.
 - **Correção:** comparar `registro.nome` com o nome do cadastro, normalizando (minúsculas, sem acento, espaços colapsados). Se diferente → `valid: false` com motivo claro. Mesma regra na revalidação.
@@ -78,8 +78,8 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Aceite:**
   - [x] Função pura `nomesConferem(a, b)` com testes (acentos, caixa, nome do meio omitido, nome diferente).
   - [x] Cadastro e revalidação usam a função.
-  - [ ] Mensagem de erro amigável chega à web (`VetRegisterPage`).
-- **Resolução:** api#181 (mergeado em 2026-10-28). `nomesConferem` (D3) no `verify()`, usado em cadastro e revalidação. **Aceite web em aberto:** mensagem amigável na `VetRegisterPage` fica no WEB-16 (P9).
+  - [x] Mensagem de erro amigável chega à web (`VetRegisterPage`).
+- **Resolução:** api#181 (mergeado em 2026-10-28). `nomesConferem` (D3) no `verify()`, usado em cadastro e revalidação. Aceite web pelo WEB-16 (PetCardOrg/petcard-web#69, mergeado em 2026-10-31): depois do cadastro, o dashboard mostra que o nome não confere, com o link para corrigi-lo.
 
 ### API-07 · Variável ausente em produção liga o verificador de CRMV falso
 - **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
