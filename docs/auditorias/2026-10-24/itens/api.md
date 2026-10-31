@@ -95,28 +95,28 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 ## 🟠 Deveria corrigir
 
 ### API-08 · Agendamento salvo, mas a API responde 500
-- **Status:** 🟦 em PR (#185) · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
+- **Status:** ✅ em develop · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
 - **Onde:** `src/modules/appointment/appointment.service.ts:76,139,154` (`calendarSyncPublisher.publish` sem try/catch). Modelo: `PetService.enqueueQrCodeGeneration`.
 - **Correção:** capturar e logar a falha; a linha fica `PENDING_*` e o `syncAllPending` recupera.
 - **Aceite:** [x] teste: publisher lança → create/update respondem 2xx e linha fica `PENDING_*`.
 - **Resolução:** helper `enqueueCalendarSync` no `AppointmentService`, no molde do `enqueueQrCodeGeneration`, usado por `create`, `update` e `remove`. No `remove` a exclusão segue mesmo com a fila fora, mas o evento fica órfão no Google (a linha some e o `syncAllPending` não o vê); o log diz qual. A recuperação virou o **API-25**.
 
 ### API-09 · Retentativas da fila sem espera
-- **Status:** 🟦 em PR (#186) · **Fase:** 3 · **Pacote:** P8 (depois do API-11) · **PR:** PetCardOrg/petcard-api#186
+- **Status:** ✅ em develop · **Fase:** 3 · **Pacote:** P8 (depois do API-11) · **PR:** PetCardOrg/petcard-api#186
 - **Onde:** `notification-push.consumer.ts:112`, `queue/qr-code.consumer.ts:70`, `calendar/calendar-sync.consumer.ts:154`.
 - **Correção:** `await sleep(1000 * 2 ** retryCount)` antes de republicar (seguro com `prefetchCount: 1`). Fazer **no `retryOrDlq` compartilhado do API-11**, não 3 vezes.
 - **Aceite:** [x] teste do helper com timers falsos verificando o backoff; [x] DLQ sem leitor documentada (ou criar item para um leitor).
 - **Resolução:** `retryOrDlq` espera `1000 * 2 ** retryCount` (1s/2s/4s) antes de republicar. A espera passa por `backoff.esperar`; os specs dos consumidores a substituem com um `spyOn` de uma linha, e `rmq.spec.ts` testa a espera real com timers falsos. A falta de leitor nas DLQs está documentada no `rmq.ts` e no `CLAUDE.md` da API (sem item novo para um leitor).
 
 ### API-10 · Upload sem throttle e arquivos nunca apagados
-- **Status:** 🟦 em PR (#185) · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
+- **Status:** ✅ em develop · **Fase:** 3 · **Pacote:** P7 · **PR:** PetCardOrg/petcard-api#185
 - **Onde:** `src/modules/upload/upload.controller.ts:30` (`@Post('image')` sem `@Throttle`), `upload.service.ts` (`deleteFile` sem chamador).
 - **Correção:** `@Throttle` na rota (seguir o padrão `@SkipThrottle` dos outros controllers); chamar `deleteFile` ao trocar foto de pet/tutor/vet e ao excluir pet, tutor ou vet (falha no delete só loga).
 - **Aceite:** [x] teste de throttle; [x] testes de troca/exclusão chamando `deleteFile` com a chave antiga.
 - **Resolução:** `POST /upload/image` limitado a 10 por minuto **por usuário** (`LIMITE_DE_UPLOAD`, balde `auth` com teto próprio + `SkipThrottle` dos outros). O `UserThrottlerGuard` conta pelo `sub` do token, não pelo IP, para uma rede compartilhada não somar todo mundo num teto só. `UploadService.discardFile` (melhor esforço, só loga) é chamado ao trocar a foto de pet/tutor/vet, só quando ela muda, e ao excluir pet/tutor/vet; a exclusão do tutor apaga também as fotos dos pets, que saem em cascata. Anexos e PNGs de QR na cascata ficaram de fora: **API-26**.
 
 ### API-11 · Configuração das filas copiada em 4 lugares
-- **Status:** 🟦 em PR (#186) · **Fase:** 3 · **Pacote:** P8 · **PR:** PetCardOrg/petcard-api#186
+- **Status:** ✅ em develop · **Fase:** 3 · **Pacote:** P8 · **PR:** PetCardOrg/petcard-api#186
 - **Onde:** `main.ts` (~60-110), `queue.module.ts` (~25-95), `rabbitmq-topology.service.ts`, 3 consumidores (`retryOrDlq`).
 - **Correção:** helper `rmqOptions(queue, dlx, dlqKey)` e um `retryOrDlq` compartilhado. Refactor puro: sem mudar comportamento (o backoff entra no API-09, commit separado).
 - **Aceite:** [x] suíte unitária e e2e verdes sem mudar testes de comportamento.
