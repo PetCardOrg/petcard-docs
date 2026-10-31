@@ -16,6 +16,13 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-31 — alvaro-unifor (com Claude) — P9 (merge) e P2 (fechamento)
+- **Feito:** web#69 e docs#83 mergeados; CI da `develop` da web verde em `bcfaf93`. WEB-04, 06, 07, 13, 15 e 16 ✅ em develop, marcados na #66. O WEB-16 cumpre o último aceite do API-06: depois do cadastro, o dashboard mostra que o nome não confere. **API-06 ✅, P2 completo, #59 fechada.** A #66 continua aberta só pelo WEB-05.
+- **PRs:** PetCardOrg/petcard-web#69 (mergeado) · PetCardOrg/petcard-docs#83 (mergeado)
+- **Decisões:** nenhuma.
+- **Bloqueios:** P6 (e o WEB-05) dependem da publicação da 0.24.0, que precisa de um PR `develop → main` novo no shared quando liberarem a `main`.
+- **Próximo passo:** **P10** (#67) no `petcard-web`, branch `refactor/aud-p10-enxugar` a partir da `develop` atualizada: WEB-09 (`toDto` também na criação e `RecordCard` extraído para as 3 abas do `VetPetProfilePage`, refactor sem mudar comportamento, coberto pelos testes do P9) e WEB-11 (`SPECIES_COLORS`, `formatDate` e o PATCH `/veterinarios/me` em `src/utils/` e numa função só). O **WEB-12** só depois de perguntar a D4 ao time (há QR impresso com caminho sem `#`?).
+
 ## 2026-10-31 — alvaro-unifor (com Claude) — P9
 - **Feito:** #66 atribuída e comentada. Branch `fix/aud-p9-correcoes` na web, 1 commit por item, todos com teste visto falhando antes:
   - **WEB-04:** `deleteError` no topo da aba (fora do modal), limpo ao trocar de aba ou ao tentar de novo. Vale para registro e nota.
