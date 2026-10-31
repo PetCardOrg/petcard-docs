@@ -16,6 +16,24 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-31 — alvaro-unifor (com Claude) — P9
+- **Feito:** #66 atribuída e comentada. Branch `fix/aud-p9-correcoes` na web, 1 commit por item, todos com teste visto falhando antes:
+  - **WEB-04:** `deleteError` no topo da aba (fora do modal), limpo ao trocar de aba ou ao tentar de novo. Vale para registro e nota.
+  - **WEB-06:** `src/utils/datas.ts` (`hojeLocal`, `diaIsoLocal`) no `emptyForm`, no `isValidDate` e na regra de aplicação no futuro. Teste às 23h30 de São Paulo.
+  - **WEB-07:** o dashboard tem um efeito só (`[termo, página]`) e uma trava pela última busca; a mesma trava no `load` do prontuário. Foi usada a trava, e não `AbortController`: o `apiFetch` ficou como estava.
+  - **WEB-13:** a mensagem padrão do bloqueio de CRMV passou a ser traduzida na exibição; `t` saiu das dependências do `load`.
+  - **WEB-15:** os três textos fixos do achador agora são neutros (pt-BR e en-US).
+  - **WEB-16:** `CrmvAviso` com aviso próprio e link **Corrigir meu nome**; o dashboard repassa a situação do status, então o aviso pós-cadastro mostra o motivo.
+  - Verificação: `lint` ✅ · `test:cov` 224 ✅ (86 / 83,7 / 77 / 86) · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#69 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - **WEB-17** (P13): a web reconhece o nome divergente pelo **texto** da situação, copiado da API. O código estável no contrato depende de release do shared.
+  - **O shared#83 (release 0.24.0) foi fechado sem merge em 2026-10-30**, e não está mais aberto como o painel e o LOG diziam. Quando liberarem a `main`, a release precisa de um PR `develop → main` novo. Painel corrigido.
+  - Para a API, só verificação **aprovada** é reaproveitada: depois de corrigir o nome, "Verificar" consulta o conselho de novo, sem `force`.
+- **Bloqueios:** P6 (e o WEB-05) dependem da publicação da 0.24.0.
+- **Próximo passo:** depois do merge do web#69, marcar WEB-04/06/07/13/15/16 ✅ (em `itens/web.md`, no painel e na #66) e o aceite web do API-06 (fechar a **#59**). A #66 continua aberta por causa do WEB-05. Enquanto o P6 estiver parado, seguir para o **P10** (#67) na web, branch `refactor/aud-p10-enxugar` a partir da `develop` atualizada (precisa do web#69 mergeado, porque os testes do P9 cobrem o refactor): WEB-09 (`toDto` na criação e `RecordCard` nas 3 abas), WEB-11 (duplicações). O WEB-12 só depois de confirmar a D4 com o time. Quando liberarem a `main` do shared: novo PR `develop → main`, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
 ## 2026-10-31 — alvaro-unifor (com Claude) — P7 e P8 (fechamento)
 - **Feito:** api#185, api#186 e docs#82 mergeados. Antes do merge foi conferido que os dois PRs da API não têm arquivo em comum e que, juntos, passam 791 testes e o build. CI da `develop` verde depois dos dois. API-08, API-10, API-11 e API-09 ✅ em develop. **P7 e P8 completos; #64 e #65 fechadas.**
 - **PRs:** PetCardOrg/petcard-api#185 (mergeado) · PetCardOrg/petcard-api#186 (mergeado) · PetCardOrg/petcard-docs#82 (mergeado)
