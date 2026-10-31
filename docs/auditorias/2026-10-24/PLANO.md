@@ -71,7 +71,7 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 ### Fase 6 — Desejáveis e breaking
 | Pacote | Itens | Observação |
 |--------|-------|------------|
-| **P13** Desejáveis | API-12, API-13, API-14, API-16, API-17, API-18, API-19, API-21, API-22 · SH-06 | API-17 tem risco: testar o sync do calendário de ponta a ponta. |
+| **P13** Desejáveis | API-12, API-13, API-14, API-16, API-17, API-18, API-19, API-21, API-22, API-25, API-26 · SH-06 | API-17 tem risco: testar o sync do calendário de ponta a ponta. |
 | **P14** Breaking v1.0.0 | SH-07, SH-08 (`auth0_id`) | Só junto da PC-108. Bump **major**. |
 
 ### Fechamento

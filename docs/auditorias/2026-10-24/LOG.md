@@ -16,6 +16,43 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-30 — alvaro-unifor (com Claude) — P8 (e CI do P7)
+- **Feito:**
+  - **P7:** o CI do api#185 reprovou no e2e: o mock do `UploadService` em `test/utils/e2e-app.ts` não tinha `discardFile`. Corrigido num commit a mais (`test(e2e): …`); CI verde.
+  - **P8:** #65 atribuída e comentada. Branch `refactor/aud-p8-filas` na API:
+    - **API-11** (refactor puro, commit próprio): `rmq.ts` com `FILAS`, `rmqOptions`, `retryOrDlq`/`getRetryCount` e `RETRY_HEADER` únicos; `main.ts`, `queue.module.ts`, topologia e os 3 consumidores passam a usá-los. Testes dos consumidores sem alteração (36 ✅).
+    - **API-09:** espera `1000 * 2 ** retryCount` antes de republicar; `rmq.spec.ts` com timers falsos; specs dos consumidores trocam a espera por `spyOn(backoff, 'esperar')`. DLQ sem leitor documentada no `rmq.ts` e no `CLAUDE.md`.
+  - Verificação: `lint` ✅ · `npm test` 772 ✅ · `build` ✅ · **e2e local 81 ✅** (Postgres e RabbitMQ do `docker/`) · boot do `dist` com RabbitMQ real (banco `petcard_test`, `FCM_ENABLED=false`, CRMV `stub`, SMTP em porta morta): 3 consumidores, 3 `DLX/DLQ ready`, filas com os mesmos argumentos, sem `PRECONDITION_FAILED`. Containers desligados no fim. CI do api#186 verde.
+- **PRs:** PetCardOrg/petcard-api#185 (aberto, CI verde) · PetCardOrg/petcard-api#186 (aberto, CI verde) · review pedido a camilampinheiro nos dois
+- **Decisões:** nenhuma nova. Segue valendo: sem `develop → main`; P6 parado até a 0.24.0.
+- **Descobertas:**
+  - Dá para rodar o e2e local: `docker start petcard-postgres petcard-rabbitmq` (o banco `petcard_test` já existe). O `gas-postgres` de outro projeto usa a porta 5434, sem conflito.
+  - O `.env` de dev tem `FCM_ENABLED=true` e SMTP real, e o boot dispara lembretes entre 9h e 21h: para subir a API local sem efeito colateral, sobrescrever `DATABASE_URL` (banco de teste), `FCM_ENABLED=false`, `CRMV_PROVIDER=stub` e o SMTP na linha de comando.
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P9** (#66) no `petcard-web`, branch `fix/aud-p9-correcoes` a partir da `develop`, **sem o WEB-05** (depende do API-24, do P6): WEB-04, WEB-06, WEB-07, WEB-13 e o derivado **WEB-16** (mensagem de nome divergente do CRMV, que fecha o aceite do API-06 e permite fechar a #59). Em paralelo: depois dos merges do api#185 e do api#186, marcar API-08/10/11/09 ✅ e fechar a #64 e a #65; quando liberarem o `develop → main` do shared, mergear o shared#83, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P7
+- **Feito:** #64 atribuída e comentada. Branch `fix/aud-p7-robustez` na API, 1 commit por item:
+  - **API-08:** `enqueueCalendarSync` captura a falha de publicação em `create`/`update`/`remove`; a linha fica `PENDING_*` e o `syncAllPending` recupera. No `remove` o evento fica órfão (vira o API-25).
+  - **API-10:** `POST /upload/image` limitado a 10/min **por usuário** (`UserThrottlerGuard` pelo `sub`, balde `auth` com teto `LIMITE_DE_UPLOAD`). `UploadService.discardFile` (melhor esforço) na troca de foto e na exclusão de pet/tutor/vet, incluindo as fotos dos pets na exclusão do tutor. `tutor.service.spec.ts` novo.
+  - Verificação: `npm run lint` sem diff fora do escopo · `npm test` 787 ✅ · `npm run build` ✅. E2E não rodado (sem Postgres local).
+- **PRs:** PetCardOrg/petcard-api#185 (aberto, review pedido a camilampinheiro)
+- **Decisões:** **sem `develop → main` por enquanto** (pedido do alvaro-unifor). O shared#83 (release 0.24.0) fica aberto sem merge, e o **P6 fica parado** até a 0.24.0 ser publicada. O P7 andou antes do P6 porque não usa contrato do shared; a seta P6 → P7 do mapa é de ordem, não de dependência técnica.
+- **Descobertas / itens derivados:**
+  - **API-25** (P13): excluir agendamento com a fila fora deixa o evento órfão no Google; corrigir com exclusão lógica (`PENDING_DELETE`).
+  - **API-26** (P13): anexos privados e PNGs de QR ficam no S3 na exclusão em cascata de pet/tutor.
+  - Um throttler **nomeado novo** obrigaria todos os `@SkipThrottle` existentes a incluí-lo (o guard avalia todos); por isso o upload reusa o balde `auth` com teto próprio.
+  - O contrato em `petcard-docs/docs/api/openapi.json` não foi regenerado (só ganha o 429 do upload).
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P8** (#65) na API, branch `refactor/aud-p8-filas` a partir da `develop`: primeiro o **API-11** (helper `rmqOptions` e `retryOrDlq` compartilhado, refactor puro, commit próprio) e depois o **API-09** (backoff `1000 * 2 ** retryCount` dentro do `retryOrDlq`, teste com timers falsos). Em paralelo: depois do merge do api#185, marcar API-08/10 ✅ e fechar a #64; quando liberarem o `develop → main` do shared, mergear o shared#83, confirmar a 0.24.0 e fechar a #62.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P5 (merge e release)
+- **Feito:** shared#82 e docs#81 mergeados. SH-02, SH-03 e SH-08 (`MaxLength`) ✅ em develop; checklist da #62 marcado. PR de release `develop → main` aberto, levando P4 + P5 para a 0.24.0.
+- **PRs:** PetCardOrg/petcard-shared#82 (mergeado) · PetCardOrg/petcard-docs#81 (mergeado) · PetCardOrg/petcard-shared#83 (aberto, `develop → main`)
+- **Decisões:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#83, conferir o workflow *Publish Package* na `main` e rodar `npm view @petcardorg/shared version` (deve dar `0.24.0`). Marcar a caixa do publish e a de status na #62, anotar no painel e **fechar a #62**. Em seguida, **P6** (#63): branch `fix/aud-p6-reautenticacao` na API a partir da `develop`, `npm install @petcardorg/shared@^0.24.0` e começar pelo API-20/API-04 (a API verifica `google_id_token` com a mesma lógica do login Google, exigindo `iat` recente e `sub` igual ao da conta).
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P5
 - **Feito:** D2 decidida. #62 atribuída e comentada. Branch `fix/aud-p5-contratos` no `petcard-shared`, 1 commit por item:
   - **SH-02:** validador `maxBytes` (bytes UTF-8 contados por code point; o build não tem os tipos do `TextEncoder`) no lugar do `MaxLength` da senha. O `todo` virou 3 testes (acento, limite exato, emoji).
