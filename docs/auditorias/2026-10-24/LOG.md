@@ -16,6 +16,13 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-10-31 — alvaro-unifor (com Claude) — P7 e P8 (fechamento)
+- **Feito:** api#185, api#186 e docs#82 mergeados. Antes do merge foi conferido que os dois PRs da API não têm arquivo em comum e que, juntos, passam 791 testes e o build. CI da `develop` verde depois dos dois. API-08, API-10, API-11 e API-09 ✅ em develop. **P7 e P8 completos; #64 e #65 fechadas.**
+- **PRs:** PetCardOrg/petcard-api#185 (mergeado) · PetCardOrg/petcard-api#186 (mergeado) · PetCardOrg/petcard-docs#82 (mergeado)
+- **Decisões:** nenhuma. Segue sem `develop → main`: o shared#83 está aberto e o P6, parado.
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P9** (#66) no `petcard-web`, branch `fix/aud-p9-correcoes` a partir da `develop`, **sem o WEB-05** (depende do API-24, do P6): WEB-04, WEB-06, WEB-07, WEB-13 e o derivado **WEB-16** (mensagem de nome divergente do CRMV, que fecha o aceite do API-06 e permite fechar a #59). Quando liberarem o `develop → main` do shared: mergear o shared#83, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
 ## 2026-10-30 — alvaro-unifor (com Claude) — P8 (e CI do P7)
 - **Feito:**
   - **P7:** o CI do api#185 reprovou no e2e: o mock do `UploadService` em `test/utils/e2e-app.ts` não tinha `discardFile`. Corrigido num commit a mais (`test(e2e): …`); CI verde.
