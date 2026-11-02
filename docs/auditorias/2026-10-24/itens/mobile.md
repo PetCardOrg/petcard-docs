@@ -83,8 +83,8 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 | ID | Item | Correção | Pacote | Status |
 |----|------|----------|--------|--------|
 | MOB-09 | `@expo/ngrok` sem uso em `dependencies` (`package.json:23`) | remover ou mover para dev | P11 | ✅ mobile#98 (commit `e1ed64d`: movido para `devDependencies`, porque o `expo start --tunnel` usa; no lock, só as marcações `dev`/`peer`) |
-| MOB-10 | `login`/`register` ignoram o `auth.service`; 3 cópias do bloco de sessão | `authService.login/register` + helper `startSession(fn)` | P12 | 🟦 mobile#99 (commit `bddd99e`: `authService.login/register`; o `startSession` reúne loading, erro e gravação da sessão do login, do Google e do cadastro) |
-| MOB-11 | Telas grandes (`AppointmentsScreen` ~935 linhas) | dividir por responsabilidade, se sobrar tempo | P12 | ⬜ |
+| MOB-10 | `login`/`register` ignoram o `auth.service`; 3 cópias do bloco de sessão | `authService.login/register` + helper `startSession(fn)` | P12 | ✅ mobile#99 (commit `bddd99e`: `authService.login/register`; o `startSession` reúne loading, erro e gravação da sessão do login, do Google e do cadastro) |
+| MOB-11 | Telas grandes (`AppointmentsScreen` ~935 linhas) | dividir por responsabilidade, se sobrar tempo | P12 | 🟦 mobile#100 (commit `8d36b25`: 16 testes fixam a tela antes; commit `725172b`: `AppointmentCard`, `CalendarBanner` + `useGoogleCalendar`, `AppointmentFormModal` e `horarioDoAgendamento`; a tela foi de 971 para 235 linhas, e os testes passam iguais) |
 | MOB-12 | Blocos `catch {}` que escondem erro | listar com `grep -rn "catch {}" src` e tratar ou comentar o porquê | P11 | ✅ mobile#98 (commit `800994d`: nenhum `catch {}` literal; dos 9 sem tratamento, 8 já explicavam o motivo e o do idioma passou a explicar. A falha escondida no cadastro virou o MOB-16) |
 | MOB-13 | Agendamento aceita data no passado | validação no formulário (e conferir no DTO do shared/API) | P11 | ✅ mobile#98 (commit `4bd63ac`: `horarioNoPassado`, por minuto; na edição só vale se data ou hora mudaram. O DTO é da API, não do shared, e não valida: virou o API-27) |
 
