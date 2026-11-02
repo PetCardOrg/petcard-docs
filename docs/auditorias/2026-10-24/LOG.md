@@ -16,6 +16,18 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P12 (fechamento) e P13 (MOB-17, MOB-16, API-27)
+- **Feito:**
+  - mobile#101 e docs#89 mergeados; CI da `develop` do mobile verde em `25dddc7`. **MOB-06 ✅. P12 completo; #69 fechada.**
+  - **P13:** #70 atribuída e comentada. Faltavam no checklist o API-25, o API-26 e o WEB-17, que o PLANO e o painel já punham no P13; foram incluídos.
+  - Mobile, branch `fix/aud-p13-mobile`: **MOB-17** (`7c189dd`, selo "Concluída" pelo i18n) e **MOB-16** (`fd8c240`, o `register` devolve `{ extrasPendentes }` e a tela avisa). Os dois testes foram vistos falhando antes. Verificação: `typecheck` ✅ · `npm test` 268 ✅ · `eslint` no conteúdo commitado ✅.
+  - API, branch `fix/aud-p13-agendamento-passado`: **API-27** (`083bb41`): 400 para `scheduled_at` no passado na criação e, na edição, só quando o horário muda, com 5 minutos de folga. Verificação: `lint` ✅ · `npm test` 798 ✅ (`test:cov` acima da catraca) · `build` ✅. O e2e não rodou (sem Docker).
+- **PRs:** PetCardOrg/petcard-mobile#101 (mergeado) · PetCardOrg/petcard-docs#89 (mergeado) · PetCardOrg/petcard-mobile#102 e PetCardOrg/petcard-api#187 (abertos, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** os testes da API usavam datas fixas de 2026 (junho e dezembro) como "futuro". Com a regra do API-27 eles passariam a falhar, então foram para 2099 ou para um relógio fixo. Vale a mesma atenção para qualquer teste novo com data fixa.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge do mobile#102 e da api#187, marcar MOB-16, MOB-17 e API-27 ✅ (em `itens/*.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch `fix/aud-p13-…` a partir da `develop` atualizada: começar pelos itens pequenos e isolados, **API-19** (P2002 do Prisma → 409) e **API-18** (corrida no token de redefinição), cada um com o teste que falha primeiro. O **API-17** (@googleapis/calendar) tem risco e pede teste de ponta a ponta do sync; deixar para o fim do pacote.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P12 (MOB-11 merge e MOB-06)
 - **Feito:**
   - mobile#100 e docs#88 mergeados; CI da `develop` do mobile verde. **MOB-11 ✅**, marcado no checklist da #69.
