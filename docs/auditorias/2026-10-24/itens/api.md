@@ -139,8 +139,8 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 
 | ID | Item | Correção sugerida | Status |
 |----|------|-------------------|--------|
-| API-18 | Corrida de leitura/escrita no consumo do token de redefinição | `updateMany` condicional (`where: { id, usedAt: null }`) e checar `count` | ⬜ |
-| API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | ⬜ |
+| API-18 | Corrida de leitura/escrita no consumo do token de redefinição | `updateMany` condicional (`where: { id, usedAt: null }`) e checar `count` | 🟦 api#188 (commit `1be60c5`: `count === 0` → o mesmo 400 de link inválido) |
+| API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | 🟦 api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
 | API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | ⬜ |
 | API-21 | Cadastro revela quais e-mails existem | avaliar custo/benefício (UX vs enumeração); no mínimo documentar a decisão | ⬜ |
 | API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | ⬜ |
@@ -175,7 +175,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-27 · Agendamento aceita `scheduled_at` no passado
-- **Status:** 🟦 em PR · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#187
+- **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#187
 - **Origem:** MOB-13 (P11). O mobile passou a recusar no formulário, mas `CreateAppointmentDto` e `UpdateAppointmentDto` (`src/modules/appointment/dto/`) só têm `@IsDateString()`, e o service não confere.
 - **Correção:** recusar `scheduled_at` no passado na criação e na remarcação, com a mesma regra do mobile: na edição, só quando o horário muda. Considerar uma folga de alguns minutos para relógio de aparelho atrasado.
 - **Aceite:** [x] teste: `POST` com data de ontem → 400; [x] `PATCH` só do título num compromisso passado → 200.
