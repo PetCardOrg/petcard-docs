@@ -16,6 +16,16 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P12 (MOB-10 merge e MOB-11)
+- **Feito:**
+  - mobile#99 mergeado (`96e4374`): **MOB-10 ✅**, marcado no checklist da #69.
+  - **MOB-11:** branch `refactor/aud-p12-appointments` no mobile. Primeiro commit (`8d36b25`): `AppointmentsScreen.test.tsx`, com 16 testes que fixam a tela antes do refactor (lista, vazio, erro, criar, validar, editar, excluir, prefill da clínica e Google Agenda). Segundo commit (`725172b`): divisão em `AppointmentCard`, `CalendarBanner` + `useGoogleCalendar`, `AppointmentFormModal` (o formulário recomeça a cada abertura por uma chave de sessão, no lugar do `resetForm`) e `horarioDoAgendamento`. A tela foi de 971 para 235 linhas; os estilos `syncButton*`, sem uso, saíram. Verificação: `typecheck` ✅ · `npm test` 232 ✅ · `eslint` nos arquivos alterados ✅.
+- **PRs:** PetCardOrg/petcard-mobile#99 (mergeado) · PetCardOrg/petcard-mobile#100 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** os testes da `VaccineScreen` emitem avisos de `act(...)` no `npm test` (não falham). É anterior a este PR; olhar quando o MOB-06 mexer nessas telas.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#100, marcar o MOB-11 ✅ (em `itens/mobile.md`, no painel e no checklist da #69). Seguir com o **MOB-06**, branch `refactor/aud-p12-telas-saude` a partir da `develop` atualizada: um componente genérico para as três telas de saúde (vacina, vermífugo, medicação), uma tela por commit, com o `selecaoDePet.test.tsx` como rede e, antes, testes que fixem a lista e o formulário de cada tela. Quando o MOB-06 estiver em develop, fechar a #69.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P11 (merge) e P12 (MOB-10)
 - **Feito:**
   - mobile#98 e docs#86 mergeados; CI da `develop` do mobile verde em `ecda6ec`. MOB-07, 04, 05, 08, 09, 12 e 13 ✅, marcados no checklist da #68. A #68 continua aberta pelo MOB-01, pelo MOB-15 e pela validação em aparelho.
