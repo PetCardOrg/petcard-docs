@@ -34,10 +34,10 @@ Atualizado em **2026-11-02**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | ✅ em develop (web#70: WEB-09, 11); WEB-12 🚫 pela D4 (código mantido) | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
 | 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 (+15) | 🟨 em develop (mobile#98: MOB-07, 04, 05, 08, 09, 12, 13 ✅); MOB-01 espera o API-23 (P6) em produção; MOB-15 é configuração do EAS | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
 | 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | ✅ em develop (mobile#99, #100, #101) | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
-| 6 | **P13** Desejáveis | api, shared, web, mobile | API-12–19, 21, 22, 25, 26, 27 · SH-06 · WEB-17 · MOB-16, 17 | 🟨 MOB-16, MOB-17 (mobile#102) e API-27 (api#187) ✅; API-18 e API-19 em PR (api#188) | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
+| 6 | **P13** Desejáveis | api, shared, web, mobile | API-12–19, 21, 22, 25, 26, 27 · SH-06 · WEB-17 · MOB-16, 17 | 🟨 MOB-16, MOB-17 (mobile#102), API-27 (api#187), API-18 e API-19 (api#188) ✅; API-12, 15 e 16 em PR (api#189) | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
 | 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | [#71](https://github.com/PetCardOrg/petcard-docs/issues/71) |
 
-**Totais:** 68 itens (API 27 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos (✅ em develop): 43** · descartados: 1 (WEB-12).
+**Totais:** 68 itens (API 27 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos (✅ em develop): 45** · descartados: 1 (WEB-12).
 
 ---
 
