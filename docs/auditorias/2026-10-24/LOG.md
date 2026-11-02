@@ -16,6 +16,19 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge; API-18 e API-19)
+- **Feito:**
+  - mobile#102, api#187 e docs#90 mergeados; CI da `develop` verde no mobile e na API. **MOB-16, MOB-17 e API-27 ✅**, marcados no checklist da #70.
+  - API, branch `fix/aud-p13-corridas`, 1 commit por item, testes vistos falhando antes:
+    - **API-18** (`1be60c5`): o token de uso único é consumido por `updateMany` condicional (`usedAt: null`); `count === 0` dá o mesmo 400 de link inválido.
+    - **API-19** (`6b43182`): `PrismaUniqueFilter` (`src/common/http/`), como `APP_FILTER` no `AppModule` e no harness de controller: `P2002` → 409 com a mensagem da checagem (e-mail ou CRMV); outros erros do Prisma seguem 500.
+    - Verificação: `lint` ✅ · `npm test` 802 ✅ (`test:cov` acima da catraca) · `build` ✅. O e2e não rodou (sem Docker).
+- **PRs:** PetCardOrg/petcard-mobile#102, PetCardOrg/petcard-api#187 e PetCardOrg/petcard-docs#90 (mergeados) · PetCardOrg/petcard-api#188 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#188, marcar API-18 e API-19 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch nova a partir da `develop` atualizada, com os itens de limpeza de baixo risco: **API-12** (`USER node` no Dockerfile), **API-15** (comentários de ECS/CloudWatch restantes) e **API-16** (remover `ts-loader` e `source-map-support`). Depois, **API-13** (erros de serviços externos) e **API-22** (paginação do histórico). **API-21** pede uma decisão (enumeração de e-mails: corrigir ou documentar): perguntar ao usuário antes. **API-17** fica para o fim.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P12 (fechamento) e P13 (MOB-17, MOB-16, API-27)
 - **Feito:**
   - mobile#101 e docs#89 mergeados; CI da `develop` do mobile verde em `25dddc7`. **MOB-06 ✅. P12 completo; #69 fechada.**
