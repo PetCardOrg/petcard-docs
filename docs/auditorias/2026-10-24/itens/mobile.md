@@ -58,7 +58,7 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** O identificador da resposta já tratada fica guardado no módulo, e a mesma notificação não navega de novo depois de um novo login. Commit `c70c937`.
 
 ### MOB-06 · Três telas de saúde quase idênticas (640 / 640 / 713 linhas)
-- **Status:** 🟦 em PR · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** PetCardOrg/petcard-mobile#101
+- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** PetCardOrg/petcard-mobile#101
 - **Onde:** `src/screens/HealthRecords/VaccineScreen.tsx`, `DewormingScreen.tsx`, `MedicationScreen.tsx`.
 - **Correção:** componente genérico (lista + modal + exclusão) configurado por props; migrar **uma tela por PR/commit**, com `selecaoDePet.test.tsx` como rede.
 - **Aceite:** [x] comportamento idêntico (testes existentes verdes, sem mudar assertivas); [x] -~800 linhas.
@@ -101,20 +101,20 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** —
 
 ### MOB-16 · Cadastro esconde do tutor a falha ao enviar foto ou telefone (derivado do MOB-12)
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
 - **Onde:** `src/contexts/AuthContext.tsx` (`register`, `catch` depois de `uploadService.uploadImage` / `tutorService.updateCurrentTutor`, ~linha 179).
 - **Problema:** a conta é criada, mas se a foto ou o telefone falham o `catch` só segue em frente. O tutor escolheu uma foto e não fica sabendo que ela não foi salva.
 - **Correção:** o `register` devolve se os extras falharam, e a tela mostra um aviso ("conta criada; complete foto/telefone no perfil") sem derrubar o cadastro.
-- **Aceite:** [ ] teste: upload lança → cadastro conclui e o aviso aparece.
-- **Resolução:** —
+- **Aceite:** [x] teste: upload lança → cadastro conclui e o aviso aparece.
+- **Resolução:** o `register` do `AuthContext` devolve `{ extrasPendentes }`, e a `RegisterScreen` mostra "Conta criada. Não conseguimos salvar a foto ou o telefone agora. Você pode completar pelo Perfil." (pt-BR e en-US). Commit `fd8c240`.
 
 ### MOB-17 · Selo "Concluída" da medicação fora do i18n (derivado do MOB-06)
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
 - **Onde:** `src/screens/HealthRecords/MedicationScreen.tsx` (`selo` da configuração).
 - **Problema:** "Em andamento" vem do i18n (`healthRecords.medication.ongoing`), mas "Concluída" é texto fixo: em inglês, o selo sai em português.
 - **Correção:** chave `healthRecords.medication.finished` em pt-BR e en-US.
-- **Aceite:** [ ] teste: com o idioma em en-US, a medicação encerrada mostra o texto em inglês.
-- **Resolução:** —
+- **Aceite:** [x] teste: com o idioma em en-US, a medicação encerrada mostra o texto em inglês.
+- **Resolução:** chave `healthRecords.medication.finished` ("Concluída" / "Finished"). Commit `7c189dd`.
 ---
 
 ## Não verificado pela auditoria

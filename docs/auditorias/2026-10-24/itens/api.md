@@ -175,11 +175,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-27 · Agendamento aceita `scheduled_at` no passado
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#187
 - **Origem:** MOB-13 (P11). O mobile passou a recusar no formulário, mas `CreateAppointmentDto` e `UpdateAppointmentDto` (`src/modules/appointment/dto/`) só têm `@IsDateString()`, e o service não confere.
 - **Correção:** recusar `scheduled_at` no passado na criação e na remarcação, com a mesma regra do mobile: na edição, só quando o horário muda. Considerar uma folga de alguns minutos para relógio de aparelho atrasado.
-- **Aceite:** [ ] teste: `POST` com data de ontem → 400; [ ] `PATCH` só do título num compromisso passado → 200.
-- **Resolução:** —
+- **Aceite:** [x] teste: `POST` com data de ontem → 400; [x] `PATCH` só do título num compromisso passado → 200.
+- **Resolução:** `recusarHorarioNoPassado` no `AppointmentService`, com 5 minutos de folga: na criação sempre, na edição só quando o `scheduled_at` muda (o app reenvia o horário atual). Os testes com datas fixas de 2026 já passadas foram para 2099 ou para um relógio fixo, sem mudar as assertivas. Commit `083bb41`.
 
 ---
 
