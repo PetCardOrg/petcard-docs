@@ -16,6 +16,23 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-18/19 merge; API-12, 15, 16)
+- **Feito:**
+  - api#188 e docs#91 mergeados. **API-18 e API-19 ✅**, marcados no checklist da #70.
+  - API, branch `chore/aud-p13-limpeza`, 1 commit por item:
+    - **API-15** (`d64e785`): os comentários do modo de log do e-mail (`.env.example`, `mail.config.ts` e o `config.spec.ts`) citam os logs do Render, não o CloudWatch. Fora de `coverage/`, não sobrou referência a ECS ou CloudWatch.
+    - **API-12** (`fb57b54`): `USER node` no estágio final do `Dockerfile`. Validado com Docker: imagem buildada com o secret do npm, `id` → `uid=1000(node)`; com Postgres, RabbitMQ e Redis em containers, `prisma migrate deploy` aplicou as 29 migrations e a API subiu, sem nenhum EACCES.
+    - **API-16** (`6e67db7`): saem `ts-loader` e `source-map-support`. O lock foi editado à mão, só com essas remoções (ver Descobertas).
+    - Verificação: `npm ci` ✅ · `lint` ✅ · `npm test` 802 ✅ · `build` ✅. O e2e não rodou.
+- **PRs:** PetCardOrg/petcard-api#188 e PetCardOrg/petcard-docs#91 (mergeados) · PetCardOrg/petcard-api#189 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:**
+  - O `npm uninstall` no Windows também tira do lock as opcionais `@emnapi/core` e `@emnapi/runtime` (do wasm), a mesma poda que já tinha acontecido na web. Para mexer em deps no Windows, conferir as chaves de `packages` do lock antes e depois e, se for o caso, editar o lock à mão.
+  - Num checkout no Windows, o `docker/entrypoint.sh` fica com CRLF e a imagem local falha com "no such file or directory". No git o arquivo está com LF e o Render builda a partir do git, então não afeta o deploy. Para testar localmente, rodar os comandos do entrypoint com `--entrypoint sh -c '…'`.
+  - Uma API rodando localmente (`node dist/src/main`) trava a DLL do Prisma, e o `npm ci` falha com EPERM no meio, deixando o `node_modules` incompleto. Parar a API antes.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#189, marcar API-12, API-15 e API-16 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-13** (erros de serviços externos: `places.service.ts` e `infosimples-crmv.validator.ts`, logar o corpo, responder genérico, `response.json()` inválido → 502), depois **API-22** (paginação do `Historico`, alinhada com o DTO do shared; ver se precisa de contrato novo no shared, que esbarra no bloqueio da `main`). **API-21** pede uma decisão (enumeração de e-mails: corrigir ou documentar): perguntar ao usuário antes. **API-17** fica para o fim.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge; API-18 e API-19)
 - **Feito:**
   - mobile#102, api#187 e docs#90 mergeados; CI da `develop` verde no mobile e na API. **MOB-16, MOB-17 e API-27 ✅**, marcados no checklist da #70.

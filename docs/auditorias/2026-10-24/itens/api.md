@@ -128,19 +128,19 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 
 | ID | Item | Onde | Correção | Status |
 |----|------|------|----------|--------|
-| API-12 | Container roda como root | `Dockerfile` | `USER node` antes do `ENTRYPOINT`; checar permissões de escrita | ⬜ |
+| API-12 | Container roda como root | `Dockerfile` | `USER node` antes do `ENTRYPOINT`; checar permissões de escrita | 🟦 api#189 (commit `fb57b54`; validado com Docker: `uid=1000(node)`, as 29 migrations e o boot sem EACCES) |
 | API-13 | Erro de serviço externo vaza ou vira 500 | `places.service.ts` (~175), `infosimples-crmv.validator.ts` (~99) | logar corpo, responder genérico; `try/catch` no `response.json()` → 502 | ⬜ |
 | API-14 | Lembrete de dose triplicado | `dose-reminder.service.ts` | mapa modelo → delegate Prisma (~-60 linhas) | ⬜ |
-| API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | 🟨 reminder ✅ em develop (api#183); faltam `.env.example` (~122) e `mail.config.ts` (~48), no P13 |
-| API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | ⬜ |
+| API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | 🟦 reminder ✅ em develop (api#183); `.env.example`, `mail.config.ts` e o teste em api#189 (commit `d64e785`: logs do Render) |
+| API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | 🟦 api#189 (commit `6e67db7`; lock editado só com as remoções, porque o `npm uninstall` no Windows podava `@emnapi/*`; o `source-map-support` fica no lock pelo `terser`) |
 | API-17 | `googleapis` enorme para 1 uso | `google-calendar.service.ts` | `@googleapis/calendar` + `google-auth-library`. **Risco médio**: testar sync de calendário de ponta a ponta | ⬜ |
 
 ## ⚪ Menores (deixados de fora do relatório, numerados aqui)
 
 | ID | Item | Correção sugerida | Status |
 |----|------|-------------------|--------|
-| API-18 | Corrida de leitura/escrita no consumo do token de redefinição | `updateMany` condicional (`where: { id, usedAt: null }`) e checar `count` | 🟦 api#188 (commit `1be60c5`: `count === 0` → o mesmo 400 de link inválido) |
-| API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | 🟦 api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
+| API-18 | Corrida de leitura/escrita no consumo do token de redefinição | `updateMany` condicional (`where: { id, usedAt: null }`) e checar `count` | ✅ api#188 (commit `1be60c5`: `count === 0` → o mesmo 400 de link inválido) |
+| API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | ✅ api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
 | API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | ⬜ |
 | API-21 | Cadastro revela quais e-mails existem | avaliar custo/benefício (UX vs enumeração); no mínimo documentar a decisão | ⬜ |
 | API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | ⬜ |
