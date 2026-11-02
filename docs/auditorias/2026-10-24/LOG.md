@@ -16,6 +16,26 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P11
+- **Feito:** branch `fix/aud-p11-correcoes` no mobile, 1 commit por item, todos com teste visto falhando antes (exceto MOB-09 e MOB-12, que não mudam comportamento):
+  - **MOB-07** (`00eb65a`): testes de `useGoogleAuth` e `usePushNotifications`.
+  - **MOB-04** (`3aaf1ee`): `refreshUser` grava no `SecureStore` o mesmo usuário que vai para o estado.
+  - **MOB-05** (`c70c937`): notificação já tratada não reabre a tela após novo login.
+  - **MOB-08** (`c011916`): erros do Google e da lista de pets no `common.json`; o `PetsContext` traduz só na exibição; data das leituras no idioma do i18n.
+  - **MOB-09** (`e1ed64d`): `@expo/ngrok` em `devDependencies` (o `expo start --tunnel` usa).
+  - **MOB-12** (`800994d`): não há `catch {}` literal; dos 9 `catch` sem tratamento, só o do idioma não dizia o porquê.
+  - **MOB-13** (`4bd63ac`): `horarioNoPassado` no formulário de agendamento; na edição, só vale se data ou hora mudaram.
+  - Verificação: `typecheck` ✅ · `npm test` 216 ✅ · `eslint` nos arquivos alterados ✅.
+- **PRs:** PetCardOrg/petcard-mobile#98 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - **MOB-16** (P13): o cadastro esconde do tutor a falha ao enviar foto ou telefone.
+  - **API-27** (P13): a API aceita agendamento no passado (o DTO é da API, não do shared).
+  - Painel: os totais estavam defasados (web e mobile contados como 14) e "Concluídos: 0" nunca tinha sido atualizado. Corrigido para 67 itens, 30 ✅ e 1 descartado.
+  - **`npm run lint` do mobile no Windows:** com `core.autocrlf=true` no Git do sistema, os arquivos de checkouts antigos ficam com CRLF e o prettier acusa cerca de 14 mil `Delete ␍`. Não é do código: o CI roda em Linux e os arquivos alterados estão em LF. Para verificar localmente, rodar `npx eslint <arquivos alterados>`.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#98 (CI verde e review), marcar MOB-07, 04, 05, 08, 09, 12 e 13 ✅ (em `itens/mobile.md`, no painel e no checklist da #68). A #68 continua aberta por causa do MOB-01, do MOB-15 e da validação em aparelho. Enquanto isso, seguir para o **P12** (#69) no mobile, branch `refactor/aud-p12-enxugar` a partir da `develop` atualizada **depois do merge do mobile#98**: MOB-10 (`authService.login/register` e o helper `startSession`) primeiro e o MOB-06 por último (uma tela de saúde por commit). O MOB-15 é configuração no EAS e precisa de alguém com acesso ao expo.dev.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P10 (merge e fechamento)
 - **Feito:** web#70 e docs#85 mergeados (web `110b622`). WEB-09 e WEB-11 ✅ em develop; WEB-12 🚫 pela D4. Checklist da #67 marcado. **P10 completo; #67 fechada.**
 - **PRs:** PetCardOrg/petcard-web#70 (mergeado) · PetCardOrg/petcard-docs#85 (mergeado)

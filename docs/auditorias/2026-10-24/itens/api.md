@@ -174,6 +174,13 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Aceite:** [ ] teste: excluir pet com anexo e QR chama a remoção das duas chaves.
 - **Resolução:** —
 
+### API-27 · Agendamento aceita `scheduled_at` no passado
+- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Origem:** MOB-13 (P11). O mobile passou a recusar no formulário, mas `CreateAppointmentDto` e `UpdateAppointmentDto` (`src/modules/appointment/dto/`) só têm `@IsDateString()`, e o service não confere.
+- **Correção:** recusar `scheduled_at` no passado na criação e na remarcação, com a mesma regra do mobile: na edição, só quando o horário muda. Considerar uma folga de alguns minutos para relógio de aparelho atrasado.
+- **Aceite:** [ ] teste: `POST` com data de ontem → 400; [ ] `PATCH` só do título num compromisso passado → 200.
+- **Resolução:** —
+
 ---
 
 ## Não verificado pela auditoria (cobrir ao trabalhar na área)
