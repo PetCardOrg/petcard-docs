@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P10
+- **Feito:** #67 atribuída e comentada. Branch `refactor/aud-p10-enxugar` na web, 1 commit por item:
+  - **WEB-09:** `RecordCard` próprio nas abas de vacina, vermifugação e medicação; `toDto` fora do componente, tipado por tipo, usado na criação e na edição. Antes do refactor, os testes de criação passaram a conferir o corpo inteiro, e um teste novo fixa os cards das três abas (verdes antes e depois). Página de 1128 para 1056 linhas.
+  - **WEB-11:** `coresDaEspecie` (`src/utils/especies.ts`) e `formatarData` (`src/utils/datas.ts`, com teste) no perfil e no dashboard; `corrigirMeuCrmv` chama `updateVeterinario`. O `formatDate` da carteira pública fica: gera `dd/mm/aaaa` fixo e trocá-lo mudaria a tela. O `formatarData` aceita `Date` porque o `AcaoClinicaResponseDto.ocorrido_em` do shared ainda é `Date` (P14).
+  - Verificação: `lint` ✅ · `test:cov` 227 ✅ (87,4 / 86,0 de statements e branches) · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#70 (aberto, review pedido a camilampinheiro)
+- **Decisões:** **D4: ninguém sabe se há QR impresso sem `#`**, então vale o padrão do PLANO: o `normalizePublicCardLocation` é mantido e o WEB-12 fica descartado.
+- **Descobertas / itens derivados:** nenhum.
+- **Bloqueios:** P6 (e o WEB-05) seguem dependendo da publicação da 0.24.0 (PR `develop → main` novo no shared).
+- **Próximo passo:** depois do merge do web#70, marcar WEB-09 e WEB-11 ✅ (em `itens/web.md`, no painel e na #67), marcar o WEB-12 como descartado na #67 e **fechar a #67**. Enquanto isso, seguir para o **P11** (#68) no `petcard-mobile`, branch `fix/aud-p11-correcoes` a partir da `develop` atualizada, começando pelo **MOB-07** (testes de login Google e push) e seguindo com MOB-04, 05, 08, 09, 12 e 13. **Sem o MOB-01**, que exige o API-23 (P6) em produção.
+
 ## 2026-10-31 — alvaro-unifor (com Claude) — P9 (merge) e P2 (fechamento)
 - **Feito:** web#69 e docs#83 mergeados; CI da `develop` da web verde em `bcfaf93`. WEB-04, 06, 07, 13, 15 e 16 ✅ em develop, marcados na #66. O WEB-16 cumpre o último aceite do API-06: depois do cadastro, o dashboard mostra que o nome não confere. **API-06 ✅, P2 completo, #59 fechada.** A #66 continua aberta só pelo WEB-05.
 - **PRs:** PetCardOrg/petcard-web#69 (mergeado) · PetCardOrg/petcard-docs#83 (mergeado)
