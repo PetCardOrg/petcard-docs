@@ -16,6 +16,13 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P10 (merge e fechamento)
+- **Feito:** web#70 e docs#85 mergeados (web `110b622`). WEB-09 e WEB-11 ✅ em develop; WEB-12 🚫 pela D4. Checklist da #67 marcado. **P10 completo; #67 fechada.**
+- **PRs:** PetCardOrg/petcard-web#70 (mergeado) · PetCardOrg/petcard-docs#85 (mergeado)
+- **Decisões:** nenhuma nova.
+- **Bloqueios:** P6 (e o WEB-05) seguem dependendo da publicação da 0.24.0 (PR `develop → main` novo no shared).
+- **Próximo passo:** **P11** (#68) no `petcard-mobile`, branch `fix/aud-p11-correcoes` a partir da `develop` atualizada, começando pelo **MOB-07** (testes de login Google e push) e seguindo com MOB-04, 05, 08, 09, 12 e 13. **Sem o MOB-01**, que exige o API-23 (P6) em produção.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P10
 - **Feito:** #67 atribuída e comentada. Branch `refactor/aud-p10-enxugar` na web, 1 commit por item:
   - **WEB-09:** `RecordCard` próprio nas abas de vacina, vermifugação e medicação; `toDto` fora do componente, tipado por tipo, usado na criação e na edição. Antes do refactor, os testes de criação passaram a conferir o corpo inteiro, e um teste novo fixa os cards das três abas (verdes antes e depois). Página de 1128 para 1056 linhas.

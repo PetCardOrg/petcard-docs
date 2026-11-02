@@ -31,7 +31,7 @@ Atualizado em **2026-11-02**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 3 | **P7** Robustez da API | api | API-08, 10 | ✅ em develop (api#185) | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |
 | 3 | **P8** Filas | api | API-11, 09 | ✅ em develop (api#186) | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
 | 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | 🟨 em develop (web#69: WEB-04, 06, 07, 13, 15, 16 ✅; WEB-05 espera o API-24 do P6) | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
-| 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | 🟦 em PR (web#70: WEB-09, 11); WEB-12 🚫 pela D4 (código mantido) | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
+| 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | ✅ em develop (web#70: WEB-09, 11); WEB-12 🚫 pela D4 (código mantido) | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
 | 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 | ⬜ | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
 | 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | ⬜ | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
 | 6 | **P13** Desejáveis | api, shared, web | API-12–19, 21, 22, 25, 26 · SH-06 · WEB-17 | ⬜ | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
