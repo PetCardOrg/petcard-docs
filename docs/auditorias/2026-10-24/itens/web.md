@@ -82,9 +82,9 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** Template marcado `caminho` em `api.ts`, aplicado em todos os services com rota dinâmica (card, coleira, pet-profile, anexo, dashboard). Commit `71cf44b`.
 
 ### WEB-09 · `VetPetProfilePage` com 1104 linhas e blocos repetidos
-- **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P10 (**depois do P9**) · **PR:** —
+- **Status:** 🟦 em PR (#70) · **Fase:** 4 · **Pacote:** P10 (**depois do P9**) · **PR:** PetCardOrg/petcard-web#70
 - **Correção:** `toDto` também na criação; extrair `RecordCard` para as 3 abas. Refactor sem mudar comportamento, coberto pelos testes do P9.
-- **Resolução:** —
+- **Resolução:** `RecordCard` em `src/pages/VetPetProfile/RecordCard.tsx`, usado nas abas de vacina, vermifugação e medicação. O `toDto` saiu do componente, é tipado por tipo de registro e serve à criação (com o `pet_id`) e à edição. Antes do refactor, os testes de criação passaram a conferir o corpo inteiro, e um teste novo fixa o conteúdo dos cards; os dois passaram antes e depois. Página de 1128 para 1056 linhas. Commit `86577ad`.
 
 ---
 
@@ -92,8 +92,8 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 
 | ID | Item | Correção | Pacote | Status |
 |----|------|----------|--------|--------|
-| WEB-11 | Duplicação: `SPECIES_COLORS` (2×), `formatDate` (3×), PATCH `/veterinarios/me` (`updateVeterinario` × `corrigirMeuCrmv`) | `src/utils/` + uma função de PATCH | P10 | ⬜ |
-| WEB-12 | Provável código morto `normalizePublicCardLocation` (`src/main.tsx:34-48`); não há `vercel.json` | **Antes de apagar:** confirmar com o time se existe QR impresso com caminho sem `#` (D4) | P10 | ⬜ |
+| WEB-11 | Duplicação: `SPECIES_COLORS` (2×), `formatDate` (3×), PATCH `/veterinarios/me` (`updateVeterinario` × `corrigirMeuCrmv`) | `src/utils/` + uma função de PATCH | P10 | 🟦 web#70 (commit `aa58f82`: `coresDaEspecie` e `formatarData` em `src/utils/`; `corrigirMeuCrmv` chama `updateVeterinario`. O `formatDate` da carteira pública fica, porque gera `dd/mm/aaaa` fixo, sem depender do idioma) |
+| WEB-12 | Provável código morto `normalizePublicCardLocation` (`src/main.tsx:34-48`); não há `vercel.json` | **Antes de apagar:** confirmar com o time se existe QR impresso com caminho sem `#` (D4) | P10 | 🚫 descartado (D4 sem resposta em 2026-11-02: pelo padrão do PLANO, o código é mantido; reabrir se alguém confirmar que não há QR sem `#`) |
 | WEB-13 | Trocar idioma refaz as 5 chamadas do perfil (`load` depende de `t`) | tirar `t` das dependências | P9 | ✅ web#69 (commit `7e9a293`: mensagem padrão do bloqueio traduzida só na exibição) |
 
 ---
