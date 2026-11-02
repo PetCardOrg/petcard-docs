@@ -16,6 +16,16 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P11 (merge) e P12 (MOB-10)
+- **Feito:**
+  - mobile#98 e docs#86 mergeados; CI da `develop` do mobile verde em `ecda6ec`. MOB-07, 04, 05, 08, 09, 12 e 13 ✅, marcados no checklist da #68. A #68 continua aberta pelo MOB-01, pelo MOB-15 e pela validação em aparelho.
+  - **P12:** #69 atribuída e comentada. Branch `refactor/aud-p12-enxugar` no mobile. **MOB-10** (`bddd99e`): `authService.login` e `authService.register`; o `startSession` do `AuthContext` reúne o bloco de sessão do login, do Google e do cadastro. Nenhuma assertiva mudou: no mock dos testes, `login` e `register` delegam ao service real. Verificação: `typecheck` ✅ · `npm test` 216 ✅ · `eslint` no conteúdo commitado ✅.
+- **PRs:** PetCardOrg/petcard-mobile#98 (mergeado) · PetCardOrg/petcard-docs#86 (mergeado) · PetCardOrg/petcard-mobile#99 (aberto, review pedido a camilampinheiro)
+- **Decisões:** o P12 sai em PRs separados: MOB-10 sozinho; MOB-11 e MOB-06 em PRs próprios, para a revisão ficar viável.
+- **Descobertas:** atenção ao encadear `eslint && … ; git commit`: no Windows o eslint falha pelo CRLF dos arquivos antigos. Para checar o que vai no commit, use `git show HEAD:<arq> | npx eslint --stdin --stdin-filename <arq>`.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#99, marcar o MOB-10 ✅ (em `itens/mobile.md`, no painel e no checklist da #69). Seguir no **P12** com o **MOB-11**, branch `refactor/aud-p12-appointments` a partir da `develop` atualizada: dividir a `AppointmentsScreen` (971 linhas) por responsabilidade (formulário, card do Google Agenda, item da lista), sem mudar comportamento. Antes, escrever testes que fixem a tela, porque hoje ela não tem nenhum. Por último, o **MOB-06**, branch `refactor/aud-p12-telas-saude`, uma tela de saúde por commit, com o `selecaoDePet.test.tsx` como rede.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P11
 - **Feito:** branch `fix/aud-p11-correcoes` no mobile, 1 commit por item, todos com teste visto falhando antes (exceto MOB-09 e MOB-12, que não mudam comportamento):
   - **MOB-07** (`00eb65a`): testes de `useGoogleAuth` e `usePushNotifications`.

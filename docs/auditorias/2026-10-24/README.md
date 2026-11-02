@@ -32,12 +32,12 @@ Atualizado em **2026-11-02**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 3 | **P8** Filas | api | API-11, 09 | ✅ em develop (api#186) | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
 | 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | 🟨 em develop (web#69: WEB-04, 06, 07, 13, 15, 16 ✅; WEB-05 espera o API-24 do P6) | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
 | 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | ✅ em develop (web#70: WEB-09, 11); WEB-12 🚫 pela D4 (código mantido) | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
-| 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 (+15) | 🟦 em PR (mobile#98: MOB-07, 04, 05, 08, 09, 12, 13); MOB-01 espera o API-23 (P6) em produção; MOB-15 é configuração do EAS | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
-| 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | ⬜ | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
+| 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 (+15) | 🟨 em develop (mobile#98: MOB-07, 04, 05, 08, 09, 12, 13 ✅); MOB-01 espera o API-23 (P6) em produção; MOB-15 é configuração do EAS | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
+| 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | 🟨 MOB-10 em PR (mobile#99); MOB-11 e MOB-06 em PRs próprios | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
 | 6 | **P13** Desejáveis | api, shared, web, mobile | API-12–19, 21, 22, 25, 26, 27 · SH-06 · WEB-17 · MOB-16 | ⬜ | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
 | 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | [#71](https://github.com/PetCardOrg/petcard-docs/issues/71) |
 
-**Totais:** 67 itens (API 27 · shared 8 · web 16 · mobile 16, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos (✅ em develop): 30** · descartados: 1 (WEB-12).
+**Totais:** 67 itens (API 27 · shared 8 · web 16 · mobile 16, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos (✅ em develop): 37** · descartados: 1 (WEB-12).
 
 ---
 
