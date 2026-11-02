@@ -128,11 +128,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 
 | ID | Item | Onde | Correção | Status |
 |----|------|------|----------|--------|
-| API-12 | Container roda como root | `Dockerfile` | `USER node` antes do `ENTRYPOINT`; checar permissões de escrita | 🟦 api#189 (commit `fb57b54`; validado com Docker: `uid=1000(node)`, as 29 migrations e o boot sem EACCES) |
+| API-12 | Container roda como root | `Dockerfile` | `USER node` antes do `ENTRYPOINT`; checar permissões de escrita | ✅ api#189 (commit `fb57b54`; validado com Docker: `uid=1000(node)`, as 29 migrations e o boot sem EACCES) |
 | API-13 | Erro de serviço externo vaza ou vira 500 | `places.service.ts` (~175), `infosimples-crmv.validator.ts` (~99) | logar corpo, responder genérico; `try/catch` no `response.json()` → 502 | ⬜ |
 | API-14 | Lembrete de dose triplicado | `dose-reminder.service.ts` | mapa modelo → delegate Prisma (~-60 linhas) | ⬜ |
-| API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | 🟦 reminder ✅ em develop (api#183); `.env.example`, `mail.config.ts` e o teste em api#189 (commit `d64e785`: logs do Render) |
-| API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | 🟦 api#189 (commit `6e67db7`; lock editado só com as remoções, porque o `npm uninstall` no Windows podava `@emnapi/*`; o `source-map-support` fica no lock pelo `terser`) |
+| API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | ✅ reminder em develop (api#183); `.env.example`, `mail.config.ts` e o teste em api#189 (commit `d64e785`: logs do Render) |
+| API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | ✅ api#189 (commit `6e67db7`; lock editado só com as remoções, porque o `npm uninstall` no Windows podava `@emnapi/*`; o `source-map-support` fica no lock pelo `terser`) |
 | API-17 | `googleapis` enorme para 1 uso | `google-calendar.service.ts` | `@googleapis/calendar` + `google-auth-library`. **Risco médio**: testar sync de calendário de ponta a ponta | ⬜ |
 
 ## ⚪ Menores (deixados de fora do relatório, numerados aqui)

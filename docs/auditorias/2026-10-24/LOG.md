@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-12, 15 e 16)
+- **Feito:** api#189 (`126482c`) e docs#92 mergeados; CI da `develop` da API verde. **API-12, API-15 e API-16 ✅**, marcados no checklist da #70. Por pedido do usuário, a sessão parou aqui, sem começar o próximo item.
+- **PRs:** PetCardOrg/petcard-api#189 e PetCardOrg/petcard-docs#92 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-13** (erros de serviços externos: `places.service.ts` e `infosimples-crmv.validator.ts`, logar o corpo, responder genérico, `response.json()` inválido → 502), depois **API-22** (paginação do `Historico`, alinhada com o DTO do shared; ver se precisa de contrato novo no shared, que esbarra no bloqueio da `main`). **API-21** pede uma decisão (enumeração de e-mails: corrigir ou documentar): perguntar ao usuário antes. **API-17** fica para o fim. Ainda abertos no P13, além desses: API-14, API-25, API-26, SH-06 e WEB-17.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-18/19 merge; API-12, 15, 16)
 - **Feito:**
   - api#188 e docs#91 mergeados. **API-18 e API-19 ✅**, marcados no checklist da #70.
