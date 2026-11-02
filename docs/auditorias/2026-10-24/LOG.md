@@ -16,6 +16,19 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P12 (MOB-11 merge e MOB-06)
+- **Feito:**
+  - mobile#100 e docs#88 mergeados; CI da `develop` do mobile verde. **MOB-11 ✅**, marcado no checklist da #69.
+  - **MOB-06:** branch `refactor/aud-p12-telas-saude` no mobile. Primeiro, `telasDeSaude.test.tsx` (`801116f`): 31 testes que fixam as três telas no código antigo (card, criar com payload exato, obrigatórios, data inválida, falha ao criar, editar, formulário em branco depois de editar, exclusão, aviso de registro de veterinário e o selo da medicação). Depois, uma tela por commit: `TelaDeRegistroDeSaude` + vacina (`a0977c6`), vermífugo (`6a44dd0`) e medicação (`2041909`). As telas foram de 1993 para 1031 linhas. Verificação: `typecheck` ✅ · `npm test` 263 ✅ · `eslint` no conteúdo commitado ✅.
+- **PRs:** PetCardOrg/petcard-mobile#100 (mergeado) · PetCardOrg/petcard-docs#88 (mergeado) · PetCardOrg/petcard-mobile#101 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - **MOB-17** (P13): "Concluída", no selo da medicação, é texto fixo fora do i18n; incluído no checklist da #70.
+  - Os testes escritos antes do refactor mostraram uma diferença que já existia: o botão de confirmar a exclusão diz "Excluir" na vacina e "Excluir vermífugo"/"Excluir medicação" nas outras. Foi mantida.
+  - Os 6 avisos de `act(...)` do `npm test` vêm do `selecaoDePet.test.tsx` e já existiam; não são do refactor.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#101, marcar o MOB-06 ✅ (em `itens/mobile.md`, no painel e no checklist da #69) e **fechar a #69** (P12 completo). Depois: o P6 continua parado até sair a 0.24.0 do shared (precisa de um PR `develop → main` novo no shared); sem isso, o próximo pacote livre é o **P13** (#70). Começar pelos itens do mobile (MOB-16, MOB-17) ou pelo API-27, cada repo na sua branch `fix/aud-p13-…`.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P12 (MOB-10 merge e MOB-11)
 - **Feito:**
   - mobile#99 mergeado (`96e4374`): **MOB-10 ✅**, marcado no checklist da #69.

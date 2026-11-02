@@ -58,11 +58,11 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** O identificador da resposta já tratada fica guardado no módulo, e a mesma notificação não navega de novo depois de um novo login. Commit `c70c937`.
 
 ### MOB-06 · Três telas de saúde quase idênticas (640 / 640 / 713 linhas)
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** —
+- **Status:** 🟦 em PR · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** PetCardOrg/petcard-mobile#101
 - **Onde:** `src/screens/HealthRecords/VaccineScreen.tsx`, `DewormingScreen.tsx`, `MedicationScreen.tsx`.
 - **Correção:** componente genérico (lista + modal + exclusão) configurado por props; migrar **uma tela por PR/commit**, com `selecaoDePet.test.tsx` como rede.
-- **Aceite:** [ ] comportamento idêntico (testes existentes verdes, sem mudar assertivas); [ ] -~800 linhas.
-- **Resolução:** —
+- **Aceite:** [x] comportamento idêntico (testes existentes verdes, sem mudar assertivas); [x] -~800 linhas.
+- **Resolução:** `TelaDeRegistroDeSaude` configurada por tela (campos, textos do i18n, card, service). Antes, `telasDeSaude.test.tsx` fixou as três telas com 31 testes (commit `801116f`); depois, uma tela por commit: vacina com o componente (`a0977c6`), vermífugo (`6a44dd0`) e medicação (`2041909`). As telas foram de 1993 para 1031 linhas (−962). As diferenças que já existiam ficaram: o rótulo do botão de exclusão e, na medicação, o selo, o modal a 90% e o detalhe em linha cheia. O "Concluída" fora do i18n virou o MOB-17.
 
 ### MOB-07 · Login Google e registro de push sem teste
 - **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P11 (**fazer antes do MOB-01**) · **PR:** PetCardOrg/petcard-mobile#98
@@ -84,7 +84,7 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 |----|------|----------|--------|--------|
 | MOB-09 | `@expo/ngrok` sem uso em `dependencies` (`package.json:23`) | remover ou mover para dev | P11 | ✅ mobile#98 (commit `e1ed64d`: movido para `devDependencies`, porque o `expo start --tunnel` usa; no lock, só as marcações `dev`/`peer`) |
 | MOB-10 | `login`/`register` ignoram o `auth.service`; 3 cópias do bloco de sessão | `authService.login/register` + helper `startSession(fn)` | P12 | ✅ mobile#99 (commit `bddd99e`: `authService.login/register`; o `startSession` reúne loading, erro e gravação da sessão do login, do Google e do cadastro) |
-| MOB-11 | Telas grandes (`AppointmentsScreen` ~935 linhas) | dividir por responsabilidade, se sobrar tempo | P12 | 🟦 mobile#100 (commit `8d36b25`: 16 testes fixam a tela antes; commit `725172b`: `AppointmentCard`, `CalendarBanner` + `useGoogleCalendar`, `AppointmentFormModal` e `horarioDoAgendamento`; a tela foi de 971 para 235 linhas, e os testes passam iguais) |
+| MOB-11 | Telas grandes (`AppointmentsScreen` ~935 linhas) | dividir por responsabilidade, se sobrar tempo | P12 | ✅ mobile#100 (commit `8d36b25`: 16 testes fixam a tela antes; commit `725172b`: `AppointmentCard`, `CalendarBanner` + `useGoogleCalendar`, `AppointmentFormModal` e `horarioDoAgendamento`; a tela foi de 971 para 235 linhas, e os testes passam iguais) |
 | MOB-12 | Blocos `catch {}` que escondem erro | listar com `grep -rn "catch {}" src` e tratar ou comentar o porquê | P11 | ✅ mobile#98 (commit `800994d`: nenhum `catch {}` literal; dos 9 sem tratamento, 8 já explicavam o motivo e o do idioma passou a explicar. A falha escondida no cadastro virou o MOB-16) |
 | MOB-13 | Agendamento aceita data no passado | validação no formulário (e conferir no DTO do shared/API) | P11 | ✅ mobile#98 (commit `4bd63ac`: `horarioNoPassado`, por minuto; na edição só vale se data ou hora mudaram. O DTO é da API, não do shared, e não valida: virou o API-27) |
 
@@ -106,6 +106,14 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Problema:** a conta é criada, mas se a foto ou o telefone falham o `catch` só segue em frente. O tutor escolheu uma foto e não fica sabendo que ela não foi salva.
 - **Correção:** o `register` devolve se os extras falharam, e a tela mostra um aviso ("conta criada; complete foto/telefone no perfil") sem derrubar o cadastro.
 - **Aceite:** [ ] teste: upload lança → cadastro conclui e o aviso aparece.
+- **Resolução:** —
+
+### MOB-17 · Selo "Concluída" da medicação fora do i18n (derivado do MOB-06)
+- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Onde:** `src/screens/HealthRecords/MedicationScreen.tsx` (`selo` da configuração).
+- **Problema:** "Em andamento" vem do i18n (`healthRecords.medication.ongoing`), mas "Concluída" é texto fixo: em inglês, o selo sai em português.
+- **Correção:** chave `healthRecords.medication.finished` em pt-BR e en-US.
+- **Aceite:** [ ] teste: com o idioma em en-US, a medicação encerrada mostra o texto em inglês.
 - **Resolução:** —
 ---
 
