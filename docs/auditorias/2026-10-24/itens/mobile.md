@@ -44,18 +44,18 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 ## 🟠 Deveria corrigir
 
 ### MOB-04 · `refreshUser` pode não salvar o usuário
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 · **PR:** —
+- **Status:** 🟦 em PR (mobile#98) · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `AuthContext.tsx` (`refreshUser`, `next = {...}` dentro de `setUser(prev => …)`, ~linha 214).
 - **Correção:** `userRef` com o usuário atual; montar `merged` fora do updater, `setUser(merged)` e gravar `merged` no `SecureStore`.
-- **Aceite:** [ ] teste: após `refreshUser`, o `SecureStore` recebe `email_verified: true`.
-- **Resolução:** —
+- **Aceite:** [x] teste: após `refreshUser`, o `SecureStore` recebe `email_verified: true`.
+- **Resolução:** `refreshUser` monta o usuário atualizado fora do updater do `setUser` e grava o mesmo objeto no `SecureStore`. Teste confere `email_verified: true` no que foi salvo. Commit `3aaf1ee`.
 
 ### MOB-05 · Notificação antiga reabre a tela após novo login
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 · **PR:** —
+- **Status:** 🟦 em PR (mobile#98) · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `src/hooks/usePetScanNotificationNavigation.ts:43` (`getLastNotificationResponseAsync`), `src/navigation/AppNavigator.tsx` (~95-97).
 - **Correção:** guardar em variável de módulo o `response.notification.request.identifier` já tratado e ignorar repetição (ou `clearLastNotificationResponseAsync()` depois de tratar, se a versão do expo-notifications tiver).
-- **Aceite:** [ ] teste: montar o hook 2× com a mesma resposta navega 1×.
-- **Resolução:** —
+- **Aceite:** [x] teste: montar o hook 2× com a mesma resposta navega 1×.
+- **Resolução:** O identificador da resposta já tratada fica guardado no módulo, e a mesma notificação não navega de novo depois de um novo login. Commit `c70c937`.
 
 ### MOB-06 · Três telas de saúde quase idênticas (640 / 640 / 713 linhas)
 - **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** —
@@ -65,16 +65,16 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** —
 
 ### MOB-07 · Login Google e registro de push sem teste
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 (**fazer antes do MOB-01**) · **PR:** —
+- **Status:** 🟦 em PR (mobile#98) · **Fase:** 5 · **Pacote:** P11 (**fazer antes do MOB-01**) · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `src/hooks/useGoogleAuth.ts`, `src/hooks/usePushNotifications.ts`.
-- **Aceite:** [ ] Google: sucesso chama `loginWithGoogle`; `id_token` ausente define erro; [ ] Push: registra 1× e re-registra ao rotacionar token.
-- **Resolução:** —
+- **Aceite:** [x] Google: sucesso chama `loginWithGoogle`; `id_token` ausente define erro; [x] Push: registra 1× e re-registra ao rotacionar token.
+- **Resolução:** Testes de `useGoogleAuth` (token nos params ou na autenticação, sem token, API recusando, cancelamento) e de `usePushNotifications` (registra 1×, re-registra ao rotacionar, sem sessão, permissão negada). Commit `00eb65a`.
 
 ### MOB-08 · Mensagens fixas em português ignoram o i18n
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 · **PR:** —
+- **Status:** 🟦 em PR (mobile#98) · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `src/contexts/PetsContext.tsx` (~37-40), `src/hooks/useGoogleAuth.ts` (~57, 66, 74), datas em `src/screens/Home/PetScansScreen.tsx`.
 - **Correção:** strings para `common.json` (pt-BR e en-US) + `t()`; `toLocaleDateString(undefined, …)` ou o idioma do i18n.
-- **Resolução:** —
+- **Resolução:** chaves `login.googleError`, `googleNoToken`, `googleFailed`, `home.loadError` e `permissionError` em pt-BR e en-US. O `PetsContext` guarda a chave e só traduz na exibição, para seguir a troca de idioma. `formatarInstante` recebe o idioma do i18n. Um teste por arquivo, em en-US, falhava antes. Commit `c011916`.
 
 ---
 
@@ -82,11 +82,11 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 
 | ID | Item | Correção | Pacote | Status |
 |----|------|----------|--------|--------|
-| MOB-09 | `@expo/ngrok` sem uso em `dependencies` (`package.json:23`) | remover ou mover para dev | P11 | ⬜ |
+| MOB-09 | `@expo/ngrok` sem uso em `dependencies` (`package.json:23`) | remover ou mover para dev | P11 | 🟦 mobile#98 (commit `e1ed64d`: movido para `devDependencies`, porque o `expo start --tunnel` usa; no lock, só as marcações `dev`/`peer`) |
 | MOB-10 | `login`/`register` ignoram o `auth.service`; 3 cópias do bloco de sessão | `authService.login/register` + helper `startSession(fn)` | P12 | ⬜ |
 | MOB-11 | Telas grandes (`AppointmentsScreen` ~935 linhas) | dividir por responsabilidade, se sobrar tempo | P12 | ⬜ |
-| MOB-12 | Blocos `catch {}` que escondem erro | listar com `grep -rn "catch {}" src` e tratar ou comentar o porquê | P11 | ⬜ |
-| MOB-13 | Agendamento aceita data no passado | validação no formulário (e conferir no DTO do shared/API) | P11 | ⬜ |
+| MOB-12 | Blocos `catch {}` que escondem erro | listar com `grep -rn "catch {}" src` e tratar ou comentar o porquê | P11 | 🟦 mobile#98 (commit `800994d`: nenhum `catch {}` literal; dos 9 sem tratamento, 8 já explicavam o motivo e o do idioma passou a explicar. A falha escondida no cadastro virou o MOB-16) |
+| MOB-13 | Agendamento aceita data no passado | validação no formulário (e conferir no DTO do shared/API) | P11 | 🟦 mobile#98 (commit `4bd63ac`: `horarioNoPassado`, por minuto; na edição só vale se data ou hora mudaram. O DTO é da API, não do shared, e não valida: virou o API-27) |
 
 ---
 
@@ -98,6 +98,14 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Problema:** um build `production` sai com o mapa em branco (o `app.config.ts` só avisa) e sem login Google.
 - **Correção:** cadastrar as variáveis no ambiente production (não é código). Avaliar transformar o aviso do Maps em erro nos perfis de distribuição, como no MOB-03.
 - **Aceite:** [ ] variáveis presentes no `env:list` de production; [ ] build production abre o mapa e faz login Google em aparelho.
+- **Resolução:** —
+
+### MOB-16 · Cadastro esconde do tutor a falha ao enviar foto ou telefone (derivado do MOB-12)
+- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Onde:** `src/contexts/AuthContext.tsx` (`register`, `catch` depois de `uploadService.uploadImage` / `tutorService.updateCurrentTutor`, ~linha 179).
+- **Problema:** a conta é criada, mas se a foto ou o telefone falham o `catch` só segue em frente. O tutor escolheu uma foto e não fica sabendo que ela não foi salva.
+- **Correção:** o `register` devolve se os extras falharam, e a tela mostra um aviso ("conta criada; complete foto/telefone no perfil") sem derrubar o cadastro.
+- **Aceite:** [ ] teste: upload lança → cadastro conclui e o aviso aparece.
 - **Resolução:** —
 ---
 
