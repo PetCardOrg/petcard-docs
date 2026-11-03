@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P9 (WEB-05)
+- **Feito:** web, branch `fix/aud-p9-limpar-opcionais`, 1 commit (PR web#73). **WEB-05** `61ca996`: na edição, opcional apagado vai como `null` (registros clínicos e nota clínica); a criação continua omitindo. `ComLimpeza<T>` tipa o `null` nos PATCH. Verificação: `lint` ✅ · `npm test` 233 ✅ · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#73 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** nenhuma nova (o `null` sem tipo no shared já é o SH-09).
+- **Bloqueios:** nenhum. O teste manual contra a API local fica com o usuário, porque mexe no banco de dev.
+- **Próximo passo:** depois do merge da web#73 e do teste manual, o P9 (#66) está completo: fechar a issue. Depois, **MOB-01** (P11, #68) no mobile, branch `fix/aud-p11-push-logout` a partir da `develop`: `deviceService.unregister(token)` antes do `clearSession()` no `logout`, com erro ignorado e timeout curto (teste: chama `unregister` e depois limpa a sessão, mesmo se ele falhar).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P6 concluído
 - **Feito:** o usuário gerou o APK do app a partir da `main` e testou em aparelho, inclusive o "Confirmar com Google" do MOB-14. **MOB-14 e API-04 🚀**: o P6 está todo em produção. #63 fechada. docs#106 mergeada.
 - **PRs:** PetCardOrg/petcard-docs#106 (mergeado) · este PR de docs

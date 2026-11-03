@@ -30,7 +30,7 @@ Atualizado em **2026-11-03**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | 🚀 em produção (api#195, web#72, mobile#105 e APK testado em aparelho, 2026-11-03) | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
 | 3 | **P7** Robustez da API | api | API-08, 10 | 🚀 em produção (api#185) | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |
 | 3 | **P8** Filas | api | API-11, 09 | 🚀 em produção (api#186) | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
-| 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | 🟨 em produção (web#69: WEB-04, 06, 07, 13, 15, 16 🚀); WEB-05 ⬜ liberado: o API-24 está em produção | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
+| 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | 🟨 em produção (web#69: WEB-04, 06, 07, 13, 15, 16 🚀); WEB-05 🟦 web#73 | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
 | 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | 🚀 em produção (web#70: WEB-09, 11); WEB-12 🚫 pela D4 (código mantido) | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
 | 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 (+15) | 🟨 em produção (mobile#98: MOB-07, 04, 05, 08, 09, 12, 13 🚀); MOB-01 liberado (o API-23 está em produção); MOB-15 é configuração do EAS | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
 | 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | 🚀 em produção (mobile#99, #100, #101) | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
