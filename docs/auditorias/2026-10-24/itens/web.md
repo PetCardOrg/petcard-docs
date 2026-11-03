@@ -42,12 +42,12 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** Estado `deleteError` exibido no topo da aba (`role="alert"`), limpo ao trocar de aba ou ao tentar apagar de novo. Vale para registro e nota clínica. Commit `7b50d13`.
 
 ### WEB-05 · Não dá para limpar campo opcional ao editar
-- **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P9 · **PR:** —
+- **Status:** 🟦 em PR (#73) · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#73
 - **Depende de:** API-24 (API grava `null`).
 - **Onde:** `VetPetProfilePage.tsx` `toDto` e o PATCH da nota clínica.
 - **Correção:** na **edição**, campo opcional esvaziado → `null` no corpo. Na **criação**, continua omitido.
-- **Aceite:** [ ] teste: editar e apagar `next_dose_at` envia `null`; [ ] teste manual contra a API local confirma que o dado some após `load()`.
-- **Resolução:** —
+- **Aceite:** [x] teste: editar e apagar `next_dose_at` envia `null`; [x] teste manual contra a API local confirma que o dado some após `load()` (feito pelo usuário em 2026-11-03).
+- **Resolução:** commit `61ca996`. `toUpdateDto` na edição dos registros: `next_dose_at`, `end_date` e `notes` vazios vão como `null`; a criação segue com o `toDto`, que só omite. Na nota clínica, `prescricao` e `observacoes` vazias vão como `null` na edição. `ComLimpeza<T>` no `pet-profile.service` tipa o `null` nos PATCH, porque os DTOs do shared ainda não o tipam (SH-09). Testes: vacina com próxima dose e observações apagadas, e nota com a prescrição apagada. Teste manual feito pelo usuário com a web e a API locais: criar, editar e apagar os opcionais funcionou.
 
 ### WEB-14 · Pedir senha atual ao trocar e-mail do vet (derivado do SH-03/API-04)
 - **Status:** 🚀 em produção (web#72, junto com a api#195) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-web#71

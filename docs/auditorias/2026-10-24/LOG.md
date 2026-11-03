@@ -16,6 +16,23 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P9 (WEB-05)
+- **Feito:** web, branch `fix/aud-p9-limpar-opcionais`, 1 commit (PR web#73). **WEB-05** `61ca996`: na edição, opcional apagado vai como `null` (registros clínicos e nota clínica); a criação continua omitindo. `ComLimpeza<T>` tipa o `null` nos PATCH. Verificação: `lint` ✅ · `npm test` 233 ✅ · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#73 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** nenhuma nova (o `null` sem tipo no shared já é o SH-09).
+- **Bloqueios:** nenhum.
+- **Teste manual:** feito pelo usuário com a web (branch do WEB-05) e uma API local na porta 3001 (código da `develop`, banco `petcard_dev`, com `FCM_ENABLED=false` e `CRMV_PROVIDER=stub` só na execução): os opcionais apagados somem depois de salvar. A web usa `HashRouter`: as rotas locais são `http://localhost:5173/#/vet/login`, `/#/vet/pets/<id>` etc.
+- **Próximo passo:** depois do merge da web#73, o P9 (#66) está completo: fechar a issue. Depois, **MOB-01** (P11, #68) no mobile, branch `fix/aud-p11-push-logout` a partir da `develop`: `deviceService.unregister(token)` antes do `clearSession()` no `logout`, com erro ignorado e timeout curto (teste: chama `unregister` e depois limpa a sessão, mesmo se ele falhar).
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 concluído
+- **Feito:** o usuário gerou o APK do app a partir da `main` e testou em aparelho, inclusive o "Confirmar com Google" do MOB-14. **MOB-14 e API-04 🚀**: o P6 está todo em produção. #63 fechada. docs#106 mergeada.
+- **PRs:** PetCardOrg/petcard-docs#106 (mergeado) · este PR de docs
+- **Decisões:** o APK testado conta como o "build mobile" do deploy do P6.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** **WEB-05** (P9, #66) na web, branch `fix/aud-p9-limpar-opcionais` a partir da `develop`: na edição dos registros clínicos, campo opcional esvaziado vai como `null` (na criação, continua omitido). Depois, **MOB-01** (P11, #68): `deviceService.unregister` antes de `clearSession` no logout. O MOB-15 (P11) é configuração do EAS, com o usuário.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — Release `develop → main` (api, web, mobile, docs)
 - **Feito:**
   - Antes da release, revisão do que ia para a `main`. Na API: sem migration nova; `CRMV_PROVIDER` e `REMINDERS_TRIGGER_SECRET` passam a ser obrigatórios no boot; o staging já rodava a `develop` com `NODE_ENV=production`. O secret `REMINDERS_API_URL` foi conferido e corrigido pelo usuário (o LOG de 30/10 citava `https://petcard-api.onrender.com`, que responde 404; a produção é `https://petcard-api-v1yi.onrender.com`).

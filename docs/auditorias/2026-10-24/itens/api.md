@@ -44,7 +44,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** api#182 (mergeado em 2026-10-29). `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação que não entrou na fila e devolve só as publicadas; retorno vazio faz o `DoseReminderService` soltar a reivindicação (`lastNotifiedAt` volta ao valor anterior).
 
 ### API-04 · Token roubado permite tomar a conta do tutor
-- **Status:** 🚀 em produção (api#195, 2026-11-03), com a web; falta o build EAS do app (MOB-14) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
+- **Status:** 🚀 em produção (api#195, web#72 e APK do app, 2026-11-03) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Depende de:** SH-03 (DTO com `senha_atual`) publicado no `@petcardorg/shared`.
 - **Onde:** `src/modules/tutor/tutor.controller.ts:36` (`PATCH me`), `:46` (`DELETE me`), `tutor.service.ts` (`updateById`, `removeById`). Modelo a copiar: `veterinario.service.ts:111` (`assertSenhaAtualConfere`).
 - **Problema:** trocar o e-mail e apagar a conta só exigem o token (7 dias, em `localStorage` na web). Atacante troca o e-mail → "esqueci a senha" → dono da conta.
@@ -55,7 +55,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
   - [x] `DELETE /tutors/me` idem.
   - [x] Caminho da conta só-Google coberto por teste.
   - [x] **Vet também:** troca de e-mail em `PATCH /veterinarios/me` passa a exigir `senha_atual` (hoje só a troca de senha exige — ver SH-03).
-  - [ ] Clientes atualizados (web 🚀 web#72; app na `main` pela mobile#105, falta o build EAS) para pedir a senha nesses fluxos: MOB-14 (tutor) e WEB-14 (vet). **Publicar a API e os clientes juntos**, senão a troca de e-mail quebra.
+  - [x] Clientes atualizados (web#72 e app pela mobile#105, APK testado em 2026-11-03) para pedir a senha nesses fluxos: MOB-14 (tutor) e WEB-14 (vet). **Publicar a API e os clientes juntos**, senão a troca de e-mail quebra.
   - [x] OpenAPI/Postman regenerados (`scripts/generate-openapi.ts`).
 - **Resolução:** commit `a93ce9e`. Tutor: `PATCH /tutors/me` com e-mail **novo** e `DELETE /tutors/me` conferem `senha_atual` (bcrypt); a conta com Google vinculado pode provar com `google_id_token`, validado pelo mesmo verificador do login (`AuthService.verifyGoogleIdToken`, extraído do `googleLogin`), exigindo o mesmo `sub` e `iat` de até **5 minutos**. `senha_atual` em conta sem senha → 401. Trocar o e-mail zera `emailVerifiedAt` e carimba `passwordChangedAt`: **todas as sessões caem, inclusive a de quem trocou** (o app precisa mandar a pessoa entrar de novo, MOB-14). Vet: trocar o e-mail confere `senha_atual` (sem derrubar sessões; o item não pedia). Nos dois, a prova vem antes da checagem de e-mail ocupado, para a rota não revelar quais e-mails têm conta. Mandar o e-mail atual sem mudança não pede prova. Testes: `tutor.reautenticacao.spec.ts` (16), controller do tutor, service do vet e e2e (`conta-do-tutor`, `auth`). Falta o OpenAPI (regenerar depois do merge) e os clientes (WEB-14, MOB-14).
 
