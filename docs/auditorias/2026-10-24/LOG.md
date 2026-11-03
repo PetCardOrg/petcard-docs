@@ -17,12 +17,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 ---
 
 ## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do API-17)
-- **Feito:** api#193 (`b318123`) e docs#98 mergeados; CI da `develop` da API verde. **API-17 ✅**, marcado no checklist da #70.
-- **PRs:** PetCardOrg/petcard-api#193 e PetCardOrg/petcard-docs#98 (mergeados)
-- **Decisões:** nenhuma nova.
+- **Feito:**
+  - api#193 (`b318123`) e docs#98 mergeados; CI da `develop` da API verde. **API-17 ✅**, marcado no checklist da #70.
+  - Aberto o **shared#85** (`develop → main`, release **0.24.1**), no lugar do shared#83. Entram P4, P5 e SH-06. Avisado na #62.
+- **PRs:** PetCardOrg/petcard-api#193 e PetCardOrg/petcard-docs#98 (mergeados) · PetCardOrg/petcard-shared#85 (aberto, review pedido a camilampinheiro)
+- **Decisões:** o usuário **liberou a release do shared** (só do shared). API, web, mobile e docs continuam sem nada para a `main`. O deploy do P6 toca a `main` desses repos: perguntar antes.
 - **Descobertas:** nenhuma.
-- **Bloqueios:** WEB-17, API-22, P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) esperam uma release do shared (a **0.24.1**), que precisa de um PR `develop → main` novo no shared.
-- **Próximo passo:** perguntar ao usuário qual caminho seguir: (1) abrir o PR `develop → main` do shared para publicar a 0.24.1 e destravar P5/P6/WEB-05/MOB-01/WEB-17/API-22; ou (2) seguir pelo **MOB-15** (#68, variáveis do ambiente `production` no EAS), que não depende da release mas precisa de acesso ao painel do EAS. A validação de push/Google em aparelho real (#68) também pode andar sem release.
+- **Bloqueios:** WEB-17, API-22, P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) esperam a 0.24.1 publicada.
+- **Próximo passo:** depois do merge do shared#85, conferir o workflow *Publish Package* e `npm view @petcardorg/shared version` (deve dar `0.24.1`). Com isso, marcar a publicação na #62 e fechá-la (P5 completo). Depois seguir pelo **P6** (#63): atualizar `@petcardorg/shared` para `^0.24.1` na API, na web e no mobile (commit `chore(deps): atualiza @petcardorg/shared para 0.24.1 (AUD P6)`), começando pela API: API-20, API-04, API-23 e API-24.
 
 ## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do SH-06; API-17)
 - **Feito:**
