@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P15 concluído
+- **Feito:**
+  - api#196, web#74 e docs#111 mergeadas. **P15 completo na `develop`**: #109 fechada. MOB-01 (mobile#106) também ✅ em develop.
+  - Ao regenerar o OpenAPI, as respostas do status do CRMV e do histórico não apareciam: o plugin do Swagger não infere tipos de pacote externo, e o status do CRMV deixou de ser um tipo local no WEB-17 (antes aparecia como `object` genérico; o histórico nunca apareceu). PR api#197 com `@ApiOkResponse` nas três rotas, só documentação.
+  - `docs/api/openapi.json` e a collection do Postman regenerados com o código da api#197 sobre a `develop` (58 paths, 47 schemas; 76 requests, 15 públicos). Entram o corpo do `DELETE /veterinarios/me`, `limit`/`cursor` do histórico e as respostas com `motivo` e `proximo_cursor`.
+- **PRs:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74 e PetCardOrg/petcard-docs#111 (mergeados) · PetCardOrg/petcard-api#197 (aberto) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** o total de concluídos do painel é contado à mão; os arquivos de itens misturam seções e tabelas, e uma contagem por script não bateu. Fica 62 somando o que mudou desde a última atualização.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da api#197 e deste PR: (1) a próxima ida para a `main` leva **API e web juntas** (WEB-05, API-28, WEB-17 e API-22 na web; API-28, WEB-17 e API-22 na API) e o mobile (MOB-01); precisa de liberação do usuário. (2) Com o usuário: MOB-15 (variáveis do ambiente `production` do EAS) e a validação de push e Google em aparelho, que fecham a #68. (3) O API-29 (specs da API com erro de tipo) não tem pacote: propor ao usuário. (4) O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P15 (release 0.25.0, API e web)
 - **Feito:**
   - shared#86 e docs#110 mergeadas. Com a liberação do usuário, release shared#87 (`develop → main`) mergeada: *Publish Package* verde e o registry lista a **0.25.0**. SH-09 🚀.

@@ -405,7 +405,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/CrmvStatusResponseDto"
                 }
               }
             }
@@ -448,7 +448,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/CrmvStatusResponseDto"
                 }
               }
             }
@@ -518,8 +518,19 @@
         ]
       },
       "delete": {
+        "description": "Exige `senha_atual` no corpo: só o token não basta para uma ação irreversível. Sem a senha responde 400; com a senha errada, 401.",
         "operationId": "VeterinarioController_removeMe",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteVeterinarioDto"
+              }
+            }
+          }
+        },
         "responses": {
           "204": {
             "description": ""
@@ -2114,7 +2125,7 @@
     },
     "/pets/{petId}/historico-clinico": {
       "get": {
-        "description": "Linha do tempo com notas, vacinas, vermífugos e medicações. Inclui registros excluídos, marcados por `excluido`, e a trilha de ações de cada um com o responsável e o CRMV.",
+        "description": "Linha do tempo com notas, vacinas, vermífugos e medicações. Inclui registros excluídos, marcados por `excluido`, e a trilha de ações de cada um com o responsável e o CRMV. Paginação opcional por cursor: com `limit`, devolve até `limit` itens e, se houver mais, o `proximo_cursor` para a página seguinte. Sem `limit`, devolve tudo.",
         "operationId": "HistoricoClinicoController_doPet",
         "parameters": [
           {
@@ -2124,11 +2135,37 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "`proximo_cursor` da página anterior. Opaco: não montar no cliente.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricoClinicoResponseDto"
+                }
+              }
+            }
           },
           "401": {
             "description": "Token ausente ou inválido"
@@ -3371,6 +3408,32 @@
           "crmv"
         ]
       },
+      "CrmvStatusResponseDto": {
+        "type": "object",
+        "properties": {
+          "verified": {
+            "type": "boolean"
+          },
+          "situacao": {
+            "type": "string",
+            "description": "Situação na base externa, para exibir como veio."
+          },
+          "motivo": {
+            "type": "string",
+            "description": "Motivo da recusa, quando é um que o cliente trata à parte (AUD WEB-17).\nUse este campo para decidir, e não o texto da `situacao`.",
+            "enum": [
+              "NOME_DIVERGENTE"
+            ]
+          },
+          "verified_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "verified"
+        ]
+      },
       "UpdateVeterinarioDto": {
         "type": "object",
         "properties": {
@@ -3409,6 +3472,18 @@
             "format": "uri"
           }
         }
+      },
+      "DeleteVeterinarioDto": {
+        "type": "object",
+        "properties": {
+          "senha_atual": {
+            "type": "string",
+            "maxLength": 72
+          }
+        },
+        "required": [
+          "senha_atual"
+        ]
       },
       "AdicionarPetAtendidoDto": {
         "type": "object",
@@ -4443,17 +4518,166 @@
             "type": "string"
           },
           "next_dose_at": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "veterinarian_name": {
             "type": "string",
+            "nullable": true,
             "maxLength": 120
           },
           "notes": {
             "type": "string",
+            "nullable": true,
             "maxLength": 2000
           }
         }
+      },
+      "AcaoClinicaResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "CRIACAO",
+              "EDICAO",
+              "EXCLUSAO",
+              "ANEXO_ADICIONADO",
+              "ANEXO_REMOVIDO",
+              "ANEXO_VERIFICADO"
+            ]
+          },
+          "autor_tipo": {
+            "type": "string",
+            "enum": [
+              "TUTOR",
+              "VET"
+            ]
+          },
+          "autor_id": {
+            "type": "string"
+          },
+          "autor_nome": {
+            "type": "string"
+          },
+          "autor_crmv": {
+            "type": "string"
+          },
+          "ocorrido_em": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tipo",
+          "autor_tipo",
+          "autor_id",
+          "autor_nome",
+          "ocorrido_em"
+        ]
+      },
+      "HistoricoClinicoItemResponseDto": {
+        "type": "object",
+        "properties": {
+          "entidade": {
+            "type": "string",
+            "enum": [
+              "NOTA_CLINICA",
+              "VACINA",
+              "VERMIFUGO",
+              "MEDICACAO"
+            ]
+          },
+          "entidade_id": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string",
+            "description": "Nome da vacina, do produto, do medicamento ou o diagnóstico da nota."
+          },
+          "descricao": {
+            "type": "string",
+            "description": "Prescrição, dosagem ou observação, conforme a entidade."
+          },
+          "ocorrido_em": {
+            "type": "string",
+            "description": "Data clínica do fato (aplicação, início do tratamento, consulta).\n\nVem como **dia de calendário** `YYYY-MM-DD` para vacina, vermífugo e\nmedicação — como no resto da API. Instante (ISO completo) só na nota\nclínica, cujo fato clínico é o próprio momento do registro. Data de\ncalendário serializada como instante é lida pelo cliente em fuso\nnegativo como o dia anterior."
+          },
+          "registrado_em": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Quando entrou no sistema. Ordena a linha do tempo."
+          },
+          "excluido": {
+            "type": "boolean"
+          },
+          "excluido_em": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "veterinario_id": {
+            "type": "string"
+          },
+          "veterinario_nome": {
+            "type": "string"
+          },
+          "veterinario_crmv": {
+            "type": "string"
+          },
+          "acoes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AcaoClinicaResponseDto"
+            }
+          },
+          "anexos": {
+            "description": "Comprovantes ativos do registro; vazio para nota clínica.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnexoResponseDto"
+            }
+          }
+        },
+        "required": [
+          "entidade",
+          "entidade_id",
+          "titulo",
+          "ocorrido_em",
+          "registrado_em",
+          "excluido",
+          "acoes",
+          "anexos"
+        ]
+      },
+      "HistoricoClinicoResponseDto": {
+        "type": "object",
+        "properties": {
+          "pet_id": {
+            "type": "string"
+          },
+          "pet_nome": {
+            "type": "string"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoricoClinicoItemResponseDto"
+            }
+          },
+          "proximo_cursor": {
+            "type": "string",
+            "description": "Cursor da próxima página, quando a chamada pediu `limit` e há mais itens\n(AUD API-22). Ausente na última página e sem paginação."
+          }
+        },
+        "required": [
+          "pet_id",
+          "pet_nome",
+          "itens"
+        ]
       },
       "AnexoArquivoResponseDto": {
         "type": "object",
@@ -4518,14 +4742,17 @@
             "type": "string"
           },
           "next_dose_at": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "veterinarian_name": {
             "type": "string",
+            "nullable": true,
             "maxLength": 120
           },
           "notes": {
             "type": "string",
+            "nullable": true,
             "maxLength": 2000
           }
         }
@@ -4595,14 +4822,17 @@
             "type": "string"
           },
           "end_date": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "veterinarian_name": {
             "type": "string",
+            "nullable": true,
             "maxLength": 120
           },
           "notes": {
             "type": "string",
+            "nullable": true,
             "maxLength": 2000
           }
         }
@@ -4757,10 +4987,12 @@
           },
           "prescricao": {
             "type": "string",
+            "nullable": true,
             "maxLength": 2000
           },
           "observacoes": {
             "type": "string",
+            "nullable": true,
             "maxLength": 2000
           }
         }
