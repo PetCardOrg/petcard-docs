@@ -16,6 +16,20 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-13, 14, 21 e 22)
+- **Feito:**
+  - **API-13** (`d0152d6`, branch `fix/aud-p13-erros-externos`): no Places, o helper `readPlacesResponse` manda o status e o corpo do erro do Google para o log e responde a mensagem genérica (antes o corpo ia na mensagem do 502). No Places e na Infosimples, `response.json()` inválido vira 502 em vez de 500. 3 testes novos.
+  - **API-14** (`af8c5bc`, branch `refactor/aud-p13-dose-reminder`): um `processReminders` no lugar dos três `process*` e um delegate do Prisma por modelo no lugar dos `switch` do `claim`/`release`. -41 linhas; os 33 testes do reminder passam sem alteração.
+  - **API-21** ✅ por decisão (D6), sem código. **API-22** ⏸️.
+  - Verificação nas duas branches: `lint` ✅ · `npm test` ✅ (805 no API-13, 802 no API-14) · `build` ✅. O e2e não rodou (nenhuma rota ou DTO mudou).
+- **PRs:** PetCardOrg/petcard-api#190 (API-13) e PetCardOrg/petcard-api#191 (API-14), abertos, review pedido a camilampinheiro.
+- **Decisões:** **D6**: manter o 409 "Email already registered" no cadastro (API-21). Registrada no PLANO.
+- **Descobertas:**
+  - O shared não tem nenhum DTO de paginação: o API-22 precisa de contrato novo e, portanto, de uma release do shared.
+  - `npx tsc --noEmit` na API acusa erros de tipo já existentes em specs (`google-calendar`, `card`, `vaccine`). O `nest build` não compila specs, então não quebra nada; não mexi (fora do escopo).
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#190 e da api#191, marcar API-13 e API-14 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-25** (excluir agendamento com a fila fora deixa evento órfão no Google), depois **API-26** (anexos e PNGs de QR ficam no S3 ao excluir pet ou tutor). **API-17** fica para o fim. Ainda abertos no P13, além desses: SH-06 e WEB-17 (o WEB-17 depende de release do shared) e API-22 (⏸️).
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-12, 15 e 16)
 - **Feito:** api#189 (`126482c`) e docs#92 mergeados; CI da `develop` da API verde. **API-12, API-15 e API-16 ✅**, marcados no checklist da #70. Por pedido do usuário, a sessão parou aqui, sem começar o próximo item.
 - **PRs:** PetCardOrg/petcard-api#189 e PetCardOrg/petcard-docs#92 (mergeados)
