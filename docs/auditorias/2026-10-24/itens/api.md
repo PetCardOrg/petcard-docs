@@ -161,18 +161,18 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-25 · Excluir agendamento com a fila fora deixa o evento órfão no Google
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR (#192) · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#192
 - **Origem:** API-08 (P7). O `remove` publica o DELETE e apaga a linha; se a publicação falha, nada mais sabe do `google_event_id`.
 - **Correção:** exclusão lógica: marcar `PENDING_DELETE` (o status já existe no enum), esconder a linha das listagens e deixar o worker ou o `syncAllPending` apagar o evento e a linha.
-- **Aceite:** [ ] teste: publisher lança no DELETE → a linha fica `PENDING_DELETE`, some das listagens e o `syncAllPending` apaga o evento.
-- **Resolução:** —
+- **Aceite:** [x] teste: publisher lança no DELETE → a linha fica `PENDING_DELETE`, some das listagens e o `syncAllPending` apaga o evento.
+- **Resolução:** só quando a publicação falha: com a fila no ar, o `remove` segue apagando a linha. A linha `PENDING_DELETE` some de `findAllForTutor`, `findUpcoming`, `findOne`/`update`/`remove` (404) e do lembrete de consulta; o `syncAllPending` apaga o evento e depois a linha (se o Google falhar, ela fica para a próxima); `syncAppointment` ignora a linha, para um CREATE/UPDATE ainda na fila não a ressuscitar; `disconnect` descarta as exclusões pendentes. Sem migration (o status já existia). Commit `a2af1f9`.
 
 ### API-26 · Anexos e PNGs de QR ficam no S3 quando pet ou tutor é excluído
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR (#192) · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#192
 - **Origem:** API-10 (P7). `Anexo` sai em cascata com o pet (`onDelete: Cascade`), mas o `removePrivate` só roda na exclusão avulsa do anexo (`anexo.service.ts`). Os PNGs de QR da carteira e da coleira (`qr-code.consumer.ts`, `uploadBuffer`) também não são apagados.
 - **Correção:** antes de excluir pet ou tutor, ler as chaves dos anexos e as URLs dos QRs; depois, apagar por melhor esforço (`removePrivate` / `discardFile`).
-- **Aceite:** [ ] teste: excluir pet com anexo e QR chama a remoção das duas chaves.
-- **Resolução:** —
+- **Aceite:** [x] teste: excluir pet com anexo e QR chama a remoção das duas chaves.
+- **Resolução:** `pet-arquivos.ts` lê, antes do delete, foto, URLs dos QRs da carteira e da coleira e chaves dos anexos (inclusive os com exclusão lógica, que também saem em cascata); depois do delete, `discardFile` / `discardPrivate` (novo no `UploadService`, por melhor esforço). Usado no `PetService.remove` e no `TutorService.removeById`. Commit `5db311d`.
 
 ### API-27 · Agendamento aceita `scheduled_at` no passado
 - **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#187

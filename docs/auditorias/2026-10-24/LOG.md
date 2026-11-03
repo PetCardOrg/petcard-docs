@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-25 e API-26)
+- **Feito:** API, branch `fix/aud-p13-exclusoes`, 1 commit por item, testes vistos falhando antes:
+  - **API-25** (`a2af1f9`): exclusão de agendamento com a fila fora marca `PENDING_DELETE` em vez de apagar a linha. A linha some das listagens, do `findOne` e do lembrete; o `syncAllPending` apaga o evento no Google e depois a linha; `syncAppointment` não a ressuscita; `disconnect` descarta as pendentes.
+  - **API-26** (`5db311d`): excluir pet ou tutor apaga do S3, por melhor esforço, os PNGs de QR (carteira e coleira) e os objetos privados dos anexos, lidos antes do delete (`pet-arquivos.ts`, `UploadService.discardPrivate`).
+  - Verificação: `lint` ✅ · `npm test` 814 ✅ (`test:cov` acima da catraca) · `build` ✅. O e2e não rodou (nenhuma rota ou DTO mudou).
+- **PRs:** PetCardOrg/petcard-api#192 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** a doc do `removePrivate` dizia que comprovante nunca sai do bucket; continua valendo para a exclusão avulsa do anexo (que é lógica), mas agora os arquivos saem junto com o pet. Comentário ajustado.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#192, marcar API-25 e API-26 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13**: **SH-06** (helper `compareToRelated` no shared; mudança em `src/` pede bump, mas não precisa de release para fechar o item) e depois **API-17** (`@googleapis/calendar`, risco médio: testar o sync do calendário de ponta a ponta). Ainda abertos no P13, além desses: WEB-17 (depende de release do shared) e API-22 (⏸️).
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-13 e 14)
 - **Feito:** api#190 (`217350d`), api#191 (`af5f6e5`) e docs#94 mergeados; CI da `develop` da API verde nos dois merges. **API-13 e API-14 ✅**, marcados no checklist da #70.
 - **PRs:** PetCardOrg/petcard-api#190, PetCardOrg/petcard-api#191 e PetCardOrg/petcard-docs#94 (mergeados)
