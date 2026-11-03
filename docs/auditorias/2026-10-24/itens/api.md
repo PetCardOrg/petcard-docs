@@ -129,8 +129,8 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 | ID | Item | Onde | Correção | Status |
 |----|------|------|----------|--------|
 | API-12 | Container roda como root | `Dockerfile` | `USER node` antes do `ENTRYPOINT`; checar permissões de escrita | ✅ api#189 (commit `fb57b54`; validado com Docker: `uid=1000(node)`, as 29 migrations e o boot sem EACCES) |
-| API-13 | Erro de serviço externo vaza ou vira 500 | `places.service.ts` (~175), `infosimples-crmv.validator.ts` (~99) | logar corpo, responder genérico; `try/catch` no `response.json()` → 502 | 🟦 api#190 (commit `d0152d6`: helper `readPlacesResponse` loga status e corpo do Google e responde a mensagem genérica; JSON inválido → 502 no Places e na Infosimples) |
-| API-14 | Lembrete de dose triplicado | `dose-reminder.service.ts` | mapa modelo → delegate Prisma (~-60 linhas) | 🟦 api#191 (commit `af8c5bc`: um `processReminders` e um delegate por modelo no claim/release; -41 linhas; testes do reminder sem alteração) |
+| API-13 | Erro de serviço externo vaza ou vira 500 | `places.service.ts` (~175), `infosimples-crmv.validator.ts` (~99) | logar corpo, responder genérico; `try/catch` no `response.json()` → 502 | ✅ api#190 (commit `d0152d6`: helper `readPlacesResponse` loga status e corpo do Google e responde a mensagem genérica; JSON inválido → 502 no Places e na Infosimples) |
+| API-14 | Lembrete de dose triplicado | `dose-reminder.service.ts` | mapa modelo → delegate Prisma (~-60 linhas) | ✅ api#191 (commit `af8c5bc`: um `processReminders` e um delegate por modelo no claim/release; -41 linhas; testes do reminder sem alteração) |
 | API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | ✅ reminder em develop (api#183); `.env.example`, `mail.config.ts` e o teste em api#189 (commit `d64e785`: logs do Render) |
 | API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | ✅ api#189 (commit `6e67db7`; lock editado só com as remoções, porque o `npm uninstall` no Windows podava `@emnapi/*`; o `source-map-support` fica no lock pelo `terser`) |
 | API-17 | `googleapis` enorme para 1 uso | `google-calendar.service.ts` | `@googleapis/calendar` + `google-auth-library`. **Risco médio**: testar sync de calendário de ponta a ponta | ⬜ |
@@ -161,18 +161,18 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** —
 
 ### API-25 · Excluir agendamento com a fila fora deixa o evento órfão no Google
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR (#192) · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#192
 - **Origem:** API-08 (P7). O `remove` publica o DELETE e apaga a linha; se a publicação falha, nada mais sabe do `google_event_id`.
 - **Correção:** exclusão lógica: marcar `PENDING_DELETE` (o status já existe no enum), esconder a linha das listagens e deixar o worker ou o `syncAllPending` apagar o evento e a linha.
-- **Aceite:** [ ] teste: publisher lança no DELETE → a linha fica `PENDING_DELETE`, some das listagens e o `syncAllPending` apaga o evento.
-- **Resolução:** —
+- **Aceite:** [x] teste: publisher lança no DELETE → a linha fica `PENDING_DELETE`, some das listagens e o `syncAllPending` apaga o evento.
+- **Resolução:** só quando a publicação falha: com a fila no ar, o `remove` segue apagando a linha. A linha `PENDING_DELETE` some de `findAllForTutor`, `findUpcoming`, `findOne`/`update`/`remove` (404) e do lembrete de consulta; o `syncAllPending` apaga o evento e depois a linha (se o Google falhar, ela fica para a próxima); `syncAppointment` ignora a linha, para um CREATE/UPDATE ainda na fila não a ressuscitar; `disconnect` descarta as exclusões pendentes. Sem migration (o status já existia). Commit `a2af1f9`.
 
 ### API-26 · Anexos e PNGs de QR ficam no S3 quando pet ou tutor é excluído
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🟦 em PR (#192) · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#192
 - **Origem:** API-10 (P7). `Anexo` sai em cascata com o pet (`onDelete: Cascade`), mas o `removePrivate` só roda na exclusão avulsa do anexo (`anexo.service.ts`). Os PNGs de QR da carteira e da coleira (`qr-code.consumer.ts`, `uploadBuffer`) também não são apagados.
 - **Correção:** antes de excluir pet ou tutor, ler as chaves dos anexos e as URLs dos QRs; depois, apagar por melhor esforço (`removePrivate` / `discardFile`).
-- **Aceite:** [ ] teste: excluir pet com anexo e QR chama a remoção das duas chaves.
-- **Resolução:** —
+- **Aceite:** [x] teste: excluir pet com anexo e QR chama a remoção das duas chaves.
+- **Resolução:** `pet-arquivos.ts` lê, antes do delete, foto, URLs dos QRs da carteira e da coleira e chaves dos anexos (inclusive os com exclusão lógica, que também saem em cascata); depois do delete, `discardFile` / `discardPrivate` (novo no `UploadService`, por melhor esforço). Usado no `PetService.remove` e no `TutorService.removeById`. Commit `5db311d`.
 
 ### API-27 · Agendamento aceita `scheduled_at` no passado
 - **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#187
