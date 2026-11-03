@@ -47,12 +47,12 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 | Pacote | Repo | Itens | Observação |
 |--------|------|-------|------------|
 | **P4** Rede de segurança | shared | SH-05 → SH-01 → SH-04 | Sem mudança em `src/`, então não precisa de bump. Aplicar a lição do SH-01 aos outros repos (ver nota no item). |
-| **P5** Contratos | shared | SH-02, SH-03, SH-08 (`MaxLength`) | Bump **minor** → `0.24.0`, merge `develop` → `main`, confirmar o publish. |
+| **P5** Contratos | shared | SH-02, SH-03, SH-08 (`MaxLength`) | Bump **minor** → `0.24.0`, merge `develop` → `main`, confirmar o publish. **Saiu como 0.24.1** (shared#85, 2026-11-03), porque o SH-06 entrou antes da release. |
 
 ### Fase 3 — Contratos cross-repo e API restante
 | Pacote | Repo(s) | Itens | Observação |
 |--------|---------|-------|------------|
-| **P6** Reautenticação e contratos | api, web, mobile | API-20, API-04, API-23, API-24 · WEB-14 · MOB-14 | Atualizar `@petcardorg/shared` para `^0.24.0` nos 3. **Merge e deploy juntos** (API primeiro, clientes logo depois). D2 precisa estar decidida. |
+| **P6** Reautenticação e contratos | api, web, mobile | API-20, API-04, API-23, API-24 · WEB-14 · MOB-14 | Atualizar `@petcardorg/shared` para `^0.24.1` nos 3 (a 0.24.0 nunca foi publicada). **Merge e deploy juntos** (API primeiro, clientes logo depois). D2 precisa estar decidida. |
 | **P7** Robustez da API | api | API-08, API-10 | |
 | **P8** Filas | api | API-11 → API-09 | Refactor primeiro (commit próprio), depois o backoff. |
 

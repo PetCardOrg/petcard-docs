@@ -24,7 +24,8 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 - **Decisões:** o usuário **liberou a release do shared** (só do shared). API, web, mobile e docs continuam sem nada para a `main`. O deploy do P6 toca a `main` desses repos: perguntar antes.
 - **Descobertas:** nenhuma.
 - **Bloqueios:** WEB-17, API-22, P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) esperam a 0.24.1 publicada.
-- **Próximo passo:** depois do merge do shared#85, conferir o workflow *Publish Package* e `npm view @petcardorg/shared version` (deve dar `0.24.1`). Com isso, marcar a publicação na #62 e fechá-la (P5 completo). Depois seguir pelo **P6** (#63): atualizar `@petcardorg/shared` para `^0.24.1` na API, na web e no mobile (commit `chore(deps): atualiza @petcardorg/shared para 0.24.1 (AUD P6)`), começando pela API: API-20, API-04, API-23 e API-24.
+- **Release:** shared#85 mergeado (`ed5c9a1`); *Publish Package* verde e `npm view @petcardorg/shared version` → **`0.24.1`**. Publicação marcada na #62.
+- **Próximo passo:** depois do merge deste PR de docs, **fechar a #62** (P5 completo). Depois seguir pelo **P6** (#63): atualizar `@petcardorg/shared` para `^0.24.1` na API, na web e no mobile (commit `chore(deps): atualiza @petcardorg/shared para 0.24.1 (AUD P6)`), começando pela API: API-20, API-04, API-23 e API-24.
 
 ## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do SH-06; API-17)
 - **Feito:**
