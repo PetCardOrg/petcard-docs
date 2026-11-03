@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (SH-06)
+- **Feito:** shared, branch `refactor/aud-p13-clinical-date`. **SH-06** (`4f71945`): `IsAfterDate` e `IsOnOrAfterDate` passam a usar um helper interno, o `compareToRelated(name, property, ok, message)`. O contrato público fica igual. Antes do refactor entraram 3 testes, que passaram no código antigo: as mensagens das duas regras e `start_date` inválida no `IsOnOrAfterDate`. Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 44 ✅ · `check-version-bump.sh` ✅.
+- **PRs:** PetCardOrg/petcard-shared#84 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** o `check-version-bump.sh` compara com a `develop`, não com o que está publicado. Por isso o SH-06 exigiu bump (0.24.1) mesmo com a 0.24.0 ainda não publicada. A próxima release do shared sai direto como 0.24.1 (ou maior). Os consumidores devem instalar `^0.24.1`, não `^0.24.0`.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da shared#84, marcar o SH-06 ✅ (em `itens/shared.md`, no painel e no checklist da #70). Seguir no **P13** com o **API-17** (`@googleapis/calendar`, branch nova a partir da `develop` atualizada da API; risco médio: testar o sync do calendário de ponta a ponta). Depois disso, no P13 só restam WEB-17 e API-22, os dois dependendo de release do shared.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-25 e 26)
 - **Feito:** api#192 (`1d1a48f`) e docs#95 mergeados; CI da `develop` da API verde. **API-25 e API-26 ✅**, marcados no checklist da #70.
 - **PRs:** PetCardOrg/petcard-api#192 e PetCardOrg/petcard-docs#95 (mergeados)
