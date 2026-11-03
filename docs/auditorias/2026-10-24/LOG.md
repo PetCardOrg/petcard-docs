@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-13 e 14)
+- **Feito:** api#190 (`217350d`), api#191 (`af5f6e5`) e docs#94 mergeados; CI da `develop` da API verde nos dois merges. **API-13 e API-14 ✅**, marcados no checklist da #70.
+- **PRs:** PetCardOrg/petcard-api#190, PetCardOrg/petcard-api#191 e PetCardOrg/petcard-docs#94 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-25** (excluir agendamento com a fila fora deixa evento órfão no Google), depois **API-26** (anexos e PNGs de QR ficam no S3 ao excluir pet ou tutor). **API-17** fica para o fim. Ainda abertos no P13, além desses: SH-06, WEB-17 (depende de release do shared) e API-22 (⏸️).
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-13, 14, 21 e 22)
 - **Feito:**
   - **API-13** (`d0152d6`, branch `fix/aud-p13-erros-externos`): no Places, o helper `readPlacesResponse` manda o status e o corpo do erro do Google para o log e responde a mensagem genérica (antes o corpo ia na mensagem do 502). No Places e na Infosimples, `response.json()` inválido vira 502 em vez de 500. 3 testes novos.
