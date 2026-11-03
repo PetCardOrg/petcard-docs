@@ -16,6 +16,21 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — Release `develop → main` (api, web, mobile, docs)
+- **Feito:**
+  - Antes da release, revisão do que ia para a `main`. Na API: sem migration nova; `CRMV_PROVIDER` e `REMINDERS_TRIGGER_SECRET` passam a ser obrigatórios no boot; o staging já rodava a `develop` com `NODE_ENV=production`. O secret `REMINDERS_API_URL` foi conferido e corrigido pelo usuário (o LOG de 30/10 citava `https://petcard-api.onrender.com`, que responde 404; a produção é `https://petcard-api-v1yi.onrender.com`).
+  - docs#104: a `main` do docs entrou na `develop`, mantendo o OpenAPI da `develop`. O de 52 rotas (docs#47) tinha ido direto para a `main` e dava conflito.
+  - PRs de release abertos e mergeados pelo usuário: **api#195**, **web#72**, **mobile#105**, **docs#105**. O "CD Produção" da API foi aprovado e passou; o run antigo parado desde 20/10 foi cancelado. CI da `main` verde nos três.
+  - Produção conferida: `GET /` → 200, `DELETE /devices/x` → 401 (rota do P6 no ar), `POST /internal/reminders/run` sem segredo → 401. "Lembretes diários" rodado à mão em produção: verde. Vercel: build do commit da release (`e35bfee`) com sucesso.
+  - Status: tudo o que estava ✅ em develop virou **🚀 em produção** (54 itens). API-04 e MOB-14 seguem 🟨 até o build EAS do app.
+- **PRs:** PetCardOrg/petcard-api#195, PetCardOrg/petcard-web#72, PetCardOrg/petcard-mobile#105, PetCardOrg/petcard-docs#104 e #105 (mergeados) · este PR de docs
+- **Decisões:** o usuário liberou a release de api, web, mobile e docs (a liberação vale para esta release).
+- **Descobertas:**
+  - O `environment.url` do `cd-production.yml` da API aponta para `https://petcard-api.onrender.com`, que não existe mais (só afeta o link exibido no GitHub).
+  - O domínio de produção da web não está registrado em nenhum repo: o `petcard-web-dusky.vercel.app` citado responde `DEPLOYMENT_NOT_FOUND`, e o projeto da Vercel agora é `apppetcard-8982/petcard-web`. A web nova não foi aberta no navegador nesta sessão.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** (1) gerar o APK `preview` no EAS e testar em aparelho (login e-mail e Google, mapa, push, carteira, agendamentos, excluir conta com senha e com Google); passando, build de produção. Isso fecha o MOB-14, o API-04 e a #63. (2) Seguir com o **MOB-01** (P11, #68), já liberado pelo API-23 em produção, e o **WEB-05** (P9, #66).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P6 (OpenAPI)
 - **Feito:**
   - mobile#104 e docs#102 mergeadas. Os três PRs do P6 estão na `develop`.
