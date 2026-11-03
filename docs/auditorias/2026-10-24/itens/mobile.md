@@ -33,7 +33,7 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** `app.config.ts` lança erro nos perfis `preview`/`production` sem `EXPO_PUBLIC_API_URL`; `console.error` em runtime fora do dev. Teste `app.config.test.ts`. `eas.json` conferido; a variável existe nos ambientes preview e production do EAS. Commit `16fa3fd`.
 
 ### MOB-14 · Pedir senha atual ao trocar e-mail e ao excluir conta (derivado do SH-03/API-04)
-- **Status:** 🟦 em PR (#104) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-mobile#104
+- **Status:** 🟨 código em develop; falta publicar junto com o API-04 e validar o Google em aparelho · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-mobile#104
 - **Onde:** `ProfileScreen` (edição e exclusão de conta), `tutor.service.ts`.
 - **Correção:** campo "senha atual" ao mudar e-mail e na confirmação da exclusão; conta só-Google reautentica com Google (decisão D2).
 - **Aceite:** [x] testes dos dois fluxos (exclusão; a troca de e-mail não se aplica, ver Resolução); [ ] publicar junto com o API-04; [ ] validar o Google em aparelho.

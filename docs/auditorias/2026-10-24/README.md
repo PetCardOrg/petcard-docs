@@ -27,7 +27,7 @@ Atualizado em **2026-11-03**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 1 | **P3** Lembretes confiáveis | api | API-03, 02 (+15) | ✅ em develop (api#182, api#183); variáveis cadastradas; falta `develop → main` da API e rodar o workflow uma vez | [#60](https://github.com/PetCardOrg/petcard-docs/issues/60) |
 | 2 | **P4** Rede de segurança do shared | shared | SH-05, 01, 04 | ✅ em develop (shared#81, api#184) | [#61](https://github.com/PetCardOrg/petcard-docs/issues/61) |
 | 2 | **P5** Contratos do shared (0.24.1) | shared | SH-02, 03, 08 | ✅ publicado: **0.24.1** no registry (shared#85, `develop → main`, 2026-11-03). Sai direto como 0.24.1 porque o SH-06 mudou `src/` antes; a 0.24.0 nunca foi publicada | [#62](https://github.com/PetCardOrg/petcard-docs/issues/62) |
-| 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | 🟨 API em develop (api#194: API-20, 24 ✅; API-04, 23 esperam OpenAPI e clientes) · WEB-14 em develop (web#71) · MOB-14 🟦 mobile#104 · deploy na `main` pendente | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
+| 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | 🟨 tudo em develop (api#194, web#71, mobile#104; API-20, 23, 24 ✅; OpenAPI regenerado). API-04, WEB-14 e MOB-14 esperam o deploy na `main` (API → web → build EAS); MOB-14 também a validação do Google em aparelho | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
 | 3 | **P7** Robustez da API | api | API-08, 10 | ✅ em develop (api#185) | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |
 | 3 | **P8** Filas | api | API-11, 09 | ✅ em develop (api#186) | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
 | 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | 🟨 em develop (web#69: WEB-04, 06, 07, 13, 15, 16 ✅; WEB-05 liberado: o API-24 está em develop) | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
@@ -37,7 +37,7 @@ Atualizado em **2026-11-03**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 6 | **P13** Desejáveis | api, shared, web, mobile | API-12–19, 21, 22, 25, 26, 27 · SH-06 · WEB-17 · MOB-16, 17 | 🟨 MOB-16, MOB-17 (mobile#102), API-27 (api#187), API-18, API-19 (api#188), API-12, API-15 e API-16 (api#189), API-21 (D6), API-13 (api#190), API-14 (api#191), API-25 e API-26 (api#192), SH-06 (shared#84), API-17 (api#193) ✅ · API-22 ⏸️ (release do shared) | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
 | 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | [#71](https://github.com/PetCardOrg/petcard-docs/issues/71) |
 
-**Totais:** 68 itens (API 27 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos (✅ em develop): 52** · descartados: 1 (WEB-12).
+**Totais:** 68 itens (API 27 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos (✅ em develop): 53** · descartados: 1 (WEB-12).
 
 ---
 
