@@ -16,6 +16,27 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (API)
+- **Feito:**
+  - docs#99 já estava mergeado: o P5 está completo. **Falta fechar a #62** (a escrita no GitHub foi bloqueada nesta sessão; ver Bloqueios).
+  - API, branch `fix/aud-p6-reautenticacao` (local, **sem push**), 5 commits:
+    - `7e6f7af` `chore(deps)`: `@petcardorg/shared` `^0.24.1`. O lock foi refeito a partir do da `develop`, com só as linhas do shared mudando (o `npm install` no Windows podou de novo as `@emnapi/*` e pôs `peer` em vários pacotes). Os testes do controller do tutor passam a mandar `senha_atual`, que o contrato novo exige. `CLAUDE.md` atualizado para 0.24.1.
+    - **API-20** `de2754f`: senha em bytes na cópia da API (`Buffer.byteLength`).
+    - **API-04** `a93ce9e`: prova de identidade para trocar o e-mail e excluir a conta do tutor (senha ou `id_token` do Google com até 5 min e o mesmo `sub`); trocar o e-mail derruba as sessões. Vet: trocar o e-mail pede `senha_atual`.
+    - **API-23** `5584ff6`: `DELETE /devices/:token`.
+    - **API-24** `0921112`: `null` limpa as datas opcionais dos PATCH clínicos; `null` em campo obrigatório → 400.
+  - Verificação: `lint` ✅ · `npm test` 857 ✅ · `build` ✅ · `test:e2e` 85 ✅ (Postgres local).
+- **PRs:** nenhum aberto (push e PR esperam a confirmação do usuário).
+- **Decisões:** detalhes do API-04 tomados aqui, dentro da D2: o `id_token` do Google vale como prova por **5 minutos** a partir do `iat`; mandar o e-mail atual sem mudar não pede prova; a prova é conferida antes da checagem de e-mail ocupado; trocar o e-mail do **tutor** encerra todas as sessões, inclusive a de quem trocou (o item pedia). No vet, só a senha passa a ser exigida; as sessões não caem.
+- **Descobertas / itens derivados:**
+  - **API-28**: `DELETE /veterinarios/me` não pede senha (precisa de `DeleteVeterinarioDto` no shared).
+  - **SH-09**: `@IsOptional` deixa `null` passar em campo obrigatório nos DTOs de PATCH; a API passou a barrar no service.
+  - Os dois ficaram sem pacote (próxima release minor do shared), fora do P14, que é só de breaking.
+  - O contrato em `petcard-docs/docs/api/openapi.json` não é regenerado desde 23/08 e está bem defasado (faltam coleira, anexos, auth por e-mail etc., não só o P6). Regenerar depois do merge do PR da API, para refletir a `develop`.
+  - **MOB-14** precisa tratar o 401 depois de trocar o e-mail (sessão encerrada): mandar a pessoa entrar de novo, como a web faz na troca de senha do vet.
+- **Bloqueios:** nesta sessão, a ferramenta bloqueou as escritas no GitHub (`gh issue close/edit/comment`). Não foi feito: fechar a #62, assumir a #63 e comentar o início do P6.
+- **Próximo passo:** com a confirmação do usuário: (1) `gh issue close 62` e assumir/comentar na #63; (2) push da `fix/aud-p6-reautenticacao` e PR para a `develop` da API (`fix(auth): reautenticação, descadastro de push e PATCH com null [AUD P6]`, `Relates to PetCardOrg/petcard-docs#63`), **sem merge** até web e mobile estarem prontos (deploy coordenado); (3) push desta branch de docs e PR. Depois, **WEB-14** na web (shared `^0.24.1` + pedir a senha ao trocar o e-mail do vet) e **MOB-14** no mobile (shared `^0.24.1` + senha ou Google ao trocar o e-mail e excluir a conta; novo login depois de trocar o e-mail).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do API-17)
 - **Feito:**
   - api#193 (`b318123`) e docs#98 mergeados; CI da `develop` da API verde. **API-17 ✅**, marcado no checklist da #70.
