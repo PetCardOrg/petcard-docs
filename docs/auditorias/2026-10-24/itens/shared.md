@@ -56,7 +56,7 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 ## 🟡 Bom ter
 
 ### SH-06 · `IsAfterDate` e `IsOnOrAfterDate` são quase cópias
-- **Status:** 🟦 em PR (#84) · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-shared#84
+- **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-shared#84
 - **Onde:** `src/validators/clinical-date.validators.ts` (~62-120).
 - **Correção:** helper interno `compareToRelated(property, name, ok, message)`; contrato público intacto. Exige SH-05 pronto.
 - **Resolução:** helper interno `compareToRelated(name, property, ok, message)`; `IsAfterDate` e `IsOnOrAfterDate` só passam a comparação e a mensagem. Contrato público igual. 3 testes novos (mensagens e `start_date` inválida no `IsOnOrAfterDate`), vistos passando no código antigo. Bump 0.24.1 (o check de versão compara com a `develop`; a 0.24.0 não foi publicada).

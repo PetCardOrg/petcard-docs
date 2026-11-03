@@ -16,6 +16,22 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do SH-06; API-17)
+- **Feito:**
+  - shared#84 (`65877b8`) e docs#97 mergeados; CI da `develop` do shared verde. **SH-06 ✅**, marcado no checklist da #70.
+  - API, branch `chore/aud-p13-googleapis-calendar`. **API-17** (`c65f21f`): sai o `googleapis`, entra o `@googleapis/calendar@^16.0.0`. O `OAuth2Client` passa a vir direto do `google-auth-library`. O spec mocka os módulos novos; com o código antigo, as suítes do calendário falham. Verificação: `npm ci` ✅ · `lint` ✅ · `npm test` 814 ✅ · `build` ✅. O e2e não rodou (nenhuma rota ou DTO mudou).
+  - **Teste de ponta a ponta**, com a API local e uma conta Google de teste, conferido na agenda pelo usuário: conectar (OAuth), criar agendamento, mudar o horário (o mesmo evento, sem duplicar), excluir; vacina com próxima dose criada (evento de dia inteiro) e excluída. Ao fim: agenda desconectada e o tutor e o pet de teste excluídos.
+- **PRs:** PetCardOrg/petcard-shared#84 e PetCardOrg/petcard-docs#97 (mergeados) · PetCardOrg/petcard-api#193 (aberto, review pedido a camilampinheiro)
+- **Decisões:** `@googleapis/calendar` na **16**, não na 20: a 19 e a 20 exigem Node 22 e trazem `google-auth-library@11`/`gaxios@8`; a API roda no Node 20. A 16 fica na mesma base de hoje (`googleapis-common@8.0.1`, `google-auth-library@10.6.2`). Subir para a 20 só junto com a migração da API para o Node 22.
+- **Descobertas:**
+  - O `npm install` no Windows podou de novo as opcionais `@emnapi/*` do lock; o lock foi refeito a partir do da `develop`, só com as duas mudanças. Ao refazer o lock por script, **não reordenar as chaves**: a ordem do npm não é a de um `sort()` simples (o `string_decoder` mudaria de lugar).
+  - Para testar o OAuth do calendário localmente, `http://localhost:3000/calendar/callback` precisa estar entre os URIs de redirecionamento do cliente OAuth no Google Cloud (sem isso, `redirect_uri_mismatch`). O usuário incluiu esse URI nesta sessão. A conta usada também precisa estar entre os usuários de teste da tela de consentimento.
+  - O `db:seed` apaga todas as vacinas, vermífugos e medicações do banco local. Para testes manuais, criar um tutor descartável pelo `POST /auth/register` em vez de rodar o seed.
+  - O sync de saúde (`health-calendar.service.ts`) não loga sucesso; para conferir, olhar a tabela `health_calendar_event`.
+  - O `.env` local tem `NODE_ENV` vazio, então rotas só de desenvolvimento (ex.: `/calendar/dev-connect`) respondem 404. Não mexi.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#193, marcar o API-17 ✅ (em `itens/api.md`, no painel e no checklist da #70). Com isso, no P13 só restam o **WEB-17** e o **API-22**, os dois esperando release do shared. Fora da release, só sobra trabalho que depende de acesso externo: **MOB-15** (#68, variáveis do ambiente `production` no EAS) e a validação de push/Google em aparelho real. P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) dependem da release. Perguntar ao usuário se abre o PR `develop → main` do shared (sairia a **0.24.1**, não mais a 0.24.0; os checklists da #62 e da #63 foram avisados por comentário) ou se segue pelo MOB-15 com acesso ao EAS.
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (SH-06)
 - **Feito:** shared, branch `refactor/aud-p13-clinical-date`. **SH-06** (`4f71945`): `IsAfterDate` e `IsOnOrAfterDate` passam a usar um helper interno, o `compareToRelated(name, property, ok, message)`. O contrato público fica igual. Antes do refactor entraram 3 testes, que passaram no código antigo: as mensagens das duas regras e `start_date` inválida no `IsOnOrAfterDate`. Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 44 ✅ · `check-version-bump.sh` ✅.
 - **PRs:** PetCardOrg/petcard-shared#84 (aberto, review pedido a camilampinheiro)
