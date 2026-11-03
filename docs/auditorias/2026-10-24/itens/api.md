@@ -44,7 +44,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** api#182 (mergeado em 2026-10-29). `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação que não entrou na fila e devolve só as publicadas; retorno vazio faz o `DoseReminderService` soltar a reivindicação (`lastNotifiedAt` volta ao valor anterior).
 
 ### API-04 · Token roubado permite tomar a conta do tutor
-- **Status:** 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR) · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟨 código em develop; faltam os clientes (WEB-14 em PR, MOB-14) e o OpenAPI · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Depende de:** SH-03 (DTO com `senha_atual`) publicado no `@petcardorg/shared`.
 - **Onde:** `src/modules/tutor/tutor.controller.ts:36` (`PATCH me`), `:46` (`DELETE me`), `tutor.service.ts` (`updateById`, `removeById`). Modelo a copiar: `veterinario.service.ts:111` (`assertSenhaAtualConfere`).
 - **Problema:** trocar o e-mail e apagar a conta só exigem o token (7 dias, em `localStorage` na web). Atacante troca o e-mail → "esqueci a senha" → dono da conta.
@@ -141,21 +141,21 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 |----|------|-------------------|--------|
 | API-18 | Corrida de leitura/escrita no consumo do token de redefinição | `updateMany` condicional (`where: { id, usedAt: null }`) e checar `count` | ✅ api#188 (commit `1be60c5`: `count === 0` → o mesmo 400 de link inválido) |
 | API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | ✅ api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
-| API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR): `de2754f`. `Buffer.byteLength` no decorator e na função `isStrongPassword` (formulário web de redefinição), com a mesma mensagem do shared. A cópia fica: o shared não exporta a versão em função |
+| API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | ✅ em develop (PetCardOrg/petcard-api#194): `de2754f`. `Buffer.byteLength` no decorator e na função `isStrongPassword` (formulário web de redefinição), com a mesma mensagem do shared. A cópia fica: o shared não exporta a versão em função |
 | API-21 | Cadastro revela quais e-mails existem | avaliar custo/benefício (UX vs enumeração); no mínimo documentar a decisão | ✅ decidido (D6): **manter** o 409 "Email already registered" do cadastro de tutor e de vet. A mensagem clara vale mais para a UX, e o cadastro já tem rate limit. Sem mudança de código |
 | API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | ⏸️ bloqueado: o shared não tem DTO de paginação, e o contrato novo precisa de uma release do shared, que depende da `main` |
 
 ## ➕ Itens derivados (descobertos ao cruzar as auditorias)
 
 ### API-23 · Rota para descadastrar token de push (necessária ao MOB-01)
-- **Status:** 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR) · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟨 código em develop; falta o OpenAPI · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Onde:** `src/modules/notification/devices.controller.ts` só tem `@Post()`.
 - **Correção:** `DELETE /devices/:token` autenticado, que só remove token do próprio tutor (idempotente: 204 mesmo se não existir). Opcional: remover tokens que o FCM devolve como `UNREGISTERED` no consumidor.
 - **Aceite:** [x] testes de controller e service (dono, não-dono, inexistente); [ ] OpenAPI regenerado.
 - **Resolução:** commit `5584ff6`. `DELETE /devices/:token` (só TUTOR, 204) chama `NotificationService.unregisterDevice`, um `deleteMany` por `token` **e** `tutorId`: token de outro tutor ou inexistente não casa e responde 204 igual. O app manda o token com `encodeURIComponent` (o FCM tem `:`). A parte opcional já existia: o consumidor apaga o token quando o FCM devolve `UNREGISTERED`.
 
 ### API-24 · PATCH de registros clínicos precisa aceitar `null` para limpar campo (necessário ao WEB-05)
-- **Status:** 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR) · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** ✅ em develop · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Contexto:** os DTOs do shared usam `@IsOptional()`, que já deixa `null` passar na validação. Falta confirmar que os services (`vaccine`, `deworming`, `medication`, `vet-note`) repassam `null` ao Prisma e não o descartam.
 - **Aceite:** [x] teste por service: `PATCH { next_dose_at: null }` grava `NULL`; [x] campos obrigatórios continuam rejeitando `null`.
 - **Resolução:** commit `0921112`. O problema existia nas datas: `next_dose_at` (vacina, vermífugo) e `end_date` (medicação) viravam `undefined` com `null` e o valor antigo ficava. Os textos opcionais (`notes`, `veterinarian_name`, `prescricao`, `observacoes`) já gravavam `NULL`. E os obrigatórios **não** rejeitavam `null`: o `@IsOptional` deixa passar, o nome nulo virava 500 no Prisma e a data aplicada nula era ignorada. Novo `health/campos-anulaveis.ts`: `dataAnulavel` e `assertObrigatoriosNaoNulos` (400 com a lista dos campos), usados nos 3 services de saúde e no de nota clínica (`diagnostico`). Testes de integração nos 3 controllers (passam pelo `ValidationPipe`) e de service na nota. O sync do Google Agenda já apaga o evento quando a data some. A correção de raiz no DTO virou o SH-09.
