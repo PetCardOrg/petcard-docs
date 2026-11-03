@@ -11,12 +11,12 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 ## 🔴 Precisa corrigir
 
 ### MOB-01 · Push continua chegando após logout
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 · **PR:** —
+- **Status:** 🟦 em PR (#106) · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#106
 - **Depende de:** API-23 (`DELETE /devices/:token`) em produção.
 - **Onde:** `src/contexts/AuthContext.tsx` (`logout`, ~linha 187; `clearSession`, ~49; logout forçado por 401, ~73 e ~87), `src/services/device.service.ts` (só `register`).
 - **Correção:** `deviceService.unregister(token)` chamado **antes** de `clearSession()` (precisa do Bearer), com erro ignorado e timeout curto. No logout por 401 o token já não vale: a limpeza fica com a API (tokens `UNREGISTERED`/órfãos, ver API-23).
-- **Aceite:** [ ] teste: `logout` chama `unregister` e depois limpa a sessão, mesmo se `unregister` falhar.
-- **Resolução:** —
+- **Aceite:** [x] teste: `logout` chama `unregister` e depois limpa a sessão, mesmo se `unregister` falhar.
+- **Resolução:** commit `e2d443d`. `device.service` guarda o último token registrado; `unregisterCurrent()` manda `DELETE /devices/:token` (`encodeURIComponent`, timeout de 3 s, erro ignorado) e esquece o token. O `logout` chama antes do `clearSession()`, com o Bearer ainda salvo; falhando, o logout segue. O logout forçado por 401 não mudou (a API limpa o token quando o FCM o recusa). Testes: a ordem no `AuthContext` (o descadastro roda com o token de sessão ainda salvo), o logout com o descadastro falhando e o `device.service` (URL codificada, sem token não chama, falha engolida). Falta validar em aparelho.
 
 ### MOB-02 · Timeout de 10s vale também para upload de foto
 - **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
