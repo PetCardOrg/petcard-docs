@@ -16,6 +16,22 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (web)
+- **Feito:**
+  - A api#194 e a docs#100 já estavam mergeadas na `develop` (api#194 às 04:21 UTC, antes da web e do mobile, ao contrário do combinado). Nada foi para a `main`. Status corrigido aqui: **API-20 e API-24 ✅**; API-04 e API-23 com o código em develop, esperando o OpenAPI (e, o API-04, os clientes).
+  - Web, branch `fix/aud-p6-reautenticacao`, 2 commits (PR web#71):
+    - `a9cf5b1` `chore(deps)`: `@petcardorg/shared` `^0.24.1`. Lock editado à mão só nas linhas do shared (versão, `resolved` e `integrity` copiados do lock da API); `npm ci` confirmou.
+    - **WEB-14** `b75b7fb`: mudar o e-mail no perfil do vet mostra **Senha atual** (obrigatória) e envia `senha_atual`. A comparação normaliza como a API (`trim` + minúsculas). 401 "Senha atual incorreta." mostra a mensagem sem deslogar (`ApiError.isSenhaAtualIncorreta`); outro 401 desloga. Ajuste de CSS para o olhinho do `PasswordInput` dentro de `.vet-profile-field`.
+  - Verificação: `lint` ✅ · `npm test` 231 ✅ · `build` ✅. Não houve teste manual no navegador.
+- **PRs:** PetCardOrg/petcard-web#71 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - Com a api#194 na `develop`, a troca de e-mail do vet (web) e a do tutor e a exclusão da conta (app) falham contra a `develop` da API até a web#71 e o MOB-14 entrarem. A `main` não foi afetada.
+  - O **WEB-05** (P9, #66) deixou de estar bloqueado: o API-24 está na `develop`.
+  - O `npm ci` da web falhou com `EPERM` porque dois `vite` (`npm run dev`) seguravam o binário do rolldown. Com autorização do usuário, eles foram encerrados; subir o `npm run dev` de novo quando precisar.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** **MOB-14** no mobile, branch `fix/aud-p6-reautenticacao` a partir da `develop`: shared `^0.24.1` (lock só com as linhas do shared; copiar `resolved`/`integrity` do lock da API), pedir a senha atual ao trocar o e-mail e ao excluir a conta no `ProfileScreen` (conta só-Google: reabrir o login Google e mandar `google_id_token`, D2), e depois de trocar o e-mail mandar a pessoa entrar de novo (a API derruba as sessões). Depois: regenerar `docs/api/openapi.json` e a collection do Postman a partir da `develop` da API (fecha API-04 e API-23), e o **WEB-05** (#66). O deploy na `main` (API → web → build EAS) precisa de autorização do usuário.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P6 (API)
 - **Feito:**
   - docs#99 já estava mergeado: o P5 está completo. **Falta fechar a #62** (a escrita no GitHub foi bloqueada nesta sessão; ver Bloqueios).

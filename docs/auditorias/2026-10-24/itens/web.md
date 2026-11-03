@@ -50,11 +50,11 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** —
 
 ### WEB-14 · Pedir senha atual ao trocar e-mail do vet (derivado do SH-03/API-04)
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟦 em PR (#71) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-web#71
 - **Onde:** `VetProfilePage.tsx` (formulário de perfil).
 - **Correção:** ao alterar o e-mail, mostrar o campo "senha atual" e enviar `senha_atual`. Tratar 401 com mensagem clara.
-- **Aceite:** [ ] teste do formulário; [ ] publicar junto com o API-04.
-- **Resolução:** —
+- **Aceite:** [x] teste do formulário; [ ] publicar junto com o API-04.
+- **Resolução:** commit `b75b7fb` (e `a9cf5b1`, shared `^0.24.1`). Mudar o e-mail (comparado como a API normaliza: `trim` + minúsculas) mostra o campo obrigatório **Senha atual** (`PasswordInput`) e manda `senha_atual`; sem mudança, nada de senha. 401 "Senha atual incorreta." vira mensagem no formulário, sem deslogar (`ApiError.isSenhaAtualIncorreta`); outro 401 continua deslogando. Textos em pt-BR e en-US. Atenção: a api#194 entrou na `develop` antes da web, então até o merge da web#71 a troca de e-mail do vet falha na `develop`.
 
 ---
 
