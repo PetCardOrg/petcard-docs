@@ -133,7 +133,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 | API-14 | Lembrete de dose triplicado | `dose-reminder.service.ts` | mapa modelo → delegate Prisma (~-60 linhas) | ✅ api#191 (commit `af8c5bc`: um `processReminders` e um delegate por modelo no claim/release; -41 linhas; testes do reminder sem alteração) |
 | API-15 | Comentários citam ECS/CloudWatch | `dose-reminder.service.ts`, `appointment-reminder.service.ts`, `.env.example`, `config/mail.config.ts` | atualizar para Render | ✅ reminder em develop (api#183); `.env.example`, `mail.config.ts` e o teste em api#189 (commit `d64e785`: logs do Render) |
 | API-16 | Dev deps sem uso | `package.json` (`ts-loader`, `source-map-support`) | remover, rodar build e testes | ✅ api#189 (commit `6e67db7`; lock editado só com as remoções, porque o `npm uninstall` no Windows podava `@emnapi/*`; o `source-map-support` fica no lock pelo `terser`) |
-| API-17 | `googleapis` enorme para 1 uso | `google-calendar.service.ts` | `@googleapis/calendar` + `google-auth-library`. **Risco médio**: testar sync de calendário de ponta a ponta | ⬜ |
+| API-17 | `googleapis` enorme para 1 uso | `google-calendar.service.ts` | `@googleapis/calendar` + `google-auth-library`. **Risco médio**: testar sync de calendário de ponta a ponta | 🟦 api#193 (commit `c65f21f`: `@googleapis/calendar@^16`, a última na mesma base de hoje, `googleapis-common@8` e `google-auth-library@10`; a 19 e a 20 exigem Node 22. `OAuth2Client` direto do `google-auth-library`. Lock editado à mão. Testado de ponta a ponta com conta Google de teste: agendamento criado, movido e excluído; vacina com próxima dose criada e excluída) |
 
 ## ⚪ Menores (deixados de fora do relatório, numerados aqui)
 
