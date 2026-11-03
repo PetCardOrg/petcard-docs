@@ -19,21 +19,21 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** —
 
 ### MOB-02 · Timeout de 10s vale também para upload de foto
-- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
+- **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
 - **Onde:** `src/services/api.ts:4` (`API_TIMEOUT_MS = 10000`), `src/services/upload.service.ts` (sem `timeout` próprio).
 - **Correção:** `{ timeout: 60000 }` na chamada de upload. Opcional: redimensionar com `expo-image-manipulator` (limite da API: 5 MB, ver API-10).
 - **Aceite:** [x] teste: o upload chama `api.post` com `timeout: 60000`.
 - **Resolução:** `UPLOAD_TIMEOUT_MS` (60s) movido para `api.ts` e usado por foto e anexo. Teste `upload.service.test.ts`. Commit `4ac21fd`.
 
 ### MOB-03 · Build sem `EXPO_PUBLIC_API_URL` aponta para `localhost` em silêncio
-- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
+- **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-mobile#97
 - **Onde:** `src/services/api.ts:3,13`.
 - **Correção:** falhar o build no `app.config.ts` quando o perfil EAS for `preview`/`production` e a variável faltar (igual já é feito para a chave do Maps), e `console.error` em runtime se `!__DEV__` e a URL for o fallback.
 - **Aceite:** [x] teste do `app.config.ts` (ou script) cobrindo a falha; [x] `eas.json` conferido.
 - **Resolução:** `app.config.ts` lança erro nos perfis `preview`/`production` sem `EXPO_PUBLIC_API_URL`; `console.error` em runtime fora do dev. Teste `app.config.test.ts`. `eas.json` conferido; a variável existe nos ambientes preview e production do EAS. Commit `16fa3fd`.
 
 ### MOB-14 · Pedir senha atual ao trocar e-mail e ao excluir conta (derivado do SH-03/API-04)
-- **Status:** 🟨 código em develop; falta publicar junto com o API-04 e validar o Google em aparelho · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-mobile#104
+- **Status:** 🟨 na `main` (mobile#105); falta o build EAS e validar o Google em aparelho · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-mobile#104
 - **Onde:** `ProfileScreen` (edição e exclusão de conta), `tutor.service.ts`.
 - **Correção:** campo "senha atual" ao mudar e-mail e na confirmação da exclusão; conta só-Google reautentica com Google (decisão D2).
 - **Aceite:** [x] testes dos dois fluxos (exclusão; a troca de e-mail não se aplica, ver Resolução); [ ] publicar junto com o API-04; [ ] validar o Google em aparelho.
@@ -44,34 +44,34 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 ## 🟠 Deveria corrigir
 
 ### MOB-04 · `refreshUser` pode não salvar o usuário
-- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
+- **Status:** 🚀 em produção · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `AuthContext.tsx` (`refreshUser`, `next = {...}` dentro de `setUser(prev => …)`, ~linha 214).
 - **Correção:** `userRef` com o usuário atual; montar `merged` fora do updater, `setUser(merged)` e gravar `merged` no `SecureStore`.
 - **Aceite:** [x] teste: após `refreshUser`, o `SecureStore` recebe `email_verified: true`.
 - **Resolução:** `refreshUser` monta o usuário atualizado fora do updater do `setUser` e grava o mesmo objeto no `SecureStore`. Teste confere `email_verified: true` no que foi salvo. Commit `3aaf1ee`.
 
 ### MOB-05 · Notificação antiga reabre a tela após novo login
-- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
+- **Status:** 🚀 em produção · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `src/hooks/usePetScanNotificationNavigation.ts:43` (`getLastNotificationResponseAsync`), `src/navigation/AppNavigator.tsx` (~95-97).
 - **Correção:** guardar em variável de módulo o `response.notification.request.identifier` já tratado e ignorar repetição (ou `clearLastNotificationResponseAsync()` depois de tratar, se a versão do expo-notifications tiver).
 - **Aceite:** [x] teste: montar o hook 2× com a mesma resposta navega 1×.
 - **Resolução:** O identificador da resposta já tratada fica guardado no módulo, e a mesma notificação não navega de novo depois de um novo login. Commit `c70c937`.
 
 ### MOB-06 · Três telas de saúde quase idênticas (640 / 640 / 713 linhas)
-- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** PetCardOrg/petcard-mobile#101
+- **Status:** 🚀 em produção · **Fase:** 5 · **Pacote:** P12 (**por último no mobile**) · **PR:** PetCardOrg/petcard-mobile#101
 - **Onde:** `src/screens/HealthRecords/VaccineScreen.tsx`, `DewormingScreen.tsx`, `MedicationScreen.tsx`.
 - **Correção:** componente genérico (lista + modal + exclusão) configurado por props; migrar **uma tela por PR/commit**, com `selecaoDePet.test.tsx` como rede.
 - **Aceite:** [x] comportamento idêntico (testes existentes verdes, sem mudar assertivas); [x] -~800 linhas.
 - **Resolução:** `TelaDeRegistroDeSaude` configurada por tela (campos, textos do i18n, card, service). Antes, `telasDeSaude.test.tsx` fixou as três telas com 31 testes (commit `801116f`); depois, uma tela por commit: vacina com o componente (`a0977c6`), vermífugo (`6a44dd0`) e medicação (`2041909`). As telas foram de 1993 para 1031 linhas (−962). As diferenças que já existiam ficaram: o rótulo do botão de exclusão e, na medicação, o selo, o modal a 90% e o detalhe em linha cheia. O "Concluída" fora do i18n virou o MOB-17.
 
 ### MOB-07 · Login Google e registro de push sem teste
-- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P11 (**fazer antes do MOB-01**) · **PR:** PetCardOrg/petcard-mobile#98
+- **Status:** 🚀 em produção · **Fase:** 5 · **Pacote:** P11 (**fazer antes do MOB-01**) · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `src/hooks/useGoogleAuth.ts`, `src/hooks/usePushNotifications.ts`.
 - **Aceite:** [x] Google: sucesso chama `loginWithGoogle`; `id_token` ausente define erro; [x] Push: registra 1× e re-registra ao rotacionar token.
 - **Resolução:** Testes de `useGoogleAuth` (token nos params ou na autenticação, sem token, API recusando, cancelamento) e de `usePushNotifications` (registra 1×, re-registra ao rotacionar, sem sessão, permissão negada). Commit `00eb65a`.
 
 ### MOB-08 · Mensagens fixas em português ignoram o i18n
-- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
+- **Status:** 🚀 em produção · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#98
 - **Onde:** `src/contexts/PetsContext.tsx` (~37-40), `src/hooks/useGoogleAuth.ts` (~57, 66, 74), datas em `src/screens/Home/PetScansScreen.tsx`.
 - **Correção:** strings para `common.json` (pt-BR e en-US) + `t()`; `toLocaleDateString(undefined, …)` ou o idioma do i18n.
 - **Resolução:** chaves `login.googleError`, `googleNoToken`, `googleFailed`, `home.loadError` e `permissionError` em pt-BR e en-US. O `PetsContext` guarda a chave e só traduz na exibição, para seguir a troca de idioma. `formatarInstante` recebe o idioma do i18n. Um teste por arquivo, em en-US, falhava antes. Commit `c011916`.
@@ -101,7 +101,7 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** —
 
 ### MOB-16 · Cadastro esconde do tutor a falha ao enviar foto ou telefone (derivado do MOB-12)
-- **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
+- **Status:** 🚀 em produção · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
 - **Onde:** `src/contexts/AuthContext.tsx` (`register`, `catch` depois de `uploadService.uploadImage` / `tutorService.updateCurrentTutor`, ~linha 179).
 - **Problema:** a conta é criada, mas se a foto ou o telefone falham o `catch` só segue em frente. O tutor escolheu uma foto e não fica sabendo que ela não foi salva.
 - **Correção:** o `register` devolve se os extras falharam, e a tela mostra um aviso ("conta criada; complete foto/telefone no perfil") sem derrubar o cadastro.
@@ -109,7 +109,7 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** o `register` do `AuthContext` devolve `{ extrasPendentes }`, e a `RegisterScreen` mostra "Conta criada. Não conseguimos salvar a foto ou o telefone agora. Você pode completar pelo Perfil." (pt-BR e en-US). Commit `fd8c240`.
 
 ### MOB-17 · Selo "Concluída" da medicação fora do i18n (derivado do MOB-06)
-- **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
+- **Status:** 🚀 em produção · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
 - **Onde:** `src/screens/HealthRecords/MedicationScreen.tsx` (`selo` da configuração).
 - **Problema:** "Em andamento" vem do i18n (`healthRecords.medication.ongoing`), mas "Concluída" é texto fixo: em inglês, o selo sai em português.
 - **Correção:** chave `healthRecords.medication.finished` em pt-BR e en-US.
