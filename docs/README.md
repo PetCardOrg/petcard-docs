@@ -17,6 +17,7 @@ Revisões de qualidade cruzando planejado (TAP/DAS) × implementado × confiáve
 |---|---|---|
 | 2026-06-01 | [Auditoria completa](auditorias/2026-06-01.md) | Auditoria de reta final da Parte 1 (5 repos) |
 | 2026-07-01 | [Auditoria delta](auditorias/2026-07-01-delta.md) | O que a de 01/06 apontou: resolvido, pendente e novo |
+| 2026-10-24 | [Auditoria 2026-10 + plano de execução](auditorias/2026-10-24/README.md) | 4 auditorias de leitura (api, shared, web, mobile) e o plano em 14 pacotes para corrigir; status nas issues `auditoria-2026-10` |
 
 ## QA
 

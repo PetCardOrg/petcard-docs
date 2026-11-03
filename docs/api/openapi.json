@@ -264,6 +264,48 @@
         ]
       }
     },
+    "/auth/veterinario/crmv": {
+      "get": {
+        "description": "Primeiro passo do cadastro: devolve o CRMV no formato canônico, se está regular e o nome no cadastro do CFMV, para pré-preencher o formulário.",
+        "operationId": "AuthController_consultarCrmv",
+        "parameters": [
+          {
+            "name": "crmv",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "CRMV-SP 12345",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CRMV em formato irreconhecível"
+          },
+          "409": {
+            "description": "CRMV já cadastrado"
+          },
+          "429": {
+            "description": "Limite de tentativas excedido"
+          }
+        },
+        "summary": "Consultar CRMV antes do cadastro do veterinário",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/auth/veterinario/register": {
       "post": {
         "description": "O CRMV é validado na base externa durante o cadastro. Se o provedor estiver indisponível, a conta é criada mesmo assim como não verificada — veja `crmv_verificado` na resposta.",
@@ -434,7 +476,7 @@
     },
     "/veterinarios/me": {
       "patch": {
-        "description": "Só o próprio veterinário altera o próprio cadastro — o id vem do token, não da rota. Trocar o CRMV zera a verificação: o registro novo precisa ser verificado antes de liberar dado clínico de novo. Trocar a senha exige `senha_atual` e encerra as sessões abertas, inclusive a que fez a troca — é preciso entrar de novo.",
+        "description": "Só o próprio veterinário altera o próprio cadastro — o id vem do token, não da rota. Trocar o CRMV zera a verificação: o registro novo precisa ser verificado antes de liberar dado clínico de novo. Trocar a senha exige `senha_atual` e encerra as sessões abertas, inclusive a que fez a troca — é preciso entrar de novo. Trocar o e-mail também exige `senha_atual`.",
         "operationId": "VeterinarioController_updateMe",
         "parameters": [],
         "requestBody": {
@@ -691,6 +733,9 @@
           },
           "403": {
             "description": "Requer papel TUTOR ou VET"
+          },
+          "429": {
+            "description": "Limite de uploads excedido"
           }
         },
         "security": [
@@ -1208,6 +1253,7 @@
         ]
       },
       "patch": {
+        "description": "Trocar o e-mail exige `senha_atual` (ou `google_id_token` recente, na conta só-Google), zera a verificação e encerra as sessões abertas, inclusive a que fez a troca — é preciso entrar de novo.",
         "operationId": "TutorController_updateMe",
         "parameters": [],
         "requestBody": {
@@ -1232,7 +1278,7 @@
             }
           },
           "401": {
-            "description": "Token ausente ou inválido"
+            "description": "Prova de identidade inválida\n\nToken ausente ou inválido"
           },
           "403": {
             "description": "Requer papel TUTOR"
@@ -1249,15 +1295,25 @@
         ]
       },
       "delete": {
-        "description": "Apaga a conta e tudo que depende dela: pets, prontuário, carteira digital, agendamentos e notificações. Não há desfazer.",
+        "description": "Apaga a conta e tudo que depende dela: pets, prontuário, carteira digital, agendamentos e notificações. Não há desfazer. Exige `senha_atual` (ou `google_id_token` recente, na conta só-Google).",
         "operationId": "TutorController_removeMe",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteTutorDto"
+              }
+            }
+          }
+        },
         "responses": {
           "204": {
             "description": ""
           },
           "401": {
-            "description": "Token ausente ou inválido"
+            "description": "Prova de identidade inválida\n\nToken ausente ou inválido"
           },
           "403": {
             "description": "Requer papel TUTOR"
@@ -1663,10 +1719,56 @@
         ]
       }
     },
+    "/devices/{token}": {
+      "delete": {
+        "description": "Só remove token do próprio tutor. Idempotente: responde 204 mesmo se o token não existe. O token vai na rota com encodeURIComponent.",
+        "operationId": "DevicesController_unregister",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "Requer papel TUTOR"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Descadastrar token de device do tutor (logout)",
+        "tags": [
+          "devices"
+        ]
+      }
+    },
     "/calendar/connect": {
       "get": {
         "operationId": "CalendarController_connect",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "return_url",
+            "required": false,
+            "in": "query",
+            "description": "Endereço do app (petcard://, exp://) para onde o callback devolve o tutor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -1698,6 +1800,7 @@
     },
     "/calendar/callback": {
       "get": {
+        "description": "Se o app informou `return_url` no connect, redireciona para ela com `?calendar=connected|denied|error`; senão, responde uma página HTML.",
         "operationId": "CalendarController_callback",
         "parameters": [
           {
@@ -2045,6 +2148,216 @@
         "summary": "Histórico clínico completo do pet",
         "tags": [
           "historico-clinico"
+        ]
+      }
+    },
+    "/pets/{petId}/anexos": {
+      "post": {
+        "description": "Enviado por veterinário, o comprovante já nasce verificado; enviado pelo tutor, aguarda a conferência de um veterinário.",
+        "operationId": "AnexoController_criar",
+        "parameters": [
+          {
+            "name": "petId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "entidade",
+                  "entidade_id"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "entidade": {
+                    "type": "string",
+                    "enum": [
+                      "VACINA",
+                      "VERMIFUGO",
+                      "MEDICACAO"
+                    ]
+                  },
+                  "entidade_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnexoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Arquivo ausente, de tipo não aceito, grande demais ou acima do limite por registro"
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Pet ou registro não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Anexar comprovante (JPEG, PNG, WebP ou PDF, até 10 MB) a uma vacina, vermífugo ou medicação",
+        "tags": [
+          "anexos"
+        ]
+      }
+    },
+    "/anexos/{id}/arquivo": {
+      "get": {
+        "operationId": "AnexoController_arquivo",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnexoArquivoResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Anexo não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Link temporário (5 min) para abrir o arquivo do comprovante",
+        "tags": [
+          "anexos"
+        ]
+      }
+    },
+    "/anexos/{id}/verificacao": {
+      "post": {
+        "operationId": "AnexoController_verificar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnexoResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Anexo não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Veterinário atesta que conferiu o comprovante",
+        "tags": [
+          "anexos"
+        ]
+      }
+    },
+    "/anexos/{id}": {
+      "delete": {
+        "operationId": "AnexoController_remover",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Token ausente ou inválido"
+          },
+          "403": {
+            "description": "CRMV não verificado, ou papel sem permissão"
+          },
+          "404": {
+            "description": "Anexo não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remover comprovante da visualização (o arquivo é preservado)",
+        "tags": [
+          "anexos"
         ]
       }
     },
@@ -3077,7 +3390,7 @@
           },
           "senha_atual": {
             "type": "string",
-            "description": "Senha atual, exigida sempre que `password` vem no corpo.\n\nO token do veterinário vale 7 dias e a web o guarda em `localStorage`.\nSem esta prova, um token vazado bastava para trocar a senha — e a conta\nque dá acesso a dado clínico passava definitivamente para quem o roubou.\nNão tem regra de senha forte: é a senha que já existe, seja ela qual for.",
+            "description": "Senha atual, exigida sempre que `password` ou `email` vem no corpo.\n\nO token do veterinário vale 7 dias e a web o guarda em `localStorage`.\nSem esta prova, um token vazado bastava para trocar a senha — e a conta\nque dá acesso a dado clínico passava definitivamente para quem o roubou.\nTrocar o e-mail tem o mesmo efeito: o \"esqueci a senha\" passa a ir para\nquem roubou o token.\nNão tem regra de senha forte: é a senha que já existe, seja ela qual for.",
             "maxLength": 72
           },
           "crmv": {
@@ -3231,6 +3544,7 @@
           },
           "photo_url": {
             "type": "string",
+            "maxLength": 2048,
             "format": "uri"
           }
         },
@@ -3340,6 +3654,7 @@
           },
           "photo_url": {
             "type": "string",
+            "maxLength": 2048,
             "format": "uri"
           }
         }
@@ -3364,6 +3679,29 @@
             "type": "string",
             "maxLength": 2048,
             "format": "uri"
+          },
+          "senha_atual": {
+            "type": "string",
+            "description": "Prova de que é o dono da conta, exigida quando `email` vem no corpo:\ncom o e-mail trocado, o \"esqueci a senha\" vai para quem estiver com o\ntoken. Conta com senha manda `senha_atual`; conta só-Google manda\n`google_id_token`. A API decide qual dos dois vale para a conta.",
+            "maxLength": 72
+          },
+          "google_id_token": {
+            "type": "string",
+            "description": "`id_token` do Google obtido na hora (o app reabre o login Google), para\nconta sem senha. A API exige que seja recente e do mesmo `sub` da conta.",
+            "maxLength": 4096
+          }
+        }
+      },
+      "DeleteTutorDto": {
+        "type": "object",
+        "properties": {
+          "senha_atual": {
+            "type": "string",
+            "maxLength": 72
+          },
+          "google_id_token": {
+            "type": "string",
+            "maxLength": 4096
           }
         }
       },
@@ -3506,6 +3844,83 @@
           "updated_at"
         ]
       },
+      "AnexoResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pet_id": {
+            "type": "string"
+          },
+          "entidade": {
+            "enum": [
+              "NOTA_CLINICA",
+              "VACINA",
+              "VERMIFUGO",
+              "MEDICACAO"
+            ],
+            "type": "string"
+          },
+          "entidade_id": {
+            "type": "string"
+          },
+          "nome_arquivo": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "tamanho_bytes": {
+            "type": "number"
+          },
+          "enviado_por_tipo": {
+            "enum": [
+              "TUTOR",
+              "VET"
+            ],
+            "type": "string"
+          },
+          "enviado_por_id": {
+            "type": "string"
+          },
+          "enviado_por_nome": {
+            "type": "string"
+          },
+          "verificado": {
+            "type": "boolean",
+            "description": "Um veterinário com CRMV verificado atestou que conferiu o comprovante."
+          },
+          "verificado_em": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "verificado_por_nome": {
+            "type": "string"
+          },
+          "verificado_por_crmv": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "pet_id",
+          "entidade",
+          "entidade_id",
+          "nome_arquivo",
+          "mime_type",
+          "tamanho_bytes",
+          "enviado_por_tipo",
+          "enviado_por_id",
+          "enviado_por_nome",
+          "verificado",
+          "created_at"
+        ]
+      },
       "VaccineRecordResponseDto": {
         "type": "object",
         "properties": {
@@ -3537,6 +3952,13 @@
           },
           "notes": {
             "type": "string"
+          },
+          "anexos": {
+            "description": "Comprovantes anexados, do mais antigo ao mais recente. Ausente na carteira\npública (QR): comprovante é dado de saúde e exige login.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnexoResponseDto"
+            }
           },
           "created_at": {
             "format": "date-time",
@@ -3587,6 +4009,13 @@
           },
           "notes": {
             "type": "string"
+          },
+          "anexos": {
+            "description": "Comprovantes anexados, do mais antigo ao mais recente. Ausente na carteira\npública (QR): comprovante é dado de saúde e exige login.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnexoResponseDto"
+            }
           },
           "created_at": {
             "format": "date-time",
@@ -3644,6 +4073,13 @@
           },
           "notes": {
             "type": "string"
+          },
+          "anexos": {
+            "description": "Comprovantes anexados, do mais antigo ao mais recente. Ausente na carteira\npública (QR): comprovante é dado de saúde e exige login.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnexoResponseDto"
+            }
           },
           "created_at": {
             "format": "date-time",
@@ -4018,6 +4454,22 @@
             "maxLength": 2000
           }
         }
+      },
+      "AnexoArquivoResponseDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "expira_em": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expira_em"
+        ]
       },
       "CreateDewormingRecordDto": {
         "type": "object",

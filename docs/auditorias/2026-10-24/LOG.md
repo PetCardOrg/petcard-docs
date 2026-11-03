@@ -1,0 +1,475 @@
+# Log de sessões — Auditoria 2026-10
+
+Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A próxima sessão começa lendo a primeira entrada.
+
+**Modelo:**
+
+```markdown
+## AAAA-MM-DD — <quem> — <pacote(s)>
+- **Feito:** …
+- **PRs:** PetCardOrg/petcard-<repo>#<n> (status)
+- **Decisões:** … (copiar também para a tabela do PLANO)
+- **Descobertas / itens derivados:** …
+- **Bloqueios:** …
+- **Próximo passo:** <ação exata, com pacote, repo e item>
+```
+
+---
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (OpenAPI)
+- **Feito:**
+  - mobile#104 e docs#102 mergeadas. Os três PRs do P6 estão na `develop`.
+  - `docs/api/openapi.json` regenerado da `develop` da API (`5f48281`): **58 paths, 76 operações** (eram 41 paths, desde 23/08). Entram as rotas de auth por e-mail e Google, CRMV, coleira, anexos, clínicas, `DELETE /devices/{token}`, e os DTOs com `senha_atual`/`google_id_token`. Nenhuma rota saiu.
+  - Collection do Postman regenerada (`build-collection.js`): 18 pastas, 76 requests, 15 públicos (`noauth`); o environment não mudou. `docs/api/README.md` com as contagens e a lista de rotas públicas novas.
+  - Status: **API-23 ✅**. API-04, WEB-14 e MOB-14 com tudo em develop, esperando só o deploy; o MOB-14 também a validação do Google em aparelho.
+- **PRs:** PetCardOrg/petcard-mobile#104 e PetCardOrg/petcard-docs#102 (mergeados) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** para gerar o OpenAPI com o `nest start --watch` rodando, o build foi para uma pasta temporária (`nest build -p` com um tsconfig de `outDir` próprio, apagado depois), para não mexer no `dist/` do servidor de dev. O `nest build` é necessário: o plugin do Swagger no `nest-cli.json` gera parte dos metadados, e um `tsc` puro não. O `openapi-to-postmanv2` foi instalado fora do repo (`NODE_PATH`), para não criar `node_modules` no docs.
+- **Bloqueios:** o deploy do P6 toca a `main` de API, web e mobile e precisa de autorização do usuário.
+- **Próximo passo:** **perguntar ao usuário** se libera o deploy do P6: PR `develop → main` da API, depois da web (Vercel), depois build EAS do app; avisar o time que o app antigo não exclui a conta até atualizar. Antes ou junto, validar o "Confirmar com Google" em aparelho. Fechada a #63, seguir para o **WEB-05** (P9, #66).
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (mobile)
+- **Feito:**
+  - web#71 e docs#101 mergeadas; CI da `develop` da web verde. WEB-14 com o código em develop (falta só publicar junto com o API-04).
+  - Mobile, branch `fix/aud-p6-reautenticacao`, 2 commits (PR mobile#104):
+    - `f5f70a4` `chore(deps)`: `@petcardorg/shared` `^0.24.1`. Lock editado só nas linhas do shared; o pacote foi instalado com `npm install --ignore-scripts` ("changed 1 package") e o lock que o npm reescreveu foi descartado e editado de novo.
+    - **MOB-14** `260569e`: excluir a conta pede a prova de identidade num modal depois das duas confirmações: **senha atual** ou **Confirmar com Google** (`useGoogleIdToken`, `id_token` sem abrir sessão). O 401 da prova não desloga mais (`isFalhaDeReautenticacao` no interceptor).
+  - Verificação: `typecheck` ✅ · `test:cov` 275 ✅ · `lint`: sem erro além do `␍` (ver Descobertas). O fluxo do Google não foi validado em aparelho.
+- **PRs:** PetCardOrg/petcard-web#71 e PetCardOrg/petcard-docs#101 (mergeados) · PetCardOrg/petcard-mobile#104 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões (com o usuário):** a metade "trocar e-mail" do MOB-14 **não se aplica**: o app não tem edição de e-mail, e criar essa edição seria funcionalidade nova. Na exclusão, o app oferece a senha **e** o Google, porque não sabe qual a conta tem (a API não expõe).
+- **Descobertas / itens derivados:**
+  - No Windows, com `core.autocrlf=true`, o `npm run lint` do mobile acusa ~16 mil `Delete ␍` (prettier) em todos os arquivos. Não é do código: o CI (Linux, LF) não vê. Para conferir localmente, filtrar o `␍` ou rodar `prettier --check --end-of-line auto`.
+  - A suíte `selecaoDePet.test.tsx` falhou uma vez no `test:cov` com todos os testes passando, e passou sozinha e na rodada seguinte. Ficar de olho (instável sob carga).
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da mobile#104: (1) regenerar `docs/api/openapi.json` e a collection do Postman a partir da `develop` da API (`scripts/generate-openapi.ts`), o que fecha o aceite de OpenAPI do API-04 e do API-23; (2) **perguntar ao usuário** se libera o deploy do P6 na `main` (API → web → build EAS) e avisar o time que o app antigo não exclui a conta; (3) validar o "Confirmar com Google" em aparelho; (4) seguir para o **WEB-05** (P9, #66), já desbloqueado.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (web)
+- **Feito:**
+  - A api#194 e a docs#100 já estavam mergeadas na `develop` (api#194 às 04:21 UTC, antes da web e do mobile, ao contrário do combinado). Nada foi para a `main`. Status corrigido aqui: **API-20 e API-24 ✅**; API-04 e API-23 com o código em develop, esperando o OpenAPI (e, o API-04, os clientes).
+  - Web, branch `fix/aud-p6-reautenticacao`, 2 commits (PR web#71):
+    - `a9cf5b1` `chore(deps)`: `@petcardorg/shared` `^0.24.1`. Lock editado à mão só nas linhas do shared (versão, `resolved` e `integrity` copiados do lock da API); `npm ci` confirmou.
+    - **WEB-14** `b75b7fb`: mudar o e-mail no perfil do vet mostra **Senha atual** (obrigatória) e envia `senha_atual`. A comparação normaliza como a API (`trim` + minúsculas). 401 "Senha atual incorreta." mostra a mensagem sem deslogar (`ApiError.isSenhaAtualIncorreta`); outro 401 desloga. Ajuste de CSS para o olhinho do `PasswordInput` dentro de `.vet-profile-field`.
+  - Verificação: `lint` ✅ · `npm test` 231 ✅ · `build` ✅. Não houve teste manual no navegador.
+- **PRs:** PetCardOrg/petcard-web#71 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - Com a api#194 na `develop`, a troca de e-mail do vet (web) e a do tutor e a exclusão da conta (app) falham contra a `develop` da API até a web#71 e o MOB-14 entrarem. A `main` não foi afetada.
+  - O **WEB-05** (P9, #66) deixou de estar bloqueado: o API-24 está na `develop`.
+  - O `npm ci` da web falhou com `EPERM` porque dois `vite` (`npm run dev`) seguravam o binário do rolldown. Com autorização do usuário, eles foram encerrados; subir o `npm run dev` de novo quando precisar.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** **MOB-14** no mobile, branch `fix/aud-p6-reautenticacao` a partir da `develop`: shared `^0.24.1` (lock só com as linhas do shared; copiar `resolved`/`integrity` do lock da API), pedir a senha atual ao trocar o e-mail e ao excluir a conta no `ProfileScreen` (conta só-Google: reabrir o login Google e mandar `google_id_token`, D2), e depois de trocar o e-mail mandar a pessoa entrar de novo (a API derruba as sessões). Depois: regenerar `docs/api/openapi.json` e a collection do Postman a partir da `develop` da API (fecha API-04 e API-23), e o **WEB-05** (#66). O deploy na `main` (API → web → build EAS) precisa de autorização do usuário.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (API)
+- **Feito:**
+  - docs#99 já estava mergeado: o P5 está completo. **Falta fechar a #62** (a escrita no GitHub foi bloqueada nesta sessão; ver Bloqueios).
+  - API, branch `fix/aud-p6-reautenticacao`, 5 commits (PR api#194):
+    - `7e6f7af` `chore(deps)`: `@petcardorg/shared` `^0.24.1`. O lock foi refeito a partir do da `develop`, com só as linhas do shared mudando (o `npm install` no Windows podou de novo as `@emnapi/*` e pôs `peer` em vários pacotes). Os testes do controller do tutor passam a mandar `senha_atual`, que o contrato novo exige. `CLAUDE.md` atualizado para 0.24.1.
+    - **API-20** `de2754f`: senha em bytes na cópia da API (`Buffer.byteLength`).
+    - **API-04** `a93ce9e`: prova de identidade para trocar o e-mail e excluir a conta do tutor (senha ou `id_token` do Google com até 5 min e o mesmo `sub`); trocar o e-mail derruba as sessões. Vet: trocar o e-mail pede `senha_atual`.
+    - **API-23** `5584ff6`: `DELETE /devices/:token`.
+    - **API-24** `0921112`: `null` limpa as datas opcionais dos PATCH clínicos; `null` em campo obrigatório → 400.
+  - Verificação: `lint` ✅ · `npm test` 857 ✅ · `build` ✅ · `test:e2e` 85 ✅ (Postgres local).
+- **PRs:** PetCardOrg/petcard-api#194 (aberto, review pedido a camilampinheiro; **não mergear** antes de web e mobile) · este PR de docs
+- **Decisões:** detalhes do API-04 tomados aqui, dentro da D2: o `id_token` do Google vale como prova por **5 minutos** a partir do `iat`; mandar o e-mail atual sem mudar não pede prova; a prova é conferida antes da checagem de e-mail ocupado; trocar o e-mail do **tutor** encerra todas as sessões, inclusive a de quem trocou (o item pedia). No vet, só a senha passa a ser exigida; as sessões não caem.
+- **Descobertas / itens derivados:**
+  - **API-28**: `DELETE /veterinarios/me` não pede senha (precisa de `DeleteVeterinarioDto` no shared).
+  - **SH-09**: `@IsOptional` deixa `null` passar em campo obrigatório nos DTOs de PATCH; a API passou a barrar no service.
+  - Os dois ficaram sem pacote (próxima release minor do shared), fora do P14, que é só de breaking.
+  - O contrato em `petcard-docs/docs/api/openapi.json` não é regenerado desde 23/08 e está bem defasado (faltam coleira, anexos, auth por e-mail etc., não só o P6). Regenerar depois do merge do PR da API, para refletir a `develop`.
+  - **MOB-14** precisa tratar o 401 depois de trocar o e-mail (sessão encerrada): mandar a pessoa entrar de novo, como a web faz na troca de senha do vet.
+- **Bloqueios:** no começo da sessão, a ferramenta bloqueou as escritas no GitHub; o usuário liberou depois. #62 fechada; #63 atribuída e comentada.
+- **Próximo passo:** **WEB-14** na web, branch `fix/aud-p6-reautenticacao` a partir da `develop`: shared `^0.24.1` (refazer o lock só com as linhas do shared) e pedir a senha atual ao trocar o e-mail do vet (só quando o e-mail muda). Depois **MOB-14** no mobile: shared `^0.24.1`, pedir senha (ou reabrir o login Google na conta só-Google e mandar `google_id_token`) ao trocar o e-mail e excluir a conta, e mandar a pessoa entrar de novo depois de trocar o e-mail (a sessão cai). Os três PRs (api#194, web, mobile) são mergeados juntos; o deploy (API → web → build EAS) toca a `main` e precisa de autorização do usuário. Depois do merge da api#194, regenerar `docs/api/openapi.json` e a collection do Postman.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do API-17)
+- **Feito:**
+  - api#193 (`b318123`) e docs#98 mergeados; CI da `develop` da API verde. **API-17 ✅**, marcado no checklist da #70.
+  - Aberto o **shared#85** (`develop → main`, release **0.24.1**), no lugar do shared#83. Entram P4, P5 e SH-06. Avisado na #62.
+- **PRs:** PetCardOrg/petcard-api#193 e PetCardOrg/petcard-docs#98 (mergeados) · PetCardOrg/petcard-shared#85 (aberto, review pedido a camilampinheiro)
+- **Decisões:** o usuário **liberou a release do shared** (só do shared). API, web, mobile e docs continuam sem nada para a `main`. O deploy do P6 toca a `main` desses repos: perguntar antes.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** WEB-17, API-22, P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) esperam a 0.24.1 publicada.
+- **Release:** shared#85 mergeado (`ed5c9a1`); *Publish Package* verde e `npm view @petcardorg/shared version` → **`0.24.1`**. Publicação marcada na #62.
+- **Próximo passo:** depois do merge deste PR de docs, **fechar a #62** (P5 completo). Depois seguir pelo **P6** (#63): atualizar `@petcardorg/shared` para `^0.24.1` na API, na web e no mobile (commit `chore(deps): atualiza @petcardorg/shared para 0.24.1 (AUD P6)`), começando pela API: API-20, API-04, API-23 e API-24.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do SH-06; API-17)
+- **Feito:**
+  - shared#84 (`65877b8`) e docs#97 mergeados; CI da `develop` do shared verde. **SH-06 ✅**, marcado no checklist da #70.
+  - API, branch `chore/aud-p13-googleapis-calendar`. **API-17** (`c65f21f`): sai o `googleapis`, entra o `@googleapis/calendar@^16.0.0`. O `OAuth2Client` passa a vir direto do `google-auth-library`. O spec mocka os módulos novos; com o código antigo, as suítes do calendário falham. Verificação: `npm ci` ✅ · `lint` ✅ · `npm test` 814 ✅ · `build` ✅. O e2e não rodou (nenhuma rota ou DTO mudou).
+  - **Teste de ponta a ponta**, com a API local e uma conta Google de teste, conferido na agenda pelo usuário: conectar (OAuth), criar agendamento, mudar o horário (o mesmo evento, sem duplicar), excluir; vacina com próxima dose criada (evento de dia inteiro) e excluída. Ao fim: agenda desconectada e o tutor e o pet de teste excluídos.
+- **PRs:** PetCardOrg/petcard-shared#84 e PetCardOrg/petcard-docs#97 (mergeados) · PetCardOrg/petcard-api#193 (aberto, review pedido a camilampinheiro)
+- **Decisões:** `@googleapis/calendar` na **16**, não na 20: a 19 e a 20 exigem Node 22 e trazem `google-auth-library@11`/`gaxios@8`; a API roda no Node 20. A 16 fica na mesma base de hoje (`googleapis-common@8.0.1`, `google-auth-library@10.6.2`). Subir para a 20 só junto com a migração da API para o Node 22.
+- **Descobertas:**
+  - O `npm install` no Windows podou de novo as opcionais `@emnapi/*` do lock; o lock foi refeito a partir do da `develop`, só com as duas mudanças. Ao refazer o lock por script, **não reordenar as chaves**: a ordem do npm não é a de um `sort()` simples (o `string_decoder` mudaria de lugar).
+  - Para testar o OAuth do calendário localmente, `http://localhost:3000/calendar/callback` precisa estar entre os URIs de redirecionamento do cliente OAuth no Google Cloud (sem isso, `redirect_uri_mismatch`). O usuário incluiu esse URI nesta sessão. A conta usada também precisa estar entre os usuários de teste da tela de consentimento.
+  - O `db:seed` apaga todas as vacinas, vermífugos e medicações do banco local. Para testes manuais, criar um tutor descartável pelo `POST /auth/register` em vez de rodar o seed.
+  - O sync de saúde (`health-calendar.service.ts`) não loga sucesso; para conferir, olhar a tabela `health_calendar_event`.
+  - O `.env` local tem `NODE_ENV` vazio, então rotas só de desenvolvimento (ex.: `/calendar/dev-connect`) respondem 404. Não mexi.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#193, marcar o API-17 ✅ (em `itens/api.md`, no painel e no checklist da #70). Com isso, no P13 só restam o **WEB-17** e o **API-22**, os dois esperando release do shared. Fora da release, só sobra trabalho que depende de acesso externo: **MOB-15** (#68, variáveis do ambiente `production` no EAS) e a validação de push/Google em aparelho real. P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) dependem da release. Perguntar ao usuário se abre o PR `develop → main` do shared (sairia a **0.24.1**, não mais a 0.24.0; os checklists da #62 e da #63 foram avisados por comentário) ou se segue pelo MOB-15 com acesso ao EAS.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (SH-06)
+- **Feito:** shared, branch `refactor/aud-p13-clinical-date`. **SH-06** (`4f71945`): `IsAfterDate` e `IsOnOrAfterDate` passam a usar um helper interno, o `compareToRelated(name, property, ok, message)`. O contrato público fica igual. Antes do refactor entraram 3 testes, que passaram no código antigo: as mensagens das duas regras e `start_date` inválida no `IsOnOrAfterDate`. Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 44 ✅ · `check-version-bump.sh` ✅.
+- **PRs:** PetCardOrg/petcard-shared#84 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** o `check-version-bump.sh` compara com a `develop`, não com o que está publicado. Por isso o SH-06 exigiu bump (0.24.1) mesmo com a 0.24.0 ainda não publicada. A próxima release do shared sai direto como 0.24.1 (ou maior). Os consumidores devem instalar `^0.24.1`, não `^0.24.0`.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da shared#84, marcar o SH-06 ✅ (em `itens/shared.md`, no painel e no checklist da #70). Seguir no **P13** com o **API-17** (`@googleapis/calendar`, branch nova a partir da `develop` atualizada da API; risco médio: testar o sync do calendário de ponta a ponta). Depois disso, no P13 só restam WEB-17 e API-22, os dois dependendo de release do shared.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-25 e 26)
+- **Feito:** api#192 (`1d1a48f`) e docs#95 mergeados; CI da `develop` da API verde. **API-25 e API-26 ✅**, marcados no checklist da #70.
+- **PRs:** PetCardOrg/petcard-api#192 e PetCardOrg/petcard-docs#95 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** seguir no **P13**: **SH-06** (helper `compareToRelated` no shared, branch nova a partir da `develop` atualizada; mudança em `src/` pede bump, mas não precisa de release para fechar o item) e depois **API-17** (`@googleapis/calendar`, risco médio: testar o sync do calendário de ponta a ponta). Ainda abertos no P13, além desses: WEB-17 (depende de release do shared) e API-22 (⏸️).
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-25 e API-26)
+- **Feito:** API, branch `fix/aud-p13-exclusoes`, 1 commit por item, testes vistos falhando antes:
+  - **API-25** (`a2af1f9`): exclusão de agendamento com a fila fora marca `PENDING_DELETE` em vez de apagar a linha. A linha some das listagens, do `findOne` e do lembrete; o `syncAllPending` apaga o evento no Google e depois a linha; `syncAppointment` não a ressuscita; `disconnect` descarta as pendentes.
+  - **API-26** (`5db311d`): excluir pet ou tutor apaga do S3, por melhor esforço, os PNGs de QR (carteira e coleira) e os objetos privados dos anexos, lidos antes do delete (`pet-arquivos.ts`, `UploadService.discardPrivate`).
+  - Verificação: `lint` ✅ · `npm test` 814 ✅ (`test:cov` acima da catraca) · `build` ✅. O e2e não rodou (nenhuma rota ou DTO mudou).
+- **PRs:** PetCardOrg/petcard-api#192 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** a doc do `removePrivate` dizia que comprovante nunca sai do bucket; continua valendo para a exclusão avulsa do anexo (que é lógica), mas agora os arquivos saem junto com o pet. Comentário ajustado.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#192, marcar API-25 e API-26 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13**: **SH-06** (helper `compareToRelated` no shared; mudança em `src/` pede bump, mas não precisa de release para fechar o item) e depois **API-17** (`@googleapis/calendar`, risco médio: testar o sync do calendário de ponta a ponta). Ainda abertos no P13, além desses: WEB-17 (depende de release do shared) e API-22 (⏸️).
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-13 e 14)
+- **Feito:** api#190 (`217350d`), api#191 (`af5f6e5`) e docs#94 mergeados; CI da `develop` da API verde nos dois merges. **API-13 e API-14 ✅**, marcados no checklist da #70.
+- **PRs:** PetCardOrg/petcard-api#190, PetCardOrg/petcard-api#191 e PetCardOrg/petcard-docs#94 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-25** (excluir agendamento com a fila fora deixa evento órfão no Google), depois **API-26** (anexos e PNGs de QR ficam no S3 ao excluir pet ou tutor). **API-17** fica para o fim. Ainda abertos no P13, além desses: SH-06, WEB-17 (depende de release do shared) e API-22 (⏸️).
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-13, 14, 21 e 22)
+- **Feito:**
+  - **API-13** (`d0152d6`, branch `fix/aud-p13-erros-externos`): no Places, o helper `readPlacesResponse` manda o status e o corpo do erro do Google para o log e responde a mensagem genérica (antes o corpo ia na mensagem do 502). No Places e na Infosimples, `response.json()` inválido vira 502 em vez de 500. 3 testes novos.
+  - **API-14** (`af8c5bc`, branch `refactor/aud-p13-dose-reminder`): um `processReminders` no lugar dos três `process*` e um delegate do Prisma por modelo no lugar dos `switch` do `claim`/`release`. -41 linhas; os 33 testes do reminder passam sem alteração.
+  - **API-21** ✅ por decisão (D6), sem código. **API-22** ⏸️.
+  - Verificação nas duas branches: `lint` ✅ · `npm test` ✅ (805 no API-13, 802 no API-14) · `build` ✅. O e2e não rodou (nenhuma rota ou DTO mudou).
+- **PRs:** PetCardOrg/petcard-api#190 (API-13) e PetCardOrg/petcard-api#191 (API-14), abertos, review pedido a camilampinheiro.
+- **Decisões:** **D6**: manter o 409 "Email already registered" no cadastro (API-21). Registrada no PLANO.
+- **Descobertas:**
+  - O shared não tem nenhum DTO de paginação: o API-22 precisa de contrato novo e, portanto, de uma release do shared.
+  - `npx tsc --noEmit` na API acusa erros de tipo já existentes em specs (`google-calendar`, `card`, `vaccine`). O `nest build` não compila specs, então não quebra nada; não mexi (fora do escopo).
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#190 e da api#191, marcar API-13 e API-14 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-25** (excluir agendamento com a fila fora deixa evento órfão no Google), depois **API-26** (anexos e PNGs de QR ficam no S3 ao excluir pet ou tutor). **API-17** fica para o fim. Ainda abertos no P13, além desses: SH-06 e WEB-17 (o WEB-17 depende de release do shared) e API-22 (⏸️).
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-12, 15 e 16)
+- **Feito:** api#189 (`126482c`) e docs#92 mergeados; CI da `develop` da API verde. **API-12, API-15 e API-16 ✅**, marcados no checklist da #70. Por pedido do usuário, a sessão parou aqui, sem começar o próximo item.
+- **PRs:** PetCardOrg/petcard-api#189 e PetCardOrg/petcard-docs#92 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-13** (erros de serviços externos: `places.service.ts` e `infosimples-crmv.validator.ts`, logar o corpo, responder genérico, `response.json()` inválido → 502), depois **API-22** (paginação do `Historico`, alinhada com o DTO do shared; ver se precisa de contrato novo no shared, que esbarra no bloqueio da `main`). **API-21** pede uma decisão (enumeração de e-mails: corrigir ou documentar): perguntar ao usuário antes. **API-17** fica para o fim. Ainda abertos no P13, além desses: API-14, API-25, API-26, SH-06 e WEB-17.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-18/19 merge; API-12, 15, 16)
+- **Feito:**
+  - api#188 e docs#91 mergeados. **API-18 e API-19 ✅**, marcados no checklist da #70.
+  - API, branch `chore/aud-p13-limpeza`, 1 commit por item:
+    - **API-15** (`d64e785`): os comentários do modo de log do e-mail (`.env.example`, `mail.config.ts` e o `config.spec.ts`) citam os logs do Render, não o CloudWatch. Fora de `coverage/`, não sobrou referência a ECS ou CloudWatch.
+    - **API-12** (`fb57b54`): `USER node` no estágio final do `Dockerfile`. Validado com Docker: imagem buildada com o secret do npm, `id` → `uid=1000(node)`; com Postgres, RabbitMQ e Redis em containers, `prisma migrate deploy` aplicou as 29 migrations e a API subiu, sem nenhum EACCES.
+    - **API-16** (`6e67db7`): saem `ts-loader` e `source-map-support`. O lock foi editado à mão, só com essas remoções (ver Descobertas).
+    - Verificação: `npm ci` ✅ · `lint` ✅ · `npm test` 802 ✅ · `build` ✅. O e2e não rodou.
+- **PRs:** PetCardOrg/petcard-api#188 e PetCardOrg/petcard-docs#91 (mergeados) · PetCardOrg/petcard-api#189 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:**
+  - O `npm uninstall` no Windows também tira do lock as opcionais `@emnapi/core` e `@emnapi/runtime` (do wasm), a mesma poda que já tinha acontecido na web. Para mexer em deps no Windows, conferir as chaves de `packages` do lock antes e depois e, se for o caso, editar o lock à mão.
+  - Num checkout no Windows, o `docker/entrypoint.sh` fica com CRLF e a imagem local falha com "no such file or directory". No git o arquivo está com LF e o Render builda a partir do git, então não afeta o deploy. Para testar localmente, rodar os comandos do entrypoint com `--entrypoint sh -c '…'`.
+  - Uma API rodando localmente (`node dist/src/main`) trava a DLL do Prisma, e o `npm ci` falha com EPERM no meio, deixando o `node_modules` incompleto. Parar a API antes.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#189, marcar API-12, API-15 e API-16 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch nova a partir da `develop` atualizada: **API-13** (erros de serviços externos: `places.service.ts` e `infosimples-crmv.validator.ts`, logar o corpo, responder genérico, `response.json()` inválido → 502), depois **API-22** (paginação do `Historico`, alinhada com o DTO do shared; ver se precisa de contrato novo no shared, que esbarra no bloqueio da `main`). **API-21** pede uma decisão (enumeração de e-mails: corrigir ou documentar): perguntar ao usuário antes. **API-17** fica para o fim.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge; API-18 e API-19)
+- **Feito:**
+  - mobile#102, api#187 e docs#90 mergeados; CI da `develop` verde no mobile e na API. **MOB-16, MOB-17 e API-27 ✅**, marcados no checklist da #70.
+  - API, branch `fix/aud-p13-corridas`, 1 commit por item, testes vistos falhando antes:
+    - **API-18** (`1be60c5`): o token de uso único é consumido por `updateMany` condicional (`usedAt: null`); `count === 0` dá o mesmo 400 de link inválido.
+    - **API-19** (`6b43182`): `PrismaUniqueFilter` (`src/common/http/`), como `APP_FILTER` no `AppModule` e no harness de controller: `P2002` → 409 com a mensagem da checagem (e-mail ou CRMV); outros erros do Prisma seguem 500.
+    - Verificação: `lint` ✅ · `npm test` 802 ✅ (`test:cov` acima da catraca) · `build` ✅. O e2e não rodou (sem Docker).
+- **PRs:** PetCardOrg/petcard-mobile#102, PetCardOrg/petcard-api#187 e PetCardOrg/petcard-docs#90 (mergeados) · PetCardOrg/petcard-api#188 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge da api#188, marcar API-18 e API-19 ✅ (em `itens/api.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch nova a partir da `develop` atualizada, com os itens de limpeza de baixo risco: **API-12** (`USER node` no Dockerfile), **API-15** (comentários de ECS/CloudWatch restantes) e **API-16** (remover `ts-loader` e `source-map-support`). Depois, **API-13** (erros de serviços externos) e **API-22** (paginação do histórico). **API-21** pede uma decisão (enumeração de e-mails: corrigir ou documentar): perguntar ao usuário antes. **API-17** fica para o fim.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P12 (fechamento) e P13 (MOB-17, MOB-16, API-27)
+- **Feito:**
+  - mobile#101 e docs#89 mergeados; CI da `develop` do mobile verde em `25dddc7`. **MOB-06 ✅. P12 completo; #69 fechada.**
+  - **P13:** #70 atribuída e comentada. Faltavam no checklist o API-25, o API-26 e o WEB-17, que o PLANO e o painel já punham no P13; foram incluídos.
+  - Mobile, branch `fix/aud-p13-mobile`: **MOB-17** (`7c189dd`, selo "Concluída" pelo i18n) e **MOB-16** (`fd8c240`, o `register` devolve `{ extrasPendentes }` e a tela avisa). Os dois testes foram vistos falhando antes. Verificação: `typecheck` ✅ · `npm test` 268 ✅ · `eslint` no conteúdo commitado ✅.
+  - API, branch `fix/aud-p13-agendamento-passado`: **API-27** (`083bb41`): 400 para `scheduled_at` no passado na criação e, na edição, só quando o horário muda, com 5 minutos de folga. Verificação: `lint` ✅ · `npm test` 798 ✅ (`test:cov` acima da catraca) · `build` ✅. O e2e não rodou (sem Docker).
+- **PRs:** PetCardOrg/petcard-mobile#101 (mergeado) · PetCardOrg/petcard-docs#89 (mergeado) · PetCardOrg/petcard-mobile#102 e PetCardOrg/petcard-api#187 (abertos, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** os testes da API usavam datas fixas de 2026 (junho e dezembro) como "futuro". Com a regra do API-27 eles passariam a falhar, então foram para 2099 ou para um relógio fixo. Vale a mesma atenção para qualquer teste novo com data fixa.
+- **Bloqueios:** P6 (e o MOB-01 e o WEB-05) esperam a 0.24.0 do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** depois do merge do mobile#102 e da api#187, marcar MOB-16, MOB-17 e API-27 ✅ (em `itens/*.md`, no painel e no checklist da #70). Seguir no **P13** pela API, branch `fix/aud-p13-…` a partir da `develop` atualizada: começar pelos itens pequenos e isolados, **API-19** (P2002 do Prisma → 409) e **API-18** (corrida no token de redefinição), cada um com o teste que falha primeiro. O **API-17** (@googleapis/calendar) tem risco e pede teste de ponta a ponta do sync; deixar para o fim do pacote.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P12 (MOB-11 merge e MOB-06)
+- **Feito:**
+  - mobile#100 e docs#88 mergeados; CI da `develop` do mobile verde. **MOB-11 ✅**, marcado no checklist da #69.
+  - **MOB-06:** branch `refactor/aud-p12-telas-saude` no mobile. Primeiro, `telasDeSaude.test.tsx` (`801116f`): 31 testes que fixam as três telas no código antigo (card, criar com payload exato, obrigatórios, data inválida, falha ao criar, editar, formulário em branco depois de editar, exclusão, aviso de registro de veterinário e o selo da medicação). Depois, uma tela por commit: `TelaDeRegistroDeSaude` + vacina (`a0977c6`), vermífugo (`6a44dd0`) e medicação (`2041909`). As telas foram de 1993 para 1031 linhas. Verificação: `typecheck` ✅ · `npm test` 263 ✅ · `eslint` no conteúdo commitado ✅.
+- **PRs:** PetCardOrg/petcard-mobile#100 (mergeado) · PetCardOrg/petcard-docs#88 (mergeado) · PetCardOrg/petcard-mobile#101 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - **MOB-17** (P13): "Concluída", no selo da medicação, é texto fixo fora do i18n; incluído no checklist da #70.
+  - Os testes escritos antes do refactor mostraram uma diferença que já existia: o botão de confirmar a exclusão diz "Excluir" na vacina e "Excluir vermífugo"/"Excluir medicação" nas outras. Foi mantida.
+  - Os 6 avisos de `act(...)` do `npm test` vêm do `selecaoDePet.test.tsx` e já existiam; não são do refactor.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#101, marcar o MOB-06 ✅ (em `itens/mobile.md`, no painel e no checklist da #69) e **fechar a #69** (P12 completo). Depois: o P6 continua parado até sair a 0.24.0 do shared (precisa de um PR `develop → main` novo no shared); sem isso, o próximo pacote livre é o **P13** (#70). Começar pelos itens do mobile (MOB-16, MOB-17) ou pelo API-27, cada repo na sua branch `fix/aud-p13-…`.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P12 (MOB-10 merge e MOB-11)
+- **Feito:**
+  - mobile#99 mergeado (`96e4374`): **MOB-10 ✅**, marcado no checklist da #69.
+  - **MOB-11:** branch `refactor/aud-p12-appointments` no mobile. Primeiro commit (`8d36b25`): `AppointmentsScreen.test.tsx`, com 16 testes que fixam a tela antes do refactor (lista, vazio, erro, criar, validar, editar, excluir, prefill da clínica e Google Agenda). Segundo commit (`725172b`): divisão em `AppointmentCard`, `CalendarBanner` + `useGoogleCalendar`, `AppointmentFormModal` (o formulário recomeça a cada abertura por uma chave de sessão, no lugar do `resetForm`) e `horarioDoAgendamento`. A tela foi de 971 para 235 linhas; os estilos `syncButton*`, sem uso, saíram. Verificação: `typecheck` ✅ · `npm test` 232 ✅ · `eslint` nos arquivos alterados ✅.
+- **PRs:** PetCardOrg/petcard-mobile#99 (mergeado) · PetCardOrg/petcard-mobile#100 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** os testes da `VaccineScreen` emitem avisos de `act(...)` no `npm test` (não falham). É anterior a este PR; olhar quando o MOB-06 mexer nessas telas.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#100, marcar o MOB-11 ✅ (em `itens/mobile.md`, no painel e no checklist da #69). Seguir com o **MOB-06**, branch `refactor/aud-p12-telas-saude` a partir da `develop` atualizada: um componente genérico para as três telas de saúde (vacina, vermífugo, medicação), uma tela por commit, com o `selecaoDePet.test.tsx` como rede e, antes, testes que fixem a lista e o formulário de cada tela. Quando o MOB-06 estiver em develop, fechar a #69.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P11 (merge) e P12 (MOB-10)
+- **Feito:**
+  - mobile#98 e docs#86 mergeados; CI da `develop` do mobile verde em `ecda6ec`. MOB-07, 04, 05, 08, 09, 12 e 13 ✅, marcados no checklist da #68. A #68 continua aberta pelo MOB-01, pelo MOB-15 e pela validação em aparelho.
+  - **P12:** #69 atribuída e comentada. Branch `refactor/aud-p12-enxugar` no mobile. **MOB-10** (`bddd99e`): `authService.login` e `authService.register`; o `startSession` do `AuthContext` reúne o bloco de sessão do login, do Google e do cadastro. Nenhuma assertiva mudou: no mock dos testes, `login` e `register` delegam ao service real. Verificação: `typecheck` ✅ · `npm test` 216 ✅ · `eslint` no conteúdo commitado ✅.
+- **PRs:** PetCardOrg/petcard-mobile#98 (mergeado) · PetCardOrg/petcard-docs#86 (mergeado) · PetCardOrg/petcard-mobile#99 (aberto, review pedido a camilampinheiro)
+- **Decisões:** o P12 sai em PRs separados: MOB-10 sozinho; MOB-11 e MOB-06 em PRs próprios, para a revisão ficar viável.
+- **Descobertas:** atenção ao encadear `eslint && … ; git commit`: no Windows o eslint falha pelo CRLF dos arquivos antigos. Para checar o que vai no commit, use `git show HEAD:<arq> | npx eslint --stdin --stdin-filename <arq>`.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#99, marcar o MOB-10 ✅ (em `itens/mobile.md`, no painel e no checklist da #69). Seguir no **P12** com o **MOB-11**, branch `refactor/aud-p12-appointments` a partir da `develop` atualizada: dividir a `AppointmentsScreen` (971 linhas) por responsabilidade (formulário, card do Google Agenda, item da lista), sem mudar comportamento. Antes, escrever testes que fixem a tela, porque hoje ela não tem nenhum. Por último, o **MOB-06**, branch `refactor/aud-p12-telas-saude`, uma tela de saúde por commit, com o `selecaoDePet.test.tsx` como rede.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P11
+- **Feito:** branch `fix/aud-p11-correcoes` no mobile, 1 commit por item, todos com teste visto falhando antes (exceto MOB-09 e MOB-12, que não mudam comportamento):
+  - **MOB-07** (`00eb65a`): testes de `useGoogleAuth` e `usePushNotifications`.
+  - **MOB-04** (`3aaf1ee`): `refreshUser` grava no `SecureStore` o mesmo usuário que vai para o estado.
+  - **MOB-05** (`c70c937`): notificação já tratada não reabre a tela após novo login.
+  - **MOB-08** (`c011916`): erros do Google e da lista de pets no `common.json`; o `PetsContext` traduz só na exibição; data das leituras no idioma do i18n.
+  - **MOB-09** (`e1ed64d`): `@expo/ngrok` em `devDependencies` (o `expo start --tunnel` usa).
+  - **MOB-12** (`800994d`): não há `catch {}` literal; dos 9 `catch` sem tratamento, só o do idioma não dizia o porquê.
+  - **MOB-13** (`4bd63ac`): `horarioNoPassado` no formulário de agendamento; na edição, só vale se data ou hora mudaram.
+  - Verificação: `typecheck` ✅ · `npm test` 216 ✅ · `eslint` nos arquivos alterados ✅.
+- **PRs:** PetCardOrg/petcard-mobile#98 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - **MOB-16** (P13): o cadastro esconde do tutor a falha ao enviar foto ou telefone.
+  - **API-27** (P13): a API aceita agendamento no passado (o DTO é da API, não do shared).
+  - Painel: os totais estavam defasados (web e mobile contados como 14) e "Concluídos: 0" nunca tinha sido atualizado. Corrigido para 67 itens, 30 ✅ e 1 descartado.
+  - **`npm run lint` do mobile no Windows:** com `core.autocrlf=true` no Git do sistema, os arquivos de checkouts antigos ficam com CRLF e o prettier acusa cerca de 14 mil `Delete ␍`. Não é do código: o CI roda em Linux e os arquivos alterados estão em LF. Para verificar localmente, rodar `npx eslint <arquivos alterados>`.
+- **Bloqueios:** MOB-01 espera o API-23 (P6) em produção; o P6 espera a 0.24.0 do shared.
+- **Próximo passo:** depois do merge do mobile#98 (CI verde e review), marcar MOB-07, 04, 05, 08, 09, 12 e 13 ✅ (em `itens/mobile.md`, no painel e no checklist da #68). A #68 continua aberta por causa do MOB-01, do MOB-15 e da validação em aparelho. Enquanto isso, seguir para o **P12** (#69) no mobile, branch `refactor/aud-p12-enxugar` a partir da `develop` atualizada **depois do merge do mobile#98**: MOB-10 (`authService.login/register` e o helper `startSession`) primeiro e o MOB-06 por último (uma tela de saúde por commit). O MOB-15 é configuração no EAS e precisa de alguém com acesso ao expo.dev.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P10 (merge e fechamento)
+- **Feito:** web#70 e docs#85 mergeados (web `110b622`). WEB-09 e WEB-11 ✅ em develop; WEB-12 🚫 pela D4. Checklist da #67 marcado. **P10 completo; #67 fechada.**
+- **PRs:** PetCardOrg/petcard-web#70 (mergeado) · PetCardOrg/petcard-docs#85 (mergeado)
+- **Decisões:** nenhuma nova.
+- **Bloqueios:** P6 (e o WEB-05) seguem dependendo da publicação da 0.24.0 (PR `develop → main` novo no shared).
+- **Próximo passo:** **P11** (#68) no `petcard-mobile`, branch `fix/aud-p11-correcoes` a partir da `develop` atualizada, começando pelo **MOB-07** (testes de login Google e push) e seguindo com MOB-04, 05, 08, 09, 12 e 13. **Sem o MOB-01**, que exige o API-23 (P6) em produção.
+
+## 2026-11-02 — alvaro-unifor (com Claude) — P10
+- **Feito:** #67 atribuída e comentada. Branch `refactor/aud-p10-enxugar` na web, 1 commit por item:
+  - **WEB-09:** `RecordCard` próprio nas abas de vacina, vermifugação e medicação; `toDto` fora do componente, tipado por tipo, usado na criação e na edição. Antes do refactor, os testes de criação passaram a conferir o corpo inteiro, e um teste novo fixa os cards das três abas (verdes antes e depois). Página de 1128 para 1056 linhas.
+  - **WEB-11:** `coresDaEspecie` (`src/utils/especies.ts`) e `formatarData` (`src/utils/datas.ts`, com teste) no perfil e no dashboard; `corrigirMeuCrmv` chama `updateVeterinario`. O `formatDate` da carteira pública fica: gera `dd/mm/aaaa` fixo e trocá-lo mudaria a tela. O `formatarData` aceita `Date` porque o `AcaoClinicaResponseDto.ocorrido_em` do shared ainda é `Date` (P14).
+  - Verificação: `lint` ✅ · `test:cov` 227 ✅ (87,4 / 86,0 de statements e branches) · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#70 (aberto, review pedido a camilampinheiro)
+- **Decisões:** **D4: ninguém sabe se há QR impresso sem `#`**, então vale o padrão do PLANO: o `normalizePublicCardLocation` é mantido e o WEB-12 fica descartado.
+- **Descobertas / itens derivados:** nenhum.
+- **Bloqueios:** P6 (e o WEB-05) seguem dependendo da publicação da 0.24.0 (PR `develop → main` novo no shared).
+- **Próximo passo:** depois do merge do web#70, marcar WEB-09 e WEB-11 ✅ (em `itens/web.md`, no painel e na #67), marcar o WEB-12 como descartado na #67 e **fechar a #67**. Enquanto isso, seguir para o **P11** (#68) no `petcard-mobile`, branch `fix/aud-p11-correcoes` a partir da `develop` atualizada, começando pelo **MOB-07** (testes de login Google e push) e seguindo com MOB-04, 05, 08, 09, 12 e 13. **Sem o MOB-01**, que exige o API-23 (P6) em produção.
+
+## 2026-10-31 — alvaro-unifor (com Claude) — P9 (merge) e P2 (fechamento)
+- **Feito:** web#69 e docs#83 mergeados; CI da `develop` da web verde em `bcfaf93`. WEB-04, 06, 07, 13, 15 e 16 ✅ em develop, marcados na #66. O WEB-16 cumpre o último aceite do API-06: depois do cadastro, o dashboard mostra que o nome não confere. **API-06 ✅, P2 completo, #59 fechada.** A #66 continua aberta só pelo WEB-05.
+- **PRs:** PetCardOrg/petcard-web#69 (mergeado) · PetCardOrg/petcard-docs#83 (mergeado)
+- **Decisões:** nenhuma.
+- **Bloqueios:** P6 (e o WEB-05) dependem da publicação da 0.24.0, que precisa de um PR `develop → main` novo no shared quando liberarem a `main`.
+- **Próximo passo:** **P10** (#67) no `petcard-web`, branch `refactor/aud-p10-enxugar` a partir da `develop` atualizada: WEB-09 (`toDto` também na criação e `RecordCard` extraído para as 3 abas do `VetPetProfilePage`, refactor sem mudar comportamento, coberto pelos testes do P9) e WEB-11 (`SPECIES_COLORS`, `formatDate` e o PATCH `/veterinarios/me` em `src/utils/` e numa função só). O **WEB-12** só depois de perguntar a D4 ao time (há QR impresso com caminho sem `#`?).
+
+## 2026-10-31 — alvaro-unifor (com Claude) — P9
+- **Feito:** #66 atribuída e comentada. Branch `fix/aud-p9-correcoes` na web, 1 commit por item, todos com teste visto falhando antes:
+  - **WEB-04:** `deleteError` no topo da aba (fora do modal), limpo ao trocar de aba ou ao tentar de novo. Vale para registro e nota.
+  - **WEB-06:** `src/utils/datas.ts` (`hojeLocal`, `diaIsoLocal`) no `emptyForm`, no `isValidDate` e na regra de aplicação no futuro. Teste às 23h30 de São Paulo.
+  - **WEB-07:** o dashboard tem um efeito só (`[termo, página]`) e uma trava pela última busca; a mesma trava no `load` do prontuário. Foi usada a trava, e não `AbortController`: o `apiFetch` ficou como estava.
+  - **WEB-13:** a mensagem padrão do bloqueio de CRMV passou a ser traduzida na exibição; `t` saiu das dependências do `load`.
+  - **WEB-15:** os três textos fixos do achador agora são neutros (pt-BR e en-US).
+  - **WEB-16:** `CrmvAviso` com aviso próprio e link **Corrigir meu nome**; o dashboard repassa a situação do status, então o aviso pós-cadastro mostra o motivo.
+  - Verificação: `lint` ✅ · `test:cov` 224 ✅ (86 / 83,7 / 77 / 86) · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#69 (aberto, review pedido a camilampinheiro)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - **WEB-17** (P13): a web reconhece o nome divergente pelo **texto** da situação, copiado da API. O código estável no contrato depende de release do shared.
+  - **O shared#83 (release 0.24.0) foi fechado sem merge em 2026-10-30**, e não está mais aberto como o painel e o LOG diziam. Quando liberarem a `main`, a release precisa de um PR `develop → main` novo. Painel corrigido.
+  - Para a API, só verificação **aprovada** é reaproveitada: depois de corrigir o nome, "Verificar" consulta o conselho de novo, sem `force`.
+- **Bloqueios:** P6 (e o WEB-05) dependem da publicação da 0.24.0.
+- **Próximo passo:** depois do merge do web#69, marcar WEB-04/06/07/13/15/16 ✅ (em `itens/web.md`, no painel e na #66) e o aceite web do API-06 (fechar a **#59**). A #66 continua aberta por causa do WEB-05. Enquanto o P6 estiver parado, seguir para o **P10** (#67) na web, branch `refactor/aud-p10-enxugar` a partir da `develop` atualizada (precisa do web#69 mergeado, porque os testes do P9 cobrem o refactor): WEB-09 (`toDto` na criação e `RecordCard` nas 3 abas), WEB-11 (duplicações). O WEB-12 só depois de confirmar a D4 com o time. Quando liberarem a `main` do shared: novo PR `develop → main`, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
+## 2026-10-31 — alvaro-unifor (com Claude) — P7 e P8 (fechamento)
+- **Feito:** api#185, api#186 e docs#82 mergeados. Antes do merge foi conferido que os dois PRs da API não têm arquivo em comum e que, juntos, passam 791 testes e o build. CI da `develop` verde depois dos dois. API-08, API-10, API-11 e API-09 ✅ em develop. **P7 e P8 completos; #64 e #65 fechadas.**
+- **PRs:** PetCardOrg/petcard-api#185 (mergeado) · PetCardOrg/petcard-api#186 (mergeado) · PetCardOrg/petcard-docs#82 (mergeado)
+- **Decisões:** nenhuma. Segue sem `develop → main`: o shared#83 está aberto e o P6, parado.
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P9** (#66) no `petcard-web`, branch `fix/aud-p9-correcoes` a partir da `develop`, **sem o WEB-05** (depende do API-24, do P6): WEB-04, WEB-06, WEB-07, WEB-13 e o derivado **WEB-16** (mensagem de nome divergente do CRMV, que fecha o aceite do API-06 e permite fechar a #59). Quando liberarem o `develop → main` do shared: mergear o shared#83, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P8 (e CI do P7)
+- **Feito:**
+  - **P7:** o CI do api#185 reprovou no e2e: o mock do `UploadService` em `test/utils/e2e-app.ts` não tinha `discardFile`. Corrigido num commit a mais (`test(e2e): …`); CI verde.
+  - **P8:** #65 atribuída e comentada. Branch `refactor/aud-p8-filas` na API:
+    - **API-11** (refactor puro, commit próprio): `rmq.ts` com `FILAS`, `rmqOptions`, `retryOrDlq`/`getRetryCount` e `RETRY_HEADER` únicos; `main.ts`, `queue.module.ts`, topologia e os 3 consumidores passam a usá-los. Testes dos consumidores sem alteração (36 ✅).
+    - **API-09:** espera `1000 * 2 ** retryCount` antes de republicar; `rmq.spec.ts` com timers falsos; specs dos consumidores trocam a espera por `spyOn(backoff, 'esperar')`. DLQ sem leitor documentada no `rmq.ts` e no `CLAUDE.md`.
+  - Verificação: `lint` ✅ · `npm test` 772 ✅ · `build` ✅ · **e2e local 81 ✅** (Postgres e RabbitMQ do `docker/`) · boot do `dist` com RabbitMQ real (banco `petcard_test`, `FCM_ENABLED=false`, CRMV `stub`, SMTP em porta morta): 3 consumidores, 3 `DLX/DLQ ready`, filas com os mesmos argumentos, sem `PRECONDITION_FAILED`. Containers desligados no fim. CI do api#186 verde.
+- **PRs:** PetCardOrg/petcard-api#185 (aberto, CI verde) · PetCardOrg/petcard-api#186 (aberto, CI verde) · review pedido a camilampinheiro nos dois
+- **Decisões:** nenhuma nova. Segue valendo: sem `develop → main`; P6 parado até a 0.24.0.
+- **Descobertas:**
+  - Dá para rodar o e2e local: `docker start petcard-postgres petcard-rabbitmq` (o banco `petcard_test` já existe). O `gas-postgres` de outro projeto usa a porta 5434, sem conflito.
+  - O `.env` de dev tem `FCM_ENABLED=true` e SMTP real, e o boot dispara lembretes entre 9h e 21h: para subir a API local sem efeito colateral, sobrescrever `DATABASE_URL` (banco de teste), `FCM_ENABLED=false`, `CRMV_PROVIDER=stub` e o SMTP na linha de comando.
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P9** (#66) no `petcard-web`, branch `fix/aud-p9-correcoes` a partir da `develop`, **sem o WEB-05** (depende do API-24, do P6): WEB-04, WEB-06, WEB-07, WEB-13 e o derivado **WEB-16** (mensagem de nome divergente do CRMV, que fecha o aceite do API-06 e permite fechar a #59). Em paralelo: depois dos merges do api#185 e do api#186, marcar API-08/10/11/09 ✅ e fechar a #64 e a #65; quando liberarem o `develop → main` do shared, mergear o shared#83, confirmar a 0.24.0, fechar a #62 e começar o P6.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P7
+- **Feito:** #64 atribuída e comentada. Branch `fix/aud-p7-robustez` na API, 1 commit por item:
+  - **API-08:** `enqueueCalendarSync` captura a falha de publicação em `create`/`update`/`remove`; a linha fica `PENDING_*` e o `syncAllPending` recupera. No `remove` o evento fica órfão (vira o API-25).
+  - **API-10:** `POST /upload/image` limitado a 10/min **por usuário** (`UserThrottlerGuard` pelo `sub`, balde `auth` com teto `LIMITE_DE_UPLOAD`). `UploadService.discardFile` (melhor esforço) na troca de foto e na exclusão de pet/tutor/vet, incluindo as fotos dos pets na exclusão do tutor. `tutor.service.spec.ts` novo.
+  - Verificação: `npm run lint` sem diff fora do escopo · `npm test` 787 ✅ · `npm run build` ✅. E2E não rodado (sem Postgres local).
+- **PRs:** PetCardOrg/petcard-api#185 (aberto, review pedido a camilampinheiro)
+- **Decisões:** **sem `develop → main` por enquanto** (pedido do alvaro-unifor). O shared#83 (release 0.24.0) fica aberto sem merge, e o **P6 fica parado** até a 0.24.0 ser publicada. O P7 andou antes do P6 porque não usa contrato do shared; a seta P6 → P7 do mapa é de ordem, não de dependência técnica.
+- **Descobertas / itens derivados:**
+  - **API-25** (P13): excluir agendamento com a fila fora deixa o evento órfão no Google; corrigir com exclusão lógica (`PENDING_DELETE`).
+  - **API-26** (P13): anexos privados e PNGs de QR ficam no S3 na exclusão em cascata de pet/tutor.
+  - Um throttler **nomeado novo** obrigaria todos os `@SkipThrottle` existentes a incluí-lo (o guard avalia todos); por isso o upload reusa o balde `auth` com teto próprio.
+  - O contrato em `petcard-docs/docs/api/openapi.json` não foi regenerado (só ganha o 429 do upload).
+- **Bloqueios:** P6 depende da publicação da 0.24.0 (shared#83).
+- **Próximo passo:** **P8** (#65) na API, branch `refactor/aud-p8-filas` a partir da `develop`: primeiro o **API-11** (helper `rmqOptions` e `retryOrDlq` compartilhado, refactor puro, commit próprio) e depois o **API-09** (backoff `1000 * 2 ** retryCount` dentro do `retryOrDlq`, teste com timers falsos). Em paralelo: depois do merge do api#185, marcar API-08/10 ✅ e fechar a #64; quando liberarem o `develop → main` do shared, mergear o shared#83, confirmar a 0.24.0 e fechar a #62.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P5 (merge e release)
+- **Feito:** shared#82 e docs#81 mergeados. SH-02, SH-03 e SH-08 (`MaxLength`) ✅ em develop; checklist da #62 marcado. PR de release `develop → main` aberto, levando P4 + P5 para a 0.24.0.
+- **PRs:** PetCardOrg/petcard-shared#82 (mergeado) · PetCardOrg/petcard-docs#81 (mergeado) · PetCardOrg/petcard-shared#83 (aberto, `develop → main`)
+- **Decisões:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#83, conferir o workflow *Publish Package* na `main` e rodar `npm view @petcardorg/shared version` (deve dar `0.24.0`). Marcar a caixa do publish e a de status na #62, anotar no painel e **fechar a #62**. Em seguida, **P6** (#63): branch `fix/aud-p6-reautenticacao` na API a partir da `develop`, `npm install @petcardorg/shared@^0.24.0` e começar pelo API-20/API-04 (a API verifica `google_id_token` com a mesma lógica do login Google, exigindo `iat` recente e `sub` igual ao da conta).
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P5
+- **Feito:** D2 decidida. #62 atribuída e comentada. Branch `fix/aud-p5-contratos` no `petcard-shared`, 1 commit por item:
+  - **SH-02:** validador `maxBytes` (bytes UTF-8 contados por code point; o build não tem os tipos do `TextEncoder`) no lugar do `MaxLength` da senha. O `todo` virou 3 testes (acento, limite exato, emoji).
+  - **SH-03:** vet exige `senha_atual` também com `email`. `UpdateTutorDto` ganhou `senha_atual?`/`google_id_token?` (um dos dois obrigatório com `email`). `DeleteTutorDto` novo (um dos dois obrigatório), exportado no barrel. O `todo` virou teste e entrou `test/tutor-reauth.test.ts`.
+  - **SH-08:** `MaxLength(2048)` no `photo_url` de `CreatePetDto`/`UpdatePetDto`.
+  - `chore(release): 0.24.0`.
+  - Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 41 ✅, 0 `todo` · CI do PR verde, com o `check-version-bump.sh` aceitando 0.23.0 → 0.24.0 (fecha de vez o aceite do SH-04).
+- **PRs:** PetCardOrg/petcard-shared#82 (aberto, review pedido a camilampinheiro)
+- **Decisões:** **D2 = `id_token` do Google obtido na hora**, enviado na própria requisição de trocar e-mail ou excluir a conta, sem guardar nada. A API exige token recente e do mesmo `sub`. Registrada no PLANO.
+- **Descobertas:**
+  - Os 3 consumidores estão em `^0.23.0`, que em 0.x **não** inclui a 0.24.0: nada muda neles até o P6 subir a dependência.
+  - O nome da regra da senha mudou de `maxLength` para `maxBytes`; nenhum consumidor depende dele (`grep`).
+  - Com `core.autocrlf=true`, `prettier --check` acusa os 47 arquivos por CRLF; usar `--end-of-line auto` para conferir localmente (o `lint:check` não sofre com isso).
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#82, abrir o PR `develop → main` do `petcard-shared`, conferir o `publish.yaml` e rodar `npm view @petcardorg/shared version` (deve dar `0.24.0`). Aí marcar SH-02/03/08 ✅ (+ a caixa do publish) em `itens/shared.md`, no painel e na #62, e **fechar a #62**. Em seguida, **P6** (#63): branch `fix/aud-p6-reautenticacao` na API a partir da `develop`, `npm install @petcardorg/shared@^0.24.0` e começar pelo API-20/API-04 (a API verifica `google_id_token` com a mesma lógica do login Google, exigindo `iat` recente e `sub` igual ao da conta).
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P4 (fechamento)
+- **Feito:** shared#81, api#184 e docs#79 mergeados. SH-05, SH-01 e SH-04 ✅ em develop; CI do shared verde na `develop` (25 testes + 2 `todo`). **P4 completo; issue #61 fechada.**
+- **PRs:** PetCardOrg/petcard-shared#81 (mergeado) · PetCardOrg/petcard-api#184 (mergeado) · PetCardOrg/petcard-docs#79 (mergeado)
+- **Decisões:** nenhuma. O P5 **não foi iniciado** (a #62 segue sem responsável).
+- **Descobertas:** o login Google existe só para tutor; vet sempre tem senha. Então a D2 afeta só o `UpdateTutorDto`/`DeleteTutorDto`: com `id_token`, o DTO aceita `senha_atual` **ou** `google_id_token` (a API decide qual vale pela conta); com confirmação por e-mail, o DTO só ganha `senha_atual` e surge um fluxo novo. A regra do vet (`senha_atual` exigida com `email`) não depende da D2.
+- **Bloqueios:** **D2 em aberto**, bloqueia a parte do tutor no SH-03.
+- **Próximo passo:** decidir a **D2** com o usuário (registrar no PLANO e no LOG). Depois, **P5** (#62) no `petcard-shared`, branch `fix/aud-p5-contratos` a partir da `develop`: SH-02 (senha em bytes; transformar o `todo` em teste), SH-03 (vet + tutor conforme a D2 + `DeleteTutorDto`; idem), SH-08 (`MaxLength(2048)` no `photo_url`), bump **minor → 0.24.0**, `develop → main` e confirmar o publish. SH-02 e SH-08 podem andar antes da D2.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P4
+- **Feito:** #61 atribuída e comentada. Branch `test/aud-p4-rede-de-seguranca` no `petcard-shared`, 1 commit por item:
+  - **SH-05:** 25 testes com `node:test` em `test/` (fora do `dist`), rodando no CI; senha em bytes (SH-02) e `senha_atual` com e-mail (SH-03) ficam como `todo` até o P5. Mutação de conferência: trocar `>` por `>=` no `IsAfterDate` faz 1 teste falhar.
+  - **SH-01:** `lint:check` sem `--fix` no CI.
+  - **SH-04:** `scripts/check-version-bump.sh` no CI de PR; `publish.yaml` só trata `E404` como versão nova (testado contra o GitHub Packages: existente, inexistente, token inválido).
+  - Linha de base pedida em `itens/shared.md`: na `develop` (`f5b1b3e`), `npm run build` e o ESLint sem `--fix` **passavam**. O `dist` gerado depois da mudança ficou byte a byte igual ao de antes.
+  - Verificação final: `build` ✅ · `lint:check` ✅ · `npm test` 25 ✅ + 2 todo.
+- **PRs:** PetCardOrg/petcard-shared#81 (aberto, review pedido a camilampinheiro) · PetCardOrg/petcard-api#184 (aberto, a parte do SH-01 na API)
+- **Decisões:** nenhuma nova. D2 e D4 seguem em aberto (não bloqueiam o P5).
+- **Descobertas / itens derivados:**
+  - SH-01 nos outros repos: só a **API** rodava `npm run lint` (com `--fix`) no CI; **web** (`eslint .`) e **mobile** (`eslint . --ext .ts,.tsx`) já estavam certos. O lint da API passa sem `--fix` na `develop` atual.
+  - O TypeScript 6 não carrega mais `@types/*` por padrão: o `tsconfig.json` do shared passou a declarar `types: ["node"]` e o `tsconfig.build.json` fixa `types: []`, para o pacote seguir sem tipos de Node.
+  - O `@Type` do class-transformer exige `reflect-metadata` carregado; nos consumidores ele vem do Nest. Os testes carregam com `node --require reflect-metadata`.
+  - No Node 22+, `node --test <diretório>` não funciona (o argumento é glob): o script usa `.test-dist/test/*.test.js` sem aspas, que o `sh` do CI (Node 20) expande.
+  - O `package-lock.json` do shared estava com a versão raiz em 0.21.0; o PR corrige.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge do shared#81 e do api#184, marcar SH-05/01/04 ✅ em `itens/shared.md`, no painel e na #61 e **fechar a #61** (o aceite do SH-04 se confirma de vez no primeiro PR do P5, que muda `src/`). Em seguida, **P5** (#62) no `petcard-shared`, branch `fix/aud-p5-contratos` a partir da `develop`: SH-02 (senha em bytes; transformar o `todo` em teste), SH-03 (`senha_atual` com e-mail + `DeleteTutorDto`; idem), SH-08 (`MaxLength(2048)` no `photo_url`), bump **minor → 0.24.0**, depois `develop → main` e confirmar o publish.
+
+## 2026-10-30 — alvaro-unifor (com Claude) — P3 (fechamento)
+- **Feito:** api#183 e docs#77 mergeados. API-02 e API-15 (arquivos de reminder) ✅ em develop. **P3 completo em develop; issue #60 fechada.**
+  - Validação no staging (deploy automático da `develop`): `REMINDERS_TRIGGER_SECRET` criado no Render de staging; `POST /internal/reminders/run` → 204 e log dos dois serviços (0 lembretes na janela). O boot às 23h de Fortaleza pulou a execução, como projetado.
+  - Repository secrets `REMINDERS_TRIGGER_SECRET` e `REMINDERS_API_URL` (`https://petcard-api.onrender.com`) orientados no GitHub da API.
+- **PRs:** PetCardOrg/petcard-api#183 (mergeado) · PetCardOrg/petcard-docs#77 (mergeado)
+- **Decisões:** staging usa um segredo **diferente** do de produção e não entra no workflow agendado (só tem o boot e o disparo manual).
+- **Descobertas / itens derivados:**
+  - O staging roda com `NODE_ENV=production` (vem do `Dockerfile`), então qualquer variável "obrigatória em produção" também derruba o staging. Ao adicionar uma, cadastrar nos dois Renders **antes** do merge na `develop`.
+  - No PowerShell 5.1, `curl` é apelido do `Invoke-WebRequest`: usar `curl.exe` nos exemplos para o time.
+  - FCM desligado no staging (`FCM_ENABLED=false`): lembrete ponta a ponta só dá para ver em produção ou ligando o FCM lá.
+- **Bloqueios / pendente fora do código:** `REMINDERS_TRIGGER_SECRET` já cadastrado no Render de produção e os repository secrets no GitHub (alvaro-unifor). Falta o `develop → main` da API; depois do deploy, rodar Actions → "Lembretes diários" → *Run workflow* e conferir que fica verde.
+- **Próximo passo:** **P4** (#61) no `petcard-shared`, branch `test/aud-p4-rede-de-seguranca` a partir da `develop`: SH-05 (testes) → SH-01 (lint do CI sem `--fix`) → SH-04 (checagem de versão). Sem mudança em `src/`, então sem bump.
+
+## 2026-10-29 — alvaro-unifor (com Claude) — P3 (API-02 e API-15 em PR)
+- **Feito:** o API-02 e o API-15 estavam commitados localmente (branch `fix/aud-p3-lembretes`, sem push) desde antes do merge do api#182; a versão local do API-03 ficou obsoleta e foi descartada. Branch nova `fix/aud-p3-disparo-externo` a partir da `develop`, com cherry-pick dos dois commits (conflito só no `dose-reminder.service.spec.ts`: ficaram o teste do API-03 e o da idempotência). Assumi a #60 junto com a camila, com aviso na issue.
+  - API-02: workflow `reminders.yml` (12:00 UTC + `workflow_dispatch`) → `POST /internal/reminders/run` com `X-Reminders-Secret`; execução no boot (9h–21h de Fortaleza); `REMINDERS_TRIGGER_SECRET` obrigatório em produção.
+  - API-15: comentários dos dois arquivos de reminder.
+  - `npm run lint` sem diff · `npm test` 768 ✅ · `npm run build` ✅. E2E não rodado (sem Postgres local).
+- **PRs:** PetCardOrg/petcard-api#183 (aberto, aguardando review)
+- **Decisões:** disparo externo pelo GitHub Actions (e não por Render Cron Job, que é pago).
+- **Descobertas / itens derivados:** o API-15 ainda cita CloudWatch no `.env.example` (~122) e no `config/mail.config.ts` (~48); fica para o P13, onde o item está listado.
+- **Bloqueios:** antes do deploy, criar `REMINDERS_TRIGGER_SECRET` no Render (sem ela o boot de produção falha) e os secrets `REMINDERS_TRIGGER_SECRET` e `REMINDERS_API_URL` no repo da API.
+- **Próximo passo:** depois do merge do api#183, marcar API-02 e API-15 (reminder) ✅ em `itens/api.md`, no painel e na #60, e **fechar a #60** (o aceite "configurado" do API-02 só se confirma com as variáveis no Render/Actions e uma execução manual do workflow depois do `develop → main`). Em seguida, **P4** (#61) no `petcard-shared`: rede de segurança (testes, lint do CI sem `--fix`, checagem de versão).
+
+## 2026-10-29 — camila — P3 (API-03 em develop)
+- **Feito:** #60 atribuída e comentada. Branch `fix/aud-p3-lembretes` (petcard-api, a partir da `develop`). **API-03** implementado em 1 commit (`b9b8ab4`): `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação cuja publicação falhou e devolve só as publicadas; retorno vazio faz o lembrete soltar a reivindicação. Testes: o antigo (que travava o comportamento errado) foi reescrito, mais um de falha parcial entre aparelhos e um do reminder. `npm test` 753 ✅, `build` ✅.
+- **PRs:** PetCardOrg/petcard-api#182 (mergeado em 2026-10-29)
+- **Descobertas / itens derivados:**
+  - `npm run build` falhou no `auth-token.service.ts` até rodar `npx prisma generate` (client do Prisma desatualizado na máquina; não é regressão).
+  - `npm run lint` (com `--fix`) reformatou 4 arquivos fora do escopo (`anexo.service.ts`, `routes-decorated.spec.ts`, `calendar-sync.message.ts`, `test/utils/acao-clinica.ts`), diferença de versão do prettier; revertidos, não entram no PR. Reforça o item do `--fix` no lint.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** em branch nova a partir da `develop`, **API-02** (disparo externo documentado + execução no boot com teste de idempotência 2×; D1 = Render gratuito) e **API-15** nos dois arquivos de reminder (trocar comentários de ECS/CloudWatch). Depois PR para a `develop` da API e atualização de `itens/api.md`, do painel e da #60 (a #60 só fecha com API-02 e API-15).
+
+## 2026-10-29 — camila — P2 (fechamento do status) e arranque do P3
+- **Feito:** api#181 conferido como **mergeado em 2026-10-28** (`44760dc` na `develop`; testes de API-05/06/07 presentes no diff). `itens/api.md` e o painel atualizados: API-05 e API-07 ✅ em develop; API-06 🟨 (falta só o aceite web, WEB-16 no P9). Os 5 repos sincronizados (`develop` local em fast-forward; nenhum commit local perdido).
+- **PRs:** PetCardOrg/petcard-docs (branch `docs/aud-status-2026-10-29`, ainda a abrir). Nenhum PR de auditoria aberto nos 5 repos.
+- **Decisões:** nenhuma nova. D2 e D4 seguem em aberto (não bloqueiam o P3).
+- **Bloqueios:** nenhum.
+- **Próximo passo:** mergeado o PR de status, **fechar a #59 com comentário** (ressalva: aceite web do API-06 vive no WEB-16, P9) ou mantê-la aberta até lá, a critério do time. Em seguida, **P3** (#60) no `petcard-api`, branch `fix/aud-p3-lembretes` a partir da `develop`: começar pelo **API-03** (lembrete perdido quando a publicação no RabbitMQ falha), depois API-02 (disparo externo + execução no boot; D1 = Render gratuito) e API-15 nos arquivos de reminder.
+
+## 2026-10-28 — alvaro-unifor (com Claude) — P2
+- **Feito:** API-05, API-06 e API-07 implementados (1 commit cada) e em PR.
+  - API-05: vincular Google a conta de e-mail não verificado zera a senha e renova o `passwordChangedAt`.
+  - API-06: `nomesConferem` (D3: primeiro + último nome) aplicado no `verify()`, que serve ao cadastro e à revalidação. Situação gravada: "Nome do cadastro não confere com o titular do CRMV".
+  - API-07: boot falha em produção sem `CRMV_PROVIDER` ou com valor desconhecido; `stub` explícito sobe com aviso.
+- **PRs:** PetCardOrg/petcard-api#181 (aberto, aguardando review)
+- **Decisões:** D3 registrada no PLANO. `CRMV_PROVIDER` confirmado no Render pelo alvaro-unifor.
+- **Descobertas / itens derivados:** WEB-16, a mensagem da web para nome divergente (P9). É o 3º aceite do API-06, que fica em aberto até lá.
+- **Bloqueios:** nenhum. Antes do deploy, conferir que o valor no Render é exatamente `infosimples` ou `stub`.
+- **Próximo passo:** depois do merge do api#181, marcar API-05/06/07 em `itens/api.md`, no painel e na #59 e fechá-la (o aceite web do API-06 segue no WEB-16). Em seguida, o **P3** (#60) no `petcard-api`: começar pelo **API-03** (lembrete perdido quando a publicação no RabbitMQ falha), depois API-02 (disparo externo + execução no boot; D1 = Render gratuito).
+
+## 2026-10-28 — alvaro-unifor (com Claude) — P1 (fechamento)
+- **Feito:** PetCardOrg/petcard-mobile#97 e PetCardOrg/petcard-docs#73 mergeados. MOB-02/03 ✅ em develop. **P1 completo em develop; issue #58 fechada.**
+- **Pendente fora do código:** `develop → main` da API e da web antes da gravação (PC-106) e o teste do API-01 com dois aparelhos em produção; cadastrar as variáveis do MOB-15 no EAS antes de qualquer build production.
+- **Decisões:** **D3** = primeiro + último nome, normalizados (alvaro-unifor). `CRMV_PROVIDER` **confirmado como definido** no Render de produção (alvaro-unifor), o que libera o merge do API-07.
+- **Próximo passo:** abrir o **P2** (#59) no `petcard-api`, começando pelo **API-05**, branch `fix/aud-p2-identidade-crmv`; depois API-06 (D3 decidida) e API-07.
+
+## 2026-10-28 — alvaro-unifor (com Claude) — P1
+- **Feito:**
+  - **API-01** ✅ em develop: `trust proxy` = 1 (`src/common/http/trust-proxy.ts`), teste de integração e nota no `CLAUDE.md`.
+  - **WEB-01, WEB-02, WEB-03, WEB-08** ✅ em develop: sessão sobrevive ao cold start, aviso do achador com estado de falha, Voltar sem prender o vet, template `caminho` nos services.
+  - **MOB-02, MOB-03** 🟦 em PR: upload de foto com 60s; build preview/production falha sem `EXPO_PUBLIC_API_URL` (variável conferida no EAS).
+- **PRs:** PetCardOrg/petcard-api#180 (mergeado) · PetCardOrg/petcard-web#68 (mergeado) · PetCardOrg/petcard-mobile#97 (aberto, aguardando review)
+- **Decisões:** nenhuma nova.
+- **Descobertas / itens derivados:**
+  - WEB-15: textos fixos da LostPetPage afirmam o aviso antes de ele sair (P9).
+  - MOB-15: ambiente production do EAS sem a chave do Maps e os client IDs do Google (P11; é configuração, não código).
+  - Lint do mobile no Windows: o checkout com `core.autocrlf=true` gera milhares de erros `␍` do prettier; não é regressão (o lint-staged normaliza no commit). Para ver os erros reais: `npx eslint --rule 'prettier/prettier: off' <arquivos>`.
+- **Bloqueios:** nenhum. A validação do API-01 em produção depende do `develop → main` da API.
+- **Próximo passo:** depois do merge do mobile#97, marcar MOB-02/03 como ✅ em `itens/mobile.md`, no painel e na issue #58, e **fechar a #58**. Em seguida, abrir o **P2** (#59) no `petcard-api`, começando pelo **API-05** (zerar senha ao vincular conta Google não verificada); o API-06 depende da decisão **D3**, a perguntar antes.
+
+## 2026-10-28 — alvaro-unifor (com Claude) — Fase 0 (preparação)
+- **Feito:**
+  - `main` e `develop` locais dos 5 repos sincronizados com o remoto (fast-forward; nenhum commit local perdido). Não existe branch `production`: `main` é a produção.
+  - Os 4 relatórios (`originais/`) foram **revalidados contra a `main` atual**: todos os achados continuam presentes (API `9483562`, shared `b4bb3c2` v0.23.0, web `df20d98`, mobile `e0def80`).
+  - Criada esta estrutura: especificação por item (`itens/`), plano em 14 pacotes (`PLANO.md`) e protocolo (`COMO-CONTINUAR.md`).
+- **Descobertas / itens derivados:**
+  - API-23: a API não tem rota para descadastrar token de push (bloqueia MOB-01).
+  - API-24: confirmar que o PATCH clínico grava `null` (bloqueia WEB-05).
+  - API-20: a API tem **cópia própria** do validador de senha (`src/common/crypto/password.validators.ts`), então o SH-02 sozinho não corrige a API.
+  - WEB-14 / MOB-14: as telas precisam pedir `senha_atual` quando o API-04 entrar.
+  - O lint com `--fix` no CI (SH-01) também aparece no `package.json` da API.
+- **Decisões:** D1 = Render no plano gratuito (API-02 segue crítico). D5 = status nas issues do GitHub, sem Trello.
+- **Bloqueios:** D2, D3 e D4 em aberto (ver PLANO). Nenhuma bloqueia o P1.
+- **Próximo passo:** abrir o **P1**, começando por `petcard-api` → **API-01** (`trust proxy`), branch `fix/aud-p1-trust-proxy`.

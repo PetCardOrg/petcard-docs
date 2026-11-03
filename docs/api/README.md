@@ -1,12 +1,12 @@
 # Collection Postman — PetCard API (PC-098)
 
-Collection e environment do Postman para explorar a **API REST do PetCard**, cobrindo os **59 endpoints** em 16 grupos. Gerados a partir do contrato **OpenAPI** da API (PC-097).
+Collection e environment do Postman para explorar a **API REST do PetCard**, cobrindo os **76 endpoints** em 18 grupos. Gerados a partir do contrato **OpenAPI** da API (PC-097).
 
 ## Arquivos
 
 | Arquivo | Descrição |
 | --- | --- |
-| `petcard-api.postman_collection.json` | Collection (schema Postman v2.1) — 16 pastas por domínio, 59 requests, com corpo de exemplo e exemplo de resposta em cada uma. |
+| `petcard-api.postman_collection.json` | Collection (schema Postman v2.1) — 18 pastas por domínio, 76 requests, com corpo de exemplo e exemplo de resposta em cada uma. |
 | `petcard-api.postman_environment.json` | Environment **PetCard - Local** — `base_url`, tokens e credenciais do seed. |
 | `openapi.json` | Snapshot do contrato OpenAPI que originou a collection (fonte de verdade). |
 | `build-collection.js` | Script que regenera a collection/environment a partir do `openapi.json`. |
@@ -21,8 +21,8 @@ Collection e environment do Postman para explorar a **API REST do PetCard**, cob
 
 ### Autenticação
 
-- A collection define **Bearer `{{access_token}}`** no nível raiz; os 52 endpoints protegidos herdam.
-- São **públicos** (`noauth`): `GET /` (health), `POST /auth/register`, `POST /auth/login`, `POST /auth/veterinario/register`, `POST /auth/veterinario/login`, `GET /calendar/callback` e `GET /cards/:token` (carteira pública via QR).
+- A collection define **Bearer `{{access_token}}`** no nível raiz; os 61 endpoints protegidos herdam.
+- São **públicos** (`noauth`), 15 no total: `GET /` (health); `POST /auth/register`, `/auth/login`, `/auth/google`, `/auth/password/forgot`, `/auth/password/reset`, `/auth/email/verify`; `GET /auth/veterinario/crmv`, `POST /auth/veterinario/register`, `/auth/veterinario/login`; `GET /cards/:token` (carteira pública via QR); `GET /coleira/:token` e `POST /coleira/:token/leitura` (coleira lida por quem achou o pet); `GET /calendar/callback`; `GET /clinicas/fotos/:token`.
 - Quem é público **sai do contrato**, não de uma lista no script: `@Auth` compõe `@ApiBearerAuth`, então só rota com `@Public()` fica sem `security` no OpenAPI.
 - Os logins gravam o token em variáveis por papel (`tutor_token`, `vet_token`) e no `access_token` ativo — troque de papel apenas re-executando o login correspondente.
 
