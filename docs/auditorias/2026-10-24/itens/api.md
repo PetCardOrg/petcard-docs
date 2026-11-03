@@ -44,20 +44,20 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** api#182 (mergeado em 2026-10-29). `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação que não entrou na fila e devolve só as publicadas; retorno vazio faz o `DoseReminderService` soltar a reivindicação (`lastNotifiedAt` volta ao valor anterior).
 
 ### API-04 · Token roubado permite tomar a conta do tutor
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR) · **Fase:** 3 · **Pacote:** P6 · **PR:** —
 - **Depende de:** SH-03 (DTO com `senha_atual`) publicado no `@petcardorg/shared`.
 - **Onde:** `src/modules/tutor/tutor.controller.ts:36` (`PATCH me`), `:46` (`DELETE me`), `tutor.service.ts` (`updateById`, `removeById`). Modelo a copiar: `veterinario.service.ts:111` (`assertSenhaAtualConfere`).
 - **Problema:** trocar o e-mail e apagar a conta só exigem o token (7 dias, em `localStorage` na web). Atacante troca o e-mail → "esqueci a senha" → dono da conta.
 - **Correção:** exigir `senha_atual` para trocar `email` e para `DELETE /tutors/me`. Conta só-Google (sem senha): exigir `id_token` do Google recente (validar com o mesmo verificador do `googleLogin`). Trocar o e-mail também deve zerar `emailVerifiedAt` e invalidar sessões (`passwordChangedAt`/equivalente).
-- **⚠️ Decisão pendente (D2):** conta só-Google: `id_token` recente ou confirmação por e-mail?
+- **Decisão (D2):** `id_token` do Google obtido na hora (ver PLANO).
 - **Aceite:**
-  - [ ] `PATCH /tutors/me` com `email` e sem `senha_atual` → 400/401; com senha errada → 401.
-  - [ ] `DELETE /tutors/me` idem.
-  - [ ] Caminho da conta só-Google coberto por teste.
-  - [ ] **Vet também:** troca de e-mail em `PATCH /veterinarios/me` passa a exigir `senha_atual` (hoje só a troca de senha exige — ver SH-03).
+  - [x] `PATCH /tutors/me` com `email` e sem `senha_atual` → 400/401; com senha errada → 401.
+  - [x] `DELETE /tutors/me` idem.
+  - [x] Caminho da conta só-Google coberto por teste.
+  - [x] **Vet também:** troca de e-mail em `PATCH /veterinarios/me` passa a exigir `senha_atual` (hoje só a troca de senha exige — ver SH-03).
   - [ ] Clientes atualizados para pedir a senha nesses fluxos: MOB-14 (tutor) e WEB-14 (vet). **Publicar a API e os clientes juntos**, senão a troca de e-mail quebra.
   - [ ] OpenAPI/Postman regenerados (`scripts/generate-openapi.ts`).
-- **Resolução:** —
+- **Resolução:** commit `a93ce9e`. Tutor: `PATCH /tutors/me` com e-mail **novo** e `DELETE /tutors/me` conferem `senha_atual` (bcrypt); a conta com Google vinculado pode provar com `google_id_token`, validado pelo mesmo verificador do login (`AuthService.verifyGoogleIdToken`, extraído do `googleLogin`), exigindo o mesmo `sub` e `iat` de até **5 minutos**. `senha_atual` em conta sem senha → 401. Trocar o e-mail zera `emailVerifiedAt` e carimba `passwordChangedAt`: **todas as sessões caem, inclusive a de quem trocou** (o app precisa mandar a pessoa entrar de novo, MOB-14). Vet: trocar o e-mail confere `senha_atual` (sem derrubar sessões; o item não pedia). Nos dois, a prova vem antes da checagem de e-mail ocupado, para a rota não revelar quais e-mails têm conta. Mandar o e-mail atual sem mudança não pede prova. Testes: `tutor.reautenticacao.spec.ts` (16), controller do tutor, service do vet e e2e (`conta-do-tutor`, `auth`). Falta o OpenAPI (regenerar depois do merge) e os clientes (WEB-14, MOB-14).
 
 ### API-05 · Login Google herda a senha de quem cadastrou o e-mail antes
 - **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P2 · **PR:** PetCardOrg/petcard-api#181
@@ -141,24 +141,24 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 |----|------|-------------------|--------|
 | API-18 | Corrida de leitura/escrita no consumo do token de redefinição | `updateMany` condicional (`where: { id, usedAt: null }`) e checar `count` | ✅ api#188 (commit `1be60c5`: `count === 0` → o mesmo 400 de link inválido) |
 | API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | ✅ api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
-| API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | ⬜ |
+| API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR): `de2754f`. `Buffer.byteLength` no decorator e na função `isStrongPassword` (formulário web de redefinição), com a mesma mensagem do shared. A cópia fica: o shared não exporta a versão em função |
 | API-21 | Cadastro revela quais e-mails existem | avaliar custo/benefício (UX vs enumeração); no mínimo documentar a decisão | ✅ decidido (D6): **manter** o 409 "Email already registered" do cadastro de tutor e de vet. A mensagem clara vale mais para a UX, e o cadastro já tem rate limit. Sem mudança de código |
 | API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | ⏸️ bloqueado: o shared não tem DTO de paginação, e o contrato novo precisa de uma release do shared, que depende da `main` |
 
 ## ➕ Itens derivados (descobertos ao cruzar as auditorias)
 
 ### API-23 · Rota para descadastrar token de push (necessária ao MOB-01)
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR) · **Fase:** 3 · **Pacote:** P6 · **PR:** —
 - **Onde:** `src/modules/notification/devices.controller.ts` só tem `@Post()`.
 - **Correção:** `DELETE /devices/:token` autenticado, que só remove token do próprio tutor (idempotente: 204 mesmo se não existir). Opcional: remover tokens que o FCM devolve como `UNREGISTERED` no consumidor.
-- **Aceite:** [ ] testes de controller e service (dono, não-dono, inexistente); [ ] OpenAPI regenerado.
-- **Resolução:** —
+- **Aceite:** [x] testes de controller e service (dono, não-dono, inexistente); [ ] OpenAPI regenerado.
+- **Resolução:** commit `5584ff6`. `DELETE /devices/:token` (só TUTOR, 204) chama `NotificationService.unregisterDevice`, um `deleteMany` por `token` **e** `tutorId`: token de outro tutor ou inexistente não casa e responde 204 igual. O app manda o token com `encodeURIComponent` (o FCM tem `:`). A parte opcional já existia: o consumidor apaga o token quando o FCM devolve `UNREGISTERED`.
 
 ### API-24 · PATCH de registros clínicos precisa aceitar `null` para limpar campo (necessário ao WEB-05)
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟨 em andamento (branch `fix/aud-p6-reautenticacao`, sem PR) · **Fase:** 3 · **Pacote:** P6 · **PR:** —
 - **Contexto:** os DTOs do shared usam `@IsOptional()`, que já deixa `null` passar na validação. Falta confirmar que os services (`vaccine`, `deworming`, `medication`, `vet-note`) repassam `null` ao Prisma e não o descartam.
-- **Aceite:** [ ] teste por service: `PATCH { next_dose_at: null }` grava `NULL`; [ ] campos obrigatórios continuam rejeitando `null`.
-- **Resolução:** —
+- **Aceite:** [x] teste por service: `PATCH { next_dose_at: null }` grava `NULL`; [x] campos obrigatórios continuam rejeitando `null`.
+- **Resolução:** commit `0921112`. O problema existia nas datas: `next_dose_at` (vacina, vermífugo) e `end_date` (medicação) viravam `undefined` com `null` e o valor antigo ficava. Os textos opcionais (`notes`, `veterinarian_name`, `prescricao`, `observacoes`) já gravavam `NULL`. E os obrigatórios **não** rejeitavam `null`: o `@IsOptional` deixa passar, o nome nulo virava 500 no Prisma e a data aplicada nula era ignorada. Novo `health/campos-anulaveis.ts`: `dataAnulavel` e `assertObrigatoriosNaoNulos` (400 com a lista dos campos), usados nos 3 services de saúde e no de nota clínica (`diagnostico`). Testes de integração nos 3 controllers (passam pelo `ValidationPipe`) e de service na nota. O sync do Google Agenda já apaga o evento quando a data some. A correção de raiz no DTO virou o SH-09.
 
 ### API-25 · Excluir agendamento com a fila fora deixa o evento órfão no Google
 - **Status:** ✅ em develop · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-api#192
@@ -180,6 +180,13 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Correção:** recusar `scheduled_at` no passado na criação e na remarcação, com a mesma regra do mobile: na edição, só quando o horário muda. Considerar uma folga de alguns minutos para relógio de aparelho atrasado.
 - **Aceite:** [x] teste: `POST` com data de ontem → 400; [x] `PATCH` só do título num compromisso passado → 200.
 - **Resolução:** `recusarHorarioNoPassado` no `AppointmentService`, com 5 minutos de folga: na criação sempre, na edição só quando o `scheduled_at` muda (o app reenvia o horário atual). Os testes com datas fixas de 2026 já passadas foram para 2099 ou para um relógio fixo, sem mudar as assertivas. Commit `083bb41`.
+
+### API-28 · Excluir a conta de veterinário não pede a senha
+- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** a definir (próxima release minor do shared; não é breaking, então fora do P14) · **PR:** —
+- **Origem:** API-04 (P6). O título do P6 fala em "excluir conta (tutor e vet)", mas o aceite do API-04 e o SH-03 só cobriram o e-mail do vet: `DELETE /veterinarios/me` (`veterinario.controller.ts`, `removeMe`) ainda apaga a conta só com o token.
+- **Correção:** `DeleteVeterinarioDto { senha_atual }` no shared (release nova) e `assertSenhaAtualConfere` no `VeterinarioService.remove`. Na web, pedir a senha no fluxo de exclusão.
+- **Aceite:** [ ] `DELETE /veterinarios/me` sem senha → 400, com senha errada → 401; [ ] web pede a senha.
+- **Resolução:** —
 
 ---
 
