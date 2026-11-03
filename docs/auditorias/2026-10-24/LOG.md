@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do API-17)
+- **Feito:** api#193 (`b318123`) e docs#98 mergeados; CI da `develop` da API verde. **API-17 ✅**, marcado no checklist da #70.
+- **PRs:** PetCardOrg/petcard-api#193 e PetCardOrg/petcard-docs#98 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** WEB-17, API-22, P5 (#62), P6 (#63), WEB-05 (#66), MOB-01 (#68) e P14 (#71) esperam uma release do shared (a **0.24.1**), que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** perguntar ao usuário qual caminho seguir: (1) abrir o PR `develop → main` do shared para publicar a 0.24.1 e destravar P5/P6/WEB-05/MOB-01/WEB-17/API-22; ou (2) seguir pelo **MOB-15** (#68, variáveis do ambiente `production` no EAS), que não depende da release mas precisa de acesso ao painel do EAS. A validação de push/Google em aparelho real (#68) também pode andar sem release.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P13 (merge do SH-06; API-17)
 - **Feito:**
   - shared#84 (`65877b8`) e docs#97 mergeados; CI da `develop` do shared verde. **SH-06 ✅**, marcado no checklist da #70.
