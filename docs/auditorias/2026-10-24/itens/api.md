@@ -44,7 +44,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** api#182 (mergeado em 2026-10-29). `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação que não entrou na fila e devolve só as publicadas; retorno vazio faz o `DoseReminderService` soltar a reivindicação (`lastNotifiedAt` volta ao valor anterior).
 
 ### API-04 · Token roubado permite tomar a conta do tutor
-- **Status:** 🟨 código em develop; faltam os clientes (WEB-14 em PR, MOB-14) e o OpenAPI · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
+- **Status:** 🟨 código em develop; faltam o MOB-14 (em PR) e o OpenAPI · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Depende de:** SH-03 (DTO com `senha_atual`) publicado no `@petcardorg/shared`.
 - **Onde:** `src/modules/tutor/tutor.controller.ts:36` (`PATCH me`), `:46` (`DELETE me`), `tutor.service.ts` (`updateById`, `removeById`). Modelo a copiar: `veterinario.service.ts:111` (`assertSenhaAtualConfere`).
 - **Problema:** trocar o e-mail e apagar a conta só exigem o token (7 dias, em `localStorage` na web). Atacante troca o e-mail → "esqueci a senha" → dono da conta.

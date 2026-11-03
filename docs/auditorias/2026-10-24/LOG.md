@@ -16,6 +16,21 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (mobile)
+- **Feito:**
+  - web#71 e docs#101 mergeadas; CI da `develop` da web verde. WEB-14 com o código em develop (falta só publicar junto com o API-04).
+  - Mobile, branch `fix/aud-p6-reautenticacao`, 2 commits (PR mobile#104):
+    - `f5f70a4` `chore(deps)`: `@petcardorg/shared` `^0.24.1`. Lock editado só nas linhas do shared; o pacote foi instalado com `npm install --ignore-scripts` ("changed 1 package") e o lock que o npm reescreveu foi descartado e editado de novo.
+    - **MOB-14** `260569e`: excluir a conta pede a prova de identidade num modal depois das duas confirmações: **senha atual** ou **Confirmar com Google** (`useGoogleIdToken`, `id_token` sem abrir sessão). O 401 da prova não desloga mais (`isFalhaDeReautenticacao` no interceptor).
+  - Verificação: `typecheck` ✅ · `test:cov` 275 ✅ · `lint`: sem erro além do `␍` (ver Descobertas). O fluxo do Google não foi validado em aparelho.
+- **PRs:** PetCardOrg/petcard-web#71 e PetCardOrg/petcard-docs#101 (mergeados) · PetCardOrg/petcard-mobile#104 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões (com o usuário):** a metade "trocar e-mail" do MOB-14 **não se aplica**: o app não tem edição de e-mail, e criar essa edição seria funcionalidade nova. Na exclusão, o app oferece a senha **e** o Google, porque não sabe qual a conta tem (a API não expõe).
+- **Descobertas / itens derivados:**
+  - No Windows, com `core.autocrlf=true`, o `npm run lint` do mobile acusa ~16 mil `Delete ␍` (prettier) em todos os arquivos. Não é do código: o CI (Linux, LF) não vê. Para conferir localmente, filtrar o `␍` ou rodar `prettier --check --end-of-line auto`.
+  - A suíte `selecaoDePet.test.tsx` falhou uma vez no `test:cov` com todos os testes passando, e passou sozinha e na rodada seguinte. Ficar de olho (instável sob carga).
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da mobile#104: (1) regenerar `docs/api/openapi.json` e a collection do Postman a partir da `develop` da API (`scripts/generate-openapi.ts`), o que fecha o aceite de OpenAPI do API-04 e do API-23; (2) **perguntar ao usuário** se libera o deploy do P6 na `main` (API → web → build EAS) e avisar o time que o app antigo não exclui a conta; (3) validar o "Confirmar com Google" em aparelho; (4) seguir para o **WEB-05** (P9, #66), já desbloqueado.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P6 (web)
 - **Feito:**
   - A api#194 e a docs#100 já estavam mergeadas na `develop` (api#194 às 04:21 UTC, antes da web e do mobile, ao contrário do combinado). Nada foi para a `main`. Status corrigido aqui: **API-20 e API-24 ✅**; API-04 e API-23 com o código em develop, esperando o OpenAPI (e, o API-04, os clientes).

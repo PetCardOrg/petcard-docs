@@ -33,11 +33,11 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 - **Resolução:** `app.config.ts` lança erro nos perfis `preview`/`production` sem `EXPO_PUBLIC_API_URL`; `console.error` em runtime fora do dev. Teste `app.config.test.ts`. `eas.json` conferido; a variável existe nos ambientes preview e production do EAS. Commit `16fa3fd`.
 
 ### MOB-14 · Pedir senha atual ao trocar e-mail e ao excluir conta (derivado do SH-03/API-04)
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** P6 · **PR:** —
+- **Status:** 🟦 em PR (#104) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-mobile#104
 - **Onde:** `ProfileScreen` (edição e exclusão de conta), `tutor.service.ts`.
 - **Correção:** campo "senha atual" ao mudar e-mail e na confirmação da exclusão; conta só-Google reautentica com Google (decisão D2).
-- **Aceite:** [ ] testes dos dois fluxos; [ ] publicar junto com o API-04.
-- **Resolução:** —
+- **Aceite:** [x] testes dos dois fluxos (exclusão; a troca de e-mail não se aplica, ver Resolução); [ ] publicar junto com o API-04; [ ] validar o Google em aparelho.
+- **Resolução:** commit `260569e` (e `f5f70a4`, shared `^0.24.1`). Depois das duas confirmações, o `ConfirmarExclusaoModal` pede a **senha atual** e, com o Google configurado, oferece **Confirmar com Google**: o app não sabe se a conta tem senha ou só Google, então oferece os dois e a API confere. `useGoogleIdToken` reabre o consentimento e devolve o `id_token` sem abrir sessão. `deleteCurrentTutor` manda o `DeleteTutorDto`. O interceptor do axios deslogava em todo 401 autenticado; o 401 da prova de identidade ficou de fora (`isFalhaDeReautenticacao`, pelas mensagens da API, que citam a "senha atual"), e o erro aparece no modal. **Troca de e-mail: não se aplica.** O app não tem edição de e-mail (o perfil só edita nome, telefone e foto); decidido com o usuário não criar essa edição agora. Por isso também não há o "entrar de novo depois de trocar o e-mail".
 
 ---
 
