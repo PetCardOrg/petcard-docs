@@ -74,11 +74,11 @@ Legenda: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desejável
 - **Resolução:** `MaxLength(2048)` nos dois `photo_url`, com 3 testes (P5). `auth0_id` segue para o P14.
 
 ### SH-09 · DTOs de PATCH aceitam `null` em campo obrigatório
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** a definir (próxima release minor do shared; não é breaking, então fora do P14) · **PR:** —
+- **Status:** 🟦 em PR (#86) · **Fase:** 6 · **Pacote:** P15 · **PR:** PetCardOrg/petcard-shared#86
 - **Origem:** API-24 (P6). `@IsOptional()` pula a validação com `undefined` **e** com `null`; nos `Update*RecordDto` e no `UpdateNotaClinicaDto`, `{ vaccine_name: null }` passa. A API passou a recusar no service (`assertObrigatoriosNaoNulos`), mas o contrato continua dizendo que vale.
 - **Correção:** nos campos obrigatórios dos DTOs de update, trocar `@IsOptional()` por `@ValidateIf((_, v) => v !== undefined)`; nos opcionais anuláveis, tipar `string | null`. Teste no `test/` do shared. Depois, a API pode tirar a checagem do service.
-- **Aceite:** [ ] `null` em campo obrigatório reprova na validação do shared; [ ] tipos dos anuláveis com `| null`.
-- **Resolução:** —
+- **Aceite:** [x] `null` em campo obrigatório reprova na validação do shared; [x] tipos dos anuláveis com `| null`.
+- **Resolução:** commit `ef9ffa2`. `@IsOptionalNaoNulo()` (`ValidateIf` que só pula com `undefined`) nos obrigatórios dos 4 DTOs de PATCH (vacina, vermífugo, medicação, nota); os anuláveis seguem com `@IsOptional()` e tipo `string | null`. Testes em `test/patch-null.test.ts`. A checagem no service da API (`assertObrigatoriosNaoNulos`) pode sair depois, mas não precisa.
 
 ---
 

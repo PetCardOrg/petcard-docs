@@ -16,6 +16,18 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P15 (shared 0.25.0)
+- **Feito:**
+  - mobile#106 e docs#108 mergeadas (MOB-01 ✅ em develop).
+  - Criado o **P15**, "Contratos do shared 0.25.0" (#109), com o que sobrou fora do P14 e depende de contrato novo: SH-09, API-28, WEB-17 e API-22. O API-22 e o WEB-17 saíram do P13; com isso, **o P13 está completo** e a #70 foi fechada.
+  - Shared, branch `feature/aud-p15-contratos-0-25`, 5 commits (PR shared#86): **SH-09** `ef9ffa2` (`@IsOptionalNaoNulo()`, anuláveis com `| null`), **API-28** `ead3abb` (`DeleteVeterinarioDto`), **WEB-17** `f34430c` (`CrmvStatusResponseDto` com `motivo`, enum `CrmvMotivoRecusa`), **API-22** `9cbb5c3` (`HistoricoClinicoQueryDto`, `proximo_cursor`), release `2dd313e` (0.25.0). Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 55 ✅ · `check-version-bump` ✅.
+  - Compatibilidade conferida antes de publicar: com o `dist` da branch copiado no `node_modules` dos consumidores, o `tsc` do build da API, da web e do mobile passa sem erro. O `node_modules` foi restaurado.
+- **PRs:** PetCardOrg/petcard-mobile#106 e PetCardOrg/petcard-docs#108 (mergeados) · PetCardOrg/petcard-shared#86 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões (com o usuário):** seguir com o pacote do shared 0.25.0. Desenho: a paginação do histórico é **opcional** (sem `limit`, responde tudo), para os clientes atuais seguirem funcionando; o `motivo` do CRMV é calculado na resposta a partir da `situacao` gravada, sem migration.
+- **Descobertas / itens derivados:** **API-29**: o `tsc` com os specs acusa 6 erros de tipo que já existiam (o Jest não faz checagem completa de tipos, então ninguém via).
+- **Bloqueios:** a publicação da 0.25.0 (`develop → main` do shared) precisa de liberação do usuário.
+- **Próximo passo:** depois do merge da shared#86, **perguntar ao usuário** se libera a release 0.25.0 (PR `develop → main` do shared). Publicada, na API (branch `feature/aud-p15-consumo-0-25`): shared `^0.25.0`; **API-28** (`DELETE /veterinarios/me` com `DeleteVeterinarioDto` e `assertSenhaAtualConfere`); **WEB-17** (`motivo` nas respostas do status do CRMV); **API-22** (`limit`/`cursor` no `GET /pets/:petId/historico-clinico`). Depois, na web: shared `^0.25.0`, pedir a senha ao excluir a conta do vet (API-28) e usar o `motivo` no lugar do `crmvSituacao.ts` (WEB-17).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P9 fechado; P11 (MOB-01)
 - **Feito:**
   - web#73 e docs#107 mergeadas. **P9 completo**: #66 fechada (WEB-05 ✅ em develop; vai para a produção na próxima release da web).

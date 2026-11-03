@@ -143,7 +143,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 | API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | ✅ api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
 | API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | 🚀 em produção (PetCardOrg/petcard-api#194): `de2754f`. `Buffer.byteLength` no decorator e na função `isStrongPassword` (formulário web de redefinição), com a mesma mensagem do shared. A cópia fica: o shared não exporta a versão em função |
 | API-21 | Cadastro revela quais e-mails existem | avaliar custo/benefício (UX vs enumeração); no mínimo documentar a decisão | ✅ decidido (D6): **manter** o 409 "Email already registered" do cadastro de tutor e de vet. A mensagem clara vale mais para a UX, e o cadastro já tem rate limit. Sem mudança de código |
-| API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | ⏸️ bloqueado: o shared não tem DTO de paginação, e o contrato novo precisa de uma release do shared, que depende da `main` |
+| API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | 🟨 em andamento (P15): contrato em shared#86 (`HistoricoClinicoQueryDto`, `proximo_cursor`, `9cbb5c3`); falta a API |
 
 ## ➕ Itens derivados (descobertos ao cruzar as auditorias)
 
@@ -182,10 +182,18 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** `recusarHorarioNoPassado` no `AppointmentService`, com 5 minutos de folga: na criação sempre, na edição só quando o `scheduled_at` muda (o app reenvia o horário atual). Os testes com datas fixas de 2026 já passadas foram para 2099 ou para um relógio fixo, sem mudar as assertivas. Commit `083bb41`.
 
 ### API-28 · Excluir a conta de veterinário não pede a senha
-- **Status:** ⬜ pendente · **Fase:** 3 · **Pacote:** a definir (próxima release minor do shared; não é breaking, então fora do P14) · **PR:** —
+- **Status:** 🟨 em andamento (contrato em PetCardOrg/petcard-shared#86; falta a API e a web) · **Fase:** 3 · **Pacote:** P15 · **PR:** —
 - **Origem:** API-04 (P6). O título do P6 fala em "excluir conta (tutor e vet)", mas o aceite do API-04 e o SH-03 só cobriram o e-mail do vet: `DELETE /veterinarios/me` (`veterinario.controller.ts`, `removeMe`) ainda apaga a conta só com o token.
 - **Correção:** `DeleteVeterinarioDto { senha_atual }` no shared (release nova) e `assertSenhaAtualConfere` no `VeterinarioService.remove`. Na web, pedir a senha no fluxo de exclusão.
 - **Aceite:** [ ] `DELETE /veterinarios/me` sem senha → 400, com senha errada → 401; [ ] web pede a senha.
+- **Resolução:** contrato no shared: `DeleteVeterinarioDto { senha_atual }` (`ead3abb`, shared#86).
+
+### API-29 · `tsc` com os testes acusa 6 erros de tipo nos specs
+- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** a definir · **PR:** —
+- **Origem:** P15, ao conferir a compilação da API contra o shared 0.25.0. O `tsc --noEmit -p tsconfig.json` (que inclui os specs) acusa 6 erros, os mesmos com o shared 0.24.1; o `tsconfig.build.json` (sem specs) passa, e o Jest não faz checagem completa de tipos, então ninguém via.
+- **Onde:** `calendar/__tests__/google-calendar.service.spec.ts:24,28` (spread sem tupla), `card/__tests__/card.service.spec.ts:239,385` (cast de `CarteiraDigitalPublicResponseDto` para `Record<string, unknown>`), `health/vaccine/__tests__/vaccine.service.spec.ts:190,211` (`veterinario` fora do tipo do mock do Prisma).
+- **Correção:** ajustar os 6 pontos e incluir `tsc --noEmit -p tsconfig.json` no `npm run lint` ou no CI, para os specs voltarem a ser checados.
+- **Aceite:** [ ] `tsc --noEmit -p tsconfig.json` sem erro; [ ] checagem no CI.
 - **Resolução:** —
 
 ---
