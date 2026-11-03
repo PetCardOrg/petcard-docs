@@ -42,7 +42,7 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** Estado `deleteError` exibido no topo da aba (`role="alert"`), limpo ao trocar de aba ou ao tentar apagar de novo. Vale para registro e nota clínica. Commit `7b50d13`.
 
 ### WEB-05 · Não dá para limpar campo opcional ao editar
-- **Status:** 🟦 em PR (#73) · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#73
+- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#73
 - **Depende de:** API-24 (API grava `null`).
 - **Onde:** `VetPetProfilePage.tsx` `toDto` e o PATCH da nota clínica.
 - **Correção:** na **edição**, campo opcional esvaziado → `null` no corpo. Na **criação**, continua omitido.

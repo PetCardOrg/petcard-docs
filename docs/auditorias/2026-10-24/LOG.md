@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P9 fechado; P11 (MOB-01)
+- **Feito:**
+  - web#73 e docs#107 mergeadas. **P9 completo**: #66 fechada (WEB-05 ✅ em develop; vai para a produção na próxima release da web).
+  - Mobile, branch `fix/aud-p11-push-logout`, 1 commit (PR mobile#106). **MOB-01** `e2d443d`: o logout descadastra o token de push do aparelho (`deviceService.unregisterCurrent()`, `DELETE /devices/:token`, timeout de 3 s, erro ignorado) antes de limpar a sessão. Verificação: `typecheck` ✅ · `test:cov` 280 ✅ · lint sem erro além do `␍`.
+  - Ambiente do teste manual do WEB-05 desfeito: API da 3001 e web da 5173 paradas, `petcard-api/.run-tmp` apagada.
+- **PRs:** PetCardOrg/petcard-web#73 e PetCardOrg/petcard-docs#107 (mergeados) · PetCardOrg/petcard-mobile#106 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** o processo antigo da API de dev (`npm run start:dev`, aberto pelo usuário) parou de responder na 3000 depois das trocas de branch; a permissão para encerrá-lo foi negada, então ele ficou aberto. O usuário fecha.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da mobile#106: (1) **MOB-15** com o usuário (configuração do EAS: `eas env:list --environment production` precisa ter `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` e os client IDs do Google) e validar push/Google em aparelho; com isso a #68 fecha. (2) O que sobra fora do P14 depende de uma **release minor do shared (0.25.0)**: SH-09 (`null` nos PATCH), DTO do `DELETE /veterinarios/me` (API-28), DTO de status do CRMV com motivo estável (WEB-17) e DTO de paginação (API-22). Propor ao usuário um pacote "shared 0.25.0" com esses quatro; a release precisa de liberação dele.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P9 (WEB-05)
 - **Feito:** web, branch `fix/aud-p9-limpar-opcionais`, 1 commit (PR web#73). **WEB-05** `61ca996`: na edição, opcional apagado vai como `null` (registros clínicos e nota clínica); a criação continua omitindo. `ComLimpeza<T>` tipa o `null` nos PATCH. Verificação: `lint` ✅ · `npm test` 233 ✅ · `build` ✅.
 - **PRs:** PetCardOrg/petcard-web#73 (aberto, review pedido a camilampinheiro) · este PR de docs
