@@ -44,7 +44,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** api#182 (mergeado em 2026-10-29). `schedulePush` marca `FAILED` (`ENQUEUE_FAILED`) a notificação que não entrou na fila e devolve só as publicadas; retorno vazio faz o `DoseReminderService` soltar a reivindicação (`lastNotifiedAt` volta ao valor anterior).
 
 ### API-04 · Token roubado permite tomar a conta do tutor
-- **Status:** 🟨 código em develop; faltam o MOB-14 (em PR) e o OpenAPI · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
+- **Status:** 🟨 código e clientes em develop; falta publicar junto (deploy do P6) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Depende de:** SH-03 (DTO com `senha_atual`) publicado no `@petcardorg/shared`.
 - **Onde:** `src/modules/tutor/tutor.controller.ts:36` (`PATCH me`), `:46` (`DELETE me`), `tutor.service.ts` (`updateById`, `removeById`). Modelo a copiar: `veterinario.service.ts:111` (`assertSenhaAtualConfere`).
 - **Problema:** trocar o e-mail e apagar a conta só exigem o token (7 dias, em `localStorage` na web). Atacante troca o e-mail → "esqueci a senha" → dono da conta.
@@ -55,8 +55,8 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
   - [x] `DELETE /tutors/me` idem.
   - [x] Caminho da conta só-Google coberto por teste.
   - [x] **Vet também:** troca de e-mail em `PATCH /veterinarios/me` passa a exigir `senha_atual` (hoje só a troca de senha exige — ver SH-03).
-  - [ ] Clientes atualizados para pedir a senha nesses fluxos: MOB-14 (tutor) e WEB-14 (vet). **Publicar a API e os clientes juntos**, senão a troca de e-mail quebra.
-  - [ ] OpenAPI/Postman regenerados (`scripts/generate-openapi.ts`).
+  - [ ] Clientes atualizados (✅ em develop: web#71, mobile#104; falta publicar) para pedir a senha nesses fluxos: MOB-14 (tutor) e WEB-14 (vet). **Publicar a API e os clientes juntos**, senão a troca de e-mail quebra.
+  - [x] OpenAPI/Postman regenerados (`scripts/generate-openapi.ts`).
 - **Resolução:** commit `a93ce9e`. Tutor: `PATCH /tutors/me` com e-mail **novo** e `DELETE /tutors/me` conferem `senha_atual` (bcrypt); a conta com Google vinculado pode provar com `google_id_token`, validado pelo mesmo verificador do login (`AuthService.verifyGoogleIdToken`, extraído do `googleLogin`), exigindo o mesmo `sub` e `iat` de até **5 minutos**. `senha_atual` em conta sem senha → 401. Trocar o e-mail zera `emailVerifiedAt` e carimba `passwordChangedAt`: **todas as sessões caem, inclusive a de quem trocou** (o app precisa mandar a pessoa entrar de novo, MOB-14). Vet: trocar o e-mail confere `senha_atual` (sem derrubar sessões; o item não pedia). Nos dois, a prova vem antes da checagem de e-mail ocupado, para a rota não revelar quais e-mails têm conta. Mandar o e-mail atual sem mudança não pede prova. Testes: `tutor.reautenticacao.spec.ts` (16), controller do tutor, service do vet e e2e (`conta-do-tutor`, `auth`). Falta o OpenAPI (regenerar depois do merge) e os clientes (WEB-14, MOB-14).
 
 ### API-05 · Login Google herda a senha de quem cadastrou o e-mail antes
@@ -148,10 +148,10 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 ## ➕ Itens derivados (descobertos ao cruzar as auditorias)
 
 ### API-23 · Rota para descadastrar token de push (necessária ao MOB-01)
-- **Status:** 🟨 código em develop; falta o OpenAPI · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
+- **Status:** ✅ em develop · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-api#194
 - **Onde:** `src/modules/notification/devices.controller.ts` só tem `@Post()`.
 - **Correção:** `DELETE /devices/:token` autenticado, que só remove token do próprio tutor (idempotente: 204 mesmo se não existir). Opcional: remover tokens que o FCM devolve como `UNREGISTERED` no consumidor.
-- **Aceite:** [x] testes de controller e service (dono, não-dono, inexistente); [ ] OpenAPI regenerado.
+- **Aceite:** [x] testes de controller e service (dono, não-dono, inexistente); [x] OpenAPI regenerado (docs/api, 2026-11-03).
 - **Resolução:** commit `5584ff6`. `DELETE /devices/:token` (só TUTOR, 204) chama `NotificationService.unregisterDevice`, um `deleteMany` por `token` **e** `tutorId`: token de outro tutor ou inexistente não casa e responde 204 igual. O app manda o token com `encodeURIComponent` (o FCM tem `:`). A parte opcional já existia: o consumidor apaga o token quando o FCM devolve `UNREGISTERED`.
 
 ### API-24 · PATCH de registros clínicos precisa aceitar `null` para limpar campo (necessário ao WEB-05)

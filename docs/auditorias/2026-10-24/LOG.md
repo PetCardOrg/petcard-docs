@@ -16,6 +16,18 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 (OpenAPI)
+- **Feito:**
+  - mobile#104 e docs#102 mergeadas. Os três PRs do P6 estão na `develop`.
+  - `docs/api/openapi.json` regenerado da `develop` da API (`5f48281`): **58 paths, 76 operações** (eram 41 paths, desde 23/08). Entram as rotas de auth por e-mail e Google, CRMV, coleira, anexos, clínicas, `DELETE /devices/{token}`, e os DTOs com `senha_atual`/`google_id_token`. Nenhuma rota saiu.
+  - Collection do Postman regenerada (`build-collection.js`): 18 pastas, 76 requests, 15 públicos (`noauth`); o environment não mudou. `docs/api/README.md` com as contagens e a lista de rotas públicas novas.
+  - Status: **API-23 ✅**. API-04, WEB-14 e MOB-14 com tudo em develop, esperando só o deploy; o MOB-14 também a validação do Google em aparelho.
+- **PRs:** PetCardOrg/petcard-mobile#104 e PetCardOrg/petcard-docs#102 (mergeados) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** para gerar o OpenAPI com o `nest start --watch` rodando, o build foi para uma pasta temporária (`nest build -p` com um tsconfig de `outDir` próprio, apagado depois), para não mexer no `dist/` do servidor de dev. O `nest build` é necessário: o plugin do Swagger no `nest-cli.json` gera parte dos metadados, e um `tsc` puro não. O `openapi-to-postmanv2` foi instalado fora do repo (`NODE_PATH`), para não criar `node_modules` no docs.
+- **Bloqueios:** o deploy do P6 toca a `main` de API, web e mobile e precisa de autorização do usuário.
+- **Próximo passo:** **perguntar ao usuário** se libera o deploy do P6: PR `develop → main` da API, depois da web (Vercel), depois build EAS do app; avisar o time que o app antigo não exclui a conta até atualizar. Antes ou junto, validar o "Confirmar com Google" em aparelho. Fechada a #63, seguir para o **WEB-05** (P9, #66).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P6 (mobile)
 - **Feito:**
   - web#71 e docs#101 mergeadas; CI da `develop` da web verde. WEB-14 com o código em develop (falta só publicar junto com o API-04).
