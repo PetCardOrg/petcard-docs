@@ -143,7 +143,7 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 | API-19 | Cadastro/troca de e-mail disputam a unique → 500 | capturar `P2002` → 409 | ✅ api#188 (commit `6b43182`: `PrismaUniqueFilter` global, `APP_FILTER` no `AppModule`; mesma mensagem da checagem, por e-mail ou CRMV; outros erros do Prisma seguem 500) |
 | API-20 | Limite de 72 bytes da senha conta caracteres | **a API tem cópia própria** em `src/common/crypto/password.validators.ts` (`MaxLength`). Corrigir aqui junto com SH-02 (ou passar a usar o validador do shared) | 🚀 em produção (PetCardOrg/petcard-api#194): `de2754f`. `Buffer.byteLength` no decorator e na função `isStrongPassword` (formulário web de redefinição), com a mesma mensagem do shared. A cópia fica: o shared não exporta a versão em função |
 | API-21 | Cadastro revela quais e-mails existem | avaliar custo/benefício (UX vs enumeração); no mínimo documentar a decisão | ✅ decidido (D6): **manter** o 409 "Email already registered" do cadastro de tutor e de vet. A mensagem clara vale mais para a UX, e o cadastro já tem rate limit. Sem mudança de código |
-| API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | 🟨 em andamento (P15): contrato em shared#86 (`HistoricoClinicoQueryDto`, `proximo_cursor`, `9cbb5c3`); falta a API |
+| API-22 | `Historico` sem paginação | paginação por cursor, alinhada com o DTO do shared | 🟦 em PR (P15, api#196): contrato `9cbb5c3` (shared 0.25.0); API `68bc601`, `GET /pets/:petId/historico-clinico?limit=&cursor=`, opcional (sem `limit`, tudo). Cada tabela busca até `limit + 1` depois do cursor; o desempate dentro da tabela segue a ordem do banco (a collation `en_US` ignora o hífen do UUID). e2e com empate no mesmo instante |
 
 ## ➕ Itens derivados (descobertos ao cruzar as auditorias)
 
@@ -182,11 +182,11 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** `recusarHorarioNoPassado` no `AppointmentService`, com 5 minutos de folga: na criação sempre, na edição só quando o `scheduled_at` muda (o app reenvia o horário atual). Os testes com datas fixas de 2026 já passadas foram para 2099 ou para um relógio fixo, sem mudar as assertivas. Commit `083bb41`.
 
 ### API-28 · Excluir a conta de veterinário não pede a senha
-- **Status:** 🟨 em andamento (contrato em PetCardOrg/petcard-shared#86; falta a API e a web) · **Fase:** 3 · **Pacote:** P15 · **PR:** —
+- **Status:** 🟦 em PR (api#196, web#74) · **Fase:** 3 · **Pacote:** P15 · **PR:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74
 - **Origem:** API-04 (P6). O título do P6 fala em "excluir conta (tutor e vet)", mas o aceite do API-04 e o SH-03 só cobriram o e-mail do vet: `DELETE /veterinarios/me` (`veterinario.controller.ts`, `removeMe`) ainda apaga a conta só com o token.
 - **Correção:** `DeleteVeterinarioDto { senha_atual }` no shared (release nova) e `assertSenhaAtualConfere` no `VeterinarioService.remove`. Na web, pedir a senha no fluxo de exclusão.
-- **Aceite:** [ ] `DELETE /veterinarios/me` sem senha → 400, com senha errada → 401; [ ] web pede a senha.
-- **Resolução:** contrato no shared: `DeleteVeterinarioDto { senha_atual }` (`ead3abb`, shared#86).
+- **Aceite:** [x] `DELETE /veterinarios/me` sem senha → 400, com senha errada → 401; [x] web pede a senha.
+- **Resolução:** contrato no shared: `DeleteVeterinarioDto { senha_atual }` (`ead3abb`, shared#86). API `e274cc8`: `remove` confere a senha (`assertSenhaAtualConfere`) antes de apagar; testes de service, de integração da rota (400 sem senha) e e2e (400, 401 e a conta fica; 204 com a senha). Web `34bf6a5`: a confirmação da exclusão pede a senha atual; senha errada mostra a mensagem sem deslogar. **Publicar API e web juntas.**
 
 ### API-29 · `tsc` com os testes acusa 6 erros de tipo nos specs
 - **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** a definir · **PR:** —

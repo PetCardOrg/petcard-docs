@@ -116,12 +116,12 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** `CrmvAviso` mostra "O nome do seu cadastro não confere…" com o link **Corrigir meu nome** (`/vet/profile`) e recebe a `situacao` que a tela já conhece; o dashboard repassa a do `GET /veterinarios/me/crmv` e, nas outras recusas, mostra a situação do conselho. A comparação é pelo texto copiado da API (`src/utils/crmvSituacao.ts`): o código estável virou o WEB-17. Commit `6edd361`.
 
 ### WEB-17 · Situação de nome divergente do CRMV comparada pelo texto (derivado do WEB-16)
-- **Status:** 🟨 em andamento (contrato em PetCardOrg/petcard-shared#86; falta a API e a web) · **Fase:** 6 · **Pacote:** P15 · **PR:** —
+- **Status:** 🟦 em PR (api#196, web#74) · **Fase:** 6 · **Pacote:** P15 · **PR:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74
 - **Onde:** `petcard-web/src/utils/crmvSituacao.ts` (cópia de `SITUACAO_NOME_DIVERGENTE` de `petcard-api/src/modules/veterinario/crmv/crmv-verification.service.ts`); o status do CRMV (`GET /veterinarios/me/crmv`, `POST …/verificar`) não tem DTO no shared, e a web declara o tipo `CrmvStatus` localmente.
 - **Problema:** a web reconhece a recusa por nome divergente comparando o texto da situação. Se a API mudar a frase, o aviso próprio some sem erro e volta o "Corrija o CRMV".
 - **Correção:** DTO do status do CRMV no shared com um campo estável (ex.: `motivo: 'NOME_DIVERGENTE' | …`), preenchido pela API; a web passa a usar o campo. Bump minor do shared, então depende da liberação do `develop → main`.
-- **Aceite:** [ ] DTO no shared com teste; [ ] API preenche o campo; [ ] web usa o campo e apaga a cópia do texto.
-- **Resolução:** —
+- **Aceite:** [x] DTO no shared (sem teste próprio: é só tipo e enum, sem regra de validação, ADR-006; o comportamento está testado na API e na web); [x] API preenche o campo; [x] web usa o campo e apaga a cópia do texto.
+- **Resolução:** shared `f34430c` (`CrmvStatusResponseDto` com `motivo?: CrmvMotivoRecusa`). API `2f87bd8`: o status e a verificação devolvem o DTO do shared, com `motivo: NOME_DIVERGENTE` calculado a partir da `situacao` gravada (vale para recusas antigas, sem migration); sai o tipo local. Web `e3b4e3c`: `CrmvAviso` e dashboard decidem pelo `motivo`; a cópia do texto saiu de `utils/crmvSituacao.ts`, que guarda só a constante tipada (o enum entra como tipo, para o shared não ir para o bundle). Os testes passaram a usar uma situação com outro texto.
 ---
 
 ## Não verificado pela auditoria

@@ -16,6 +16,19 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-03 — alvaro-unifor (com Claude) — P15 (release 0.25.0, API e web)
+- **Feito:**
+  - shared#86 e docs#110 mergeadas. Com a liberação do usuário, release shared#87 (`develop → main`) mergeada: *Publish Package* verde e o registry lista a **0.25.0**. SH-09 🚀.
+  - API, branch `feature/aud-p15-consumo-0-25`, 5 commits (PR api#196): shared `^0.25.0` (`141d564`, lock só com as linhas do shared); `c3c67bd` (o `lint --fix` tirou um cast que o `| null` do SH-09 tornou desnecessário); **API-28** `e274cc8`; **WEB-17** `2f87bd8`; **API-22** `68bc601`. Verificação: `lint` ✅ · `test:cov` 861 ✅ · `build` ✅ · `test:e2e` 88 ✅.
+  - Web, branch `feature/aud-p15-consumo-0-25`, 3 commits (PR web#74): shared `^0.25.0` (`d9d94f2`); **WEB-17** `e3b4e3c`; **API-28** `34bf6a5`. Verificação: `lint` ✅ · `npm test` 235 ✅ · `build` ✅ (sem `class-validator` no bundle).
+- **PRs:** PetCardOrg/petcard-shared#86, #87 e PetCardOrg/petcard-docs#110 (mergeados) · PetCardOrg/petcard-api#196 e PetCardOrg/petcard-web#74 (abertos, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** o usuário liberou a release 0.25.0 do shared.
+- **Descobertas:**
+  - A collation `en_US` do Postgres ignora o hífen ao comparar texto, e os ids são UUIDs em `text`: comparar ids no JavaScript dá outra ordem que a do banco. Na paginação do histórico, o desempate dentro de uma tabela segue a ordem do banco, e o cursor usa a comparação do próprio banco.
+  - Na web, importar um **enum** do shared como valor puxa o pacote inteiro (com os decorators que exigem `reflect-metadata`) e quebra os testes; só tipos podem vir do shared. O valor estável fica numa constante tipada.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da api#196 e da web#74: (1) regenerar `docs/api/openapi.json` e a collection do Postman a partir da `develop` da API (mudaram o corpo do `DELETE /veterinarios/me`, a query do histórico e a resposta do CRMV); (2) fechar a #109; (3) a próxima ida para a `main` leva **API e web juntas** (a web antiga não exclui a conta do vet com a API nova) e precisa de liberação do usuário. Depois disso, sobram o P11 (MOB-15 e a validação em aparelho, com o usuário), o API-29 (sem pacote) e o P14 (só na v1.0.0).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P15 (shared 0.25.0)
 - **Feito:**
   - mobile#106 e docs#108 mergeadas (MOB-01 ✅ em develop).
