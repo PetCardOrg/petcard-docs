@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-02 — alvaro-unifor (com Claude) — P13 (merge do API-25 e 26)
+- **Feito:** api#192 (`1d1a48f`) e docs#95 mergeados; CI da `develop` da API verde. **API-25 e API-26 ✅**, marcados no checklist da #70.
+- **PRs:** PetCardOrg/petcard-api#192 e PetCardOrg/petcard-docs#95 (mergeados)
+- **Decisões:** nenhuma nova.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** API-22, P6, MOB-01 e WEB-05 esperam uma release do shared, que precisa de um PR `develop → main` novo no shared.
+- **Próximo passo:** seguir no **P13**: **SH-06** (helper `compareToRelated` no shared, branch nova a partir da `develop` atualizada; mudança em `src/` pede bump, mas não precisa de release para fechar o item) e depois **API-17** (`@googleapis/calendar`, risco médio: testar o sync do calendário de ponta a ponta). Ainda abertos no P13, além desses: WEB-17 (depende de release do shared) e API-22 (⏸️).
+
 ## 2026-11-02 — alvaro-unifor (com Claude) — P13 (API-25 e API-26)
 - **Feito:** API, branch `fix/aud-p13-exclusoes`, 1 commit por item, testes vistos falhando antes:
   - **API-25** (`a2af1f9`): exclusão de agendamento com a fila fora marca `PENDING_DELETE` em vez de apagar a linha. A linha some das listagens, do `findOne` e do lembrete; o `syncAllPending` apaga o evento no Google e depois a linha; `syncAppointment` não a ressuscita; `disconnect` descarta as pendentes.
