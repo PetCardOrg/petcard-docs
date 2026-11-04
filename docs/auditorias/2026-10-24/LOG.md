@@ -16,6 +16,14 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-04 — alvaro-unifor (com Claude) — P16 concluído
+- **Feito:** api#198 e docs#114 mergeadas. CI da `develop` da API verde em `0bf4952`, já com o passo `npm run typecheck`. **API-29 ✅ em develop**; **P16 completo**: #113 fechada.
+- **PRs:** PetCardOrg/petcard-api#198 e PetCardOrg/petcard-docs#114 (mergeados) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** tudo o que sobra precisa do usuário: (1) liberar a ida para a `main` de **API e web juntas** (WEB-05, API-28, WEB-17, API-22 na web; API-28, WEB-17, API-22 e API-29 na API) e do mobile (MOB-01); (2) MOB-15 (variáveis do ambiente `production` do EAS) e a validação de push e Google em aparelho, que fecham a #68. O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
 ## 2026-11-04 — alvaro-unifor (com Claude) — P16 (API-29)
 - **Feito:**
   - Sincronização: api#197 e docs#112 já mergeadas; api e docs locais de volta na `develop`.
