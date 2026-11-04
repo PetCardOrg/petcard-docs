@@ -16,6 +16,18 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-04 (tarde) — alvaro-unifor (com Claude) — P11 (MOB-15, configuração)
+- **Feito:**
+  - mobile#108 mergeada na `develop`. O `env:list` ainda não tinha o `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID`, e o client Android citado na sessão anterior não foi achado: o projeto `683304030553` (dono dos client IDs web e iOS) não abre em nenhuma conta do Chrome do usuário.
+  - Com a liberação do usuário, pelo Chrome na conta `apppetcard@gmail.com`: projeto `PetCard` (`petcard-513714`, organização `apppetcard-org`); tela de consentimento "PetCard", externa, em **Teste**; usuários de teste alvaro.a.bezerra, sistemapraca, ricardotemporal10 e camilampinheiro1108 (@gmail.com); client OAuth Android "PetCard Android (EAS)" `628041947489-e12s9klk15e9392oi4cko0rd0mpi8rq0` (pacote `com.petcardorg.mobile`, SHA-1 `F2:22:…:AE:37`, igual no `production` e no `preview`).
+  - `eas env:create` do `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` em `production` e `preview` (sensível), conferido no `env:list`. O usuário acrescentou o ID ao `GOOGLE_AUTH_CLIENT_IDS` da API no Render.
+  - Build `preview` Android (APK) disparado: `6052f697-a016-4ff9-8957-d5c6e3927637`.
+- **PRs:** este PR de docs.
+- **Decisões:** o client Android fica num projeto do Google Cloud separado do web/iOS (`petcard-513714`, na conta do PetCard), porque o `683304030553` não está acessível. A tela de consentimento fica em **Teste**: publicar exige página inicial, política de privacidade e termos públicos, e o usuário não quer custo nem publicação agora.
+- **Descobertas:** o "Publicar app" do Google Auth Platform fica desativado sem os links de privacidade e termos no Branding. Candidato a item derivado (web: páginas `/privacidade` e `/termos`), se o time quiser abrir o login Google além dos usuários de teste.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** instalar o APK do build `6052f697-…` num Android com uma das contas de teste e validar: mapa, login Google e MOB-01 (entrar, sair, o lembrete não chega). Passou → marcar o aceite do MOB-15 e a validação em aparelho na #68 e fechá-la. Depois, o rascunho da **auditoria delta** (`docs/auditorias/2026-11-XX-delta.md`) e o roteiro de testes manuais (16 UCs). P14 segue esperando a PC-108.
+
 ## 2026-11-04 — alvaro-unifor (com Claude) — P11 (MOB-15)
 - **Feito:**
   - MOB-15, configuração (com o usuário): o `env:list` de production tinha só a URL da API e o `GOOGLE_SERVICES_JSON`. O usuário cadastrou a chave do Maps e os client IDs iOS e web e liberou o `NODE_AUTH_TOKEN` para o production (só estava no preview; sem ele, o `npm ci` do builder falha no `@petcardorg/shared`). Faltava um client ID **Android** em qualquer lugar (preview e `.env` local com a linha vazia): o usuário o criou no Google Cloud, no projeto `683304030553` (pacote `com.petcardorg.mobile`, SHA-1 da keystore do EAS). Falta cadastrá-lo no EAS.
