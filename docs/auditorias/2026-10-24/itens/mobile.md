@@ -93,12 +93,13 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 ## Itens derivados
 
 ### MOB-15 · Ambiente `production` do EAS sem chave do Maps e client IDs do Google (derivado do MOB-03)
-- **Status:** ⬜ pendente · **Fase:** 5 · **Pacote:** P11 · **PR:** —
+- **Status:** 🟦 em PR (mobile#108, a parte de código); configuração do EAS pendente, com o usuário · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#108
 - **Onde:** variáveis de ambiente do projeto no EAS (expo.dev). Em 2026-10-28, `eas env:list --environment production` mostrava só `EXPO_PUBLIC_API_URL`; o `preview` tem também `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY`, `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` e `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`.
 - **Problema:** um build `production` sai com o mapa em branco (o `app.config.ts` só avisa) e sem login Google.
 - **Correção:** cadastrar as variáveis no ambiente production (não é código). Avaliar transformar o aviso do Maps em erro nos perfis de distribuição, como no MOB-03.
-- **Aceite:** [ ] variáveis presentes no `env:list` de production; [ ] build production abre o mapa e faz login Google em aparelho.
-- **Resolução:** —
+- **Revalidação em 2026-11-04:** o usuário cadastrou no production a chave do Maps e os client IDs iOS e web, e liberou o `NODE_AUTH_TOKEN` para o production (sem ele, o `npm ci` do builder não baixa o `@petcardorg/shared`). Faltava um client ID **Android** em qualquer lugar: nem o preview, nem o `.env` local tinham valor, então nenhum build Android teve o botão do Google (`isGoogleAuthConfigured` o esconde sem aviso). O usuário criou o client Android (pacote `com.petcardorg.mobile`, SHA-1 da keystore do EAS) no projeto `683304030553`. A conta Google do PetCard precisa da verificação em duas etapas para abrir o Google Cloud desde 9/10/2026.
+- **Aceite:** [ ] variáveis presentes no `env:list` de production (falta `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID`, também no preview); [ ] build production abre o mapa e faz login Google em aparelho; [x] build de distribuição falha sem a chave do Maps ou o client ID da plataforma (mobile#108).
+- **Resolução:** código `afe36e0` (branch `fix/aud-p11-variaveis-distribuicao`): nos perfis `preview` e `production`, o `app.config.ts` reprova o build e lista o que falta entre `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` e o client ID do Google da plataforma (`EAS_BUILD_PLATFORM`). Configuração: pendente.
 
 ### MOB-16 · Cadastro esconde do tutor a falha ao enviar foto ou telefone (derivado do MOB-12)
 - **Status:** 🚀 em produção · **Fase:** 6 · **Pacote:** P13 · **PR:** PetCardOrg/petcard-mobile#102
