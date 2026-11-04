@@ -189,12 +189,12 @@ Legenda de severidade: 🔴 corrigir já · 🟠 deveria corrigir · 🟡 desej�
 - **Resolução:** contrato no shared: `DeleteVeterinarioDto { senha_atual }` (`ead3abb`, shared#86). API `e274cc8`: `remove` confere a senha (`assertSenhaAtualConfere`) antes de apagar; testes de service, de integração da rota (400 sem senha) e e2e (400, 401 e a conta fica; 204 com a senha). Web `34bf6a5`: a confirmação da exclusão pede a senha atual; senha errada mostra a mensagem sem deslogar. **Publicar API e web juntas.**
 
 ### API-29 · `tsc` com os testes acusa 6 erros de tipo nos specs
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** a definir · **PR:** —
+- **Status:** 🟦 em PR (api#198) · **Fase:** 6 · **Pacote:** P16 · **PR:** [api#198](https://github.com/PetCardOrg/petcard-api/pull/198)
 - **Origem:** P15, ao conferir a compilação da API contra o shared 0.25.0. O `tsc --noEmit -p tsconfig.json` (que inclui os specs) acusa 6 erros, os mesmos com o shared 0.24.1; o `tsconfig.build.json` (sem specs) passa, e o Jest não faz checagem completa de tipos, então ninguém via.
 - **Onde:** `calendar/__tests__/google-calendar.service.spec.ts:24,28` (spread sem tupla), `card/__tests__/card.service.spec.ts:239,385` (cast de `CarteiraDigitalPublicResponseDto` para `Record<string, unknown>`), `health/vaccine/__tests__/vaccine.service.spec.ts:190,211` (`veterinario` fora do tipo do mock do Prisma).
 - **Correção:** ajustar os 6 pontos e incluir `tsc --noEmit -p tsconfig.json` no `npm run lint` ou no CI, para os specs voltarem a ser checados.
-- **Aceite:** [ ] `tsc --noEmit -p tsconfig.json` sem erro; [ ] checagem no CI.
-- **Resolução:** —
+- **Aceite:** [x] `tsc --noEmit -p tsconfig.json` sem erro; [x] checagem no CI.
+- **Resolução:** `59a8587` (branch `test/aud-p16-tipos-specs`). Mocks do `OAuth2Client` e do `calendar` tipados com `jest.fn<…, unknown[]>`; cast da carteira pública via `unknown`; `veterinario` opcional no tipo do mock do Prisma, sem `as never`. Novo script `npm run typecheck`, rodado no CI depois do `lint:check`. Só teste e CI, sem código de produção.
 
 ---
 

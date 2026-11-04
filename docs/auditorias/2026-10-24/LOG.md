@@ -16,6 +16,17 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-04 — alvaro-unifor (com Claude) — P16 (API-29)
+- **Feito:**
+  - Sincronização: api#197 e docs#112 já mergeadas; api e docs locais de volta na `develop`.
+  - Com o usuário, criado o **P16**, "Tipos nos specs da API" (#113), só com o API-29.
+  - API, branch `test/aud-p16-tipos-specs`, 1 commit (PR api#198). **API-29** `59a8587`: corrigidos os 6 erros de tipo (mocks do Google tipados com `jest.fn<…, unknown[]>`, cast da carteira pública via `unknown`, `veterinario` opcional no mock do Prisma da vacina); novo script `npm run typecheck` (`tsc --noEmit -p tsconfig.json`, inclui specs e e2e), rodado no CI depois do `lint:check`. Verificação: `typecheck` ✅ · `lint` ✅ (sem diff) · `npm test` 861 ✅ · `build` ✅.
+- **PRs:** PetCardOrg/petcard-api#198 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões (com o usuário):** o API-29 vira o pacote P16.
+- **Descobertas:** os totais do painel já contavam o API-29 (69 itens); não mudam.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da api#198: fechar a #113 e marcar o API-29 ✅. O resto precisa do usuário: (1) liberar a ida para a `main` de **API e web juntas** (WEB-05, API-28, WEB-17, API-22 na web; API-28, WEB-17, API-22 e agora API-29 na API) e do mobile (MOB-01); (2) MOB-15 (variáveis do ambiente `production` do EAS) e a validação de push e Google em aparelho, que fecham a #68. O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P15 concluído
 - **Feito:**
   - api#196, web#74 e docs#111 mergeadas. **P15 completo na `develop`**: #109 fechada. MOB-01 (mobile#106) também ✅ em develop.

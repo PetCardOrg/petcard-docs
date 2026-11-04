@@ -18,7 +18,7 @@ Execução das 4 auditorias de leitura feitas em **24/10/2026** (`petcard-api`, 
 
 ## Painel
 
-Atualizado em **2026-11-03**. Status: ⬜ pendente · 🟨 em andamento · 🟦 em PR · ✅ em develop · 🚀 em produção · ⏸️ bloqueado
+Atualizado em **2026-11-04**. Status: ⬜ pendente · 🟨 em andamento · 🟦 em PR · ✅ em develop · 🚀 em produção · ⏸️ bloqueado
 
 | Fase | Pacote | Repo(s) | Itens | Status | Issue |
 |------|--------|---------|-------|--------|-------|
@@ -36,6 +36,7 @@ Atualizado em **2026-11-03**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | 🚀 em produção (mobile#99, #100, #101) | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
 | 6 | **P13** Desejáveis | api, shared, web, mobile | API-12–19, 21, 25, 26, 27 · SH-06 · MOB-16, 17 | ✅ completo (#70 fechada), tudo 🚀; API-22 e WEB-17 foram para o P15 | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
 | 6 | **P15** Contratos do shared 0.25.0 | shared, api, web | SH-09 · API-28 · WEB-17 · API-22 | ✅ completo (#109 fechada): SH-09 🚀 (0.25.0); API-28, WEB-17 e API-22 ✅ em develop (api#196, web#74). OpenAPI regenerado. Na `main`, API e web juntas | [#109](https://github.com/PetCardOrg/petcard-docs/issues/109) |
+| 6 | **P16** Tipos nos specs da API | api | API-29 | 🟦 em PR (api#198) | [#113](https://github.com/PetCardOrg/petcard-docs/issues/113) |
 | 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | [#71](https://github.com/PetCardOrg/petcard-docs/issues/71) |
 
 **Totais:** 69 itens (API 28 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos: 62** (57 🚀 em produção; 5 ✅ em develop: WEB-05, MOB-01, API-28, WEB-17, API-22) · descartados: 1 (WEB-12).
