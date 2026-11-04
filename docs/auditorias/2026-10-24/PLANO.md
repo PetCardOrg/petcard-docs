@@ -1,6 +1,6 @@
 # Plano de execução — Auditoria 2026-10
 
-O trabalho está dividido em **6 fases** e **14 pacotes** (P1…P14). Um pacote é a menor unidade que vira PR: normalmente 1 PR por repo tocado, cada item num commit próprio.
+O trabalho está dividido em **6 fases** e **16 pacotes** (P1…P14, mais o P15 e o P16, criados durante a execução). Um pacote é a menor unidade que vira PR: normalmente 1 PR por repo tocado, cada item num commit próprio.
 
 **Por que esta ordem:**
 1. **Primeiro o que quebra a demo e a produção** e não depende de nada (P1–P3): rate limit, cold start, tomada de conta, CRMV.
@@ -73,6 +73,7 @@ P4 (shared: testes+CI) ──► P5 (shared: contratos, publica 0.24.0)
 |--------|-------|------------|
 | **P13** Desejáveis | API-12, API-13, API-14, API-16, API-17, API-18, API-19, API-21, API-25, API-26, API-27 · SH-06 · MOB-16 | API-17 tem risco: testar o sync do calendário de ponta a ponta. API-22 e WEB-17 foram para o P15. |
 | **P15** Contratos do shared 0.25.0 | SH-09, API-28, WEB-17, API-22 | Criado em 2026-11-03 com o que sobrou fora do P14 e depende de contrato novo. Bump **minor** (`0.25.0`, sem breaking). Ordem: shared (os 4 contratos) → release com liberação do usuário → API → web. A paginação é opcional, para os clientes atuais seguirem funcionando. |
+| **P16** Tipos nos specs da API | API-29 | Criado em 2026-11-04. Só testes e CI: corrige os 6 erros de tipo dos specs e põe o `tsc --noEmit -p tsconfig.json` no CI. Sem dependência. |
 | **P14** Breaking v1.0.0 | SH-07, SH-08 (`auth0_id`) | Só junto da PC-108. Bump **major**. |
 
 ### Fechamento
