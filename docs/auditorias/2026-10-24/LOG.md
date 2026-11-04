@@ -16,6 +16,19 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-04 — alvaro-unifor (com Claude) — P11 (MOB-15)
+- **Feito:**
+  - MOB-15, configuração (com o usuário): o `env:list` de production tinha só a URL da API e o `GOOGLE_SERVICES_JSON`. O usuário cadastrou a chave do Maps e os client IDs iOS e web e liberou o `NODE_AUTH_TOKEN` para o production (só estava no preview; sem ele, o `npm ci` do builder falha no `@petcardorg/shared`). Faltava um client ID **Android** em qualquer lugar (preview e `.env` local com a linha vazia): o usuário o criou no Google Cloud, no projeto `683304030553` (pacote `com.petcardorg.mobile`, SHA-1 da keystore do EAS). Falta cadastrá-lo no EAS.
+  - MOB-15, código: mobile, branch `fix/aud-p11-variaveis-distribuicao`, 1 commit (PR mobile#108). `afe36e0`: nos perfis `preview` e `production`, o `app.config.ts` reprova o build e lista o que falta entre a URL da API, a chave do Maps e o client ID do Google da plataforma (`EAS_BUILD_PLATFORM`). Verificação: `typecheck` ✅ · `test:cov` 284 ✅ · lint sem erro além do `␍`.
+- **PRs:** PetCardOrg/petcard-mobile#108 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:**
+  - Desde 9/10/2026, o Google Cloud exige verificação em duas etapas: a conta Google do PetCard fica bloqueada no console até ativá-la.
+  - No Jest, o `app.config` relê o `.env` local e preenche as variáveis apagadas com `delete`; os testes zeram com `''`, que o Expo não sobrescreve.
+  - A extensão do Chrome só controla abas que ela mesma abre (não a aba do usuário), e o login nelas é o do Chrome, com várias contas Google (`authuser`).
+- **Bloqueios:** depois do merge da mobile#108, um build Android `preview`/`production` falha até o `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` entrar no EAS.
+- **Próximo passo:** com o usuário: (1) `eas env:create --name EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID --value <id> --environment production --environment preview --visibility sensitive --non-interactive` (se o SHA-1 do preview for diferente, um client por ambiente) e conferir no `env:list`; (2) depois do merge da mobile#108, `eas build --profile production --platform android` e validar em aparelho: mapa, login Google e o MOB-01 (entrar, sair, o lembrete não chega mais). Isso fecha o MOB-15 e a #68. Depois, o rascunho da **auditoria delta** (`docs/auditorias/2026-11-XX-delta.md`, no formato do de 2026-07) e o roteiro de testes manuais (16 UCs).
+
 ## 2026-11-04 — alvaro-unifor (com Claude) — Release `develop → main` (api, web, mobile)
 - **Feito:**
   - Com a liberação do usuário ("o que temos até agora", api, web e mobile), PRs de release abertos e mergeados por ele: **api#199** (P15 e P16), **web#75** (WEB-05 e P15), **mobile#107** (MOB-01). Sem migration nem variável de ambiente nova.
