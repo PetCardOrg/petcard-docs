@@ -11,7 +11,7 @@ Legenda: 🔴 precisa corrigir · 🟠 deveria corrigir · 🟡 bom ter · ⚪ m
 ## 🔴 Precisa corrigir
 
 ### MOB-01 · Push continua chegando após logout
-- **Status:** ✅ em develop · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#106
+- **Status:** 🚀 na `main` (release de 2026-11-04), mobile#107; chega aos aparelhos no próximo build EAS · **Fase:** 5 · **Pacote:** P11 · **PR:** PetCardOrg/petcard-mobile#106
 - **Depende de:** API-23 (`DELETE /devices/:token`) em produção.
 - **Onde:** `src/contexts/AuthContext.tsx` (`logout`, ~linha 187; `clearSession`, ~49; logout forçado por 401, ~73 e ~87), `src/services/device.service.ts` (só `register`).
 - **Correção:** `deviceService.unregister(token)` chamado **antes** de `clearSession()` (precisa do Bearer), com erro ignorado e timeout curto. No logout por 401 o token já não vale: a limpeza fica com a API (tokens `UNREGISTERED`/órfãos, ver API-23).

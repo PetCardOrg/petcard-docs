@@ -42,7 +42,7 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** Estado `deleteError` exibido no topo da aba (`role="alert"`), limpo ao trocar de aba ou ao tentar apagar de novo. Vale para registro e nota clínica. Commit `7b50d13`.
 
 ### WEB-05 · Não dá para limpar campo opcional ao editar
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#73
+- **Status:** 🚀 em produção (release de 2026-11-04) · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#73
 - **Depende de:** API-24 (API grava `null`).
 - **Onde:** `VetPetProfilePage.tsx` `toDto` e o PATCH da nota clínica.
 - **Correção:** na **edição**, campo opcional esvaziado → `null` no corpo. Na **criação**, continua omitido.
@@ -116,7 +116,7 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** `CrmvAviso` mostra "O nome do seu cadastro não confere…" com o link **Corrigir meu nome** (`/vet/profile`) e recebe a `situacao` que a tela já conhece; o dashboard repassa a do `GET /veterinarios/me/crmv` e, nas outras recusas, mostra a situação do conselho. A comparação é pelo texto copiado da API (`src/utils/crmvSituacao.ts`): o código estável virou o WEB-17. Commit `6edd361`.
 
 ### WEB-17 · Situação de nome divergente do CRMV comparada pelo texto (derivado do WEB-16)
-- **Status:** ✅ em develop (api#196, web#74) · **Fase:** 6 · **Pacote:** P15 · **PR:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74
+- **Status:** 🚀 em produção (release de 2026-11-04) (api#196, web#74; api#199, web#75) · **Fase:** 6 · **Pacote:** P15 · **PR:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74
 - **Onde:** `petcard-web/src/utils/crmvSituacao.ts` (cópia de `SITUACAO_NOME_DIVERGENTE` de `petcard-api/src/modules/veterinario/crmv/crmv-verification.service.ts`); o status do CRMV (`GET /veterinarios/me/crmv`, `POST …/verificar`) não tem DTO no shared, e a web declara o tipo `CrmvStatus` localmente.
 - **Problema:** a web reconhece a recusa por nome divergente comparando o texto da situação. Se a API mudar a frase, o aviso próprio some sem erro e volta o "Corrija o CRMV".
 - **Correção:** DTO do status do CRMV no shared com um campo estável (ex.: `motivo: 'NOME_DIVERGENTE' | …`), preenchido pela API; a web passa a usar o campo. Bump minor do shared, então depende da liberação do `develop → main`.

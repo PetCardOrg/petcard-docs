@@ -16,6 +16,18 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-04 — alvaro-unifor (com Claude) — Release `develop → main` (api, web, mobile)
+- **Feito:**
+  - Com a liberação do usuário ("o que temos até agora", api, web e mobile), PRs de release abertos e mergeados por ele: **api#199** (P15 e P16), **web#75** (WEB-05 e P15), **mobile#107** (MOB-01). Sem migration nem variável de ambiente nova.
+  - CI da `main` verde nos três. "CD Produção" da API aprovado e verde. Vercel: deploy do commit da release concluído.
+  - Produção conferida: `GET /` → 200; `DELETE /veterinarios/me` sem token → 401. O Swagger de produção não publica o JSON (`/docs-json` → 404), então a versão no ar foi confirmada pelo CD, não pelo documento.
+  - Status: WEB-05, API-28, WEB-17, API-22 e API-29 🚀; MOB-01 🚀 na `main` do mobile, chega aos aparelhos no próximo build EAS. Os 63 concluídos estão todos na `main`.
+- **PRs:** PetCardOrg/petcard-api#199, PetCardOrg/petcard-web#75, PetCardOrg/petcard-mobile#107 e PetCardOrg/petcard-docs#115 (mergeados) · este PR de docs
+- **Decisões:** o usuário liberou a release de api, web e mobile. O docs não foi citado: a `main` do docs não foi tocada.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** com o usuário: **MOB-15** (`eas env:list --environment production` precisa ter `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` e os client IDs do Google), novo build EAS com o MOB-01 e a validação de push e Google em aparelho (entrar, sair e conferir que o lembrete não chega mais); com isso a #68 fecha. Se o usuário quiser, release `develop → main` do docs. O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
 ## 2026-11-04 — alvaro-unifor (com Claude) — P16 concluído
 - **Feito:** api#198 e docs#114 mergeadas. CI da `develop` da API verde em `0bf4952`, já com o passo `npm run typecheck`. **API-29 ✅ em develop**; **P16 completo**: #113 fechada.
 - **PRs:** PetCardOrg/petcard-api#198 e PetCardOrg/petcard-docs#114 (mergeados) · este PR de docs
