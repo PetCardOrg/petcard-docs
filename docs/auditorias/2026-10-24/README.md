@@ -18,7 +18,7 @@ Execução das 4 auditorias de leitura feitas em **24/10/2026** (`petcard-api`, 
 
 ## Painel
 
-Atualizado em **2026-11-04**. Status: ⬜ pendente · 🟨 em andamento · 🟦 em PR · ✅ em develop · 🚀 em produção · ⏸️ bloqueado
+Atualizado em **2026-11-04** (depois da release). Status: ⬜ pendente · 🟨 em andamento · 🟦 em PR · ✅ em develop · 🚀 em produção · ⏸️ bloqueado
 
 | Fase | Pacote | Repo(s) | Itens | Status | Issue |
 |------|--------|---------|-------|--------|-------|
@@ -30,16 +30,16 @@ Atualizado em **2026-11-04**. Status: ⬜ pendente · 🟨 em andamento · 🟦 
 | 3 | **P6** Reautenticação e contratos | api, web, mobile | API-20, 04, 23, 24 · WEB-14 · MOB-14 | 🚀 em produção (api#195, web#72, mobile#105 e APK testado em aparelho, 2026-11-03) | [#63](https://github.com/PetCardOrg/petcard-docs/issues/63) |
 | 3 | **P7** Robustez da API | api | API-08, 10 | 🚀 em produção (api#185) | [#64](https://github.com/PetCardOrg/petcard-docs/issues/64) |
 | 3 | **P8** Filas | api | API-11, 09 | 🚀 em produção (api#186) | [#65](https://github.com/PetCardOrg/petcard-docs/issues/65) |
-| 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | ✅ completo (#66 fechada): WEB-04, 06, 07, 13, 15, 16 🚀 (web#69); WEB-05 ✅ em develop (web#73, testado à mão) | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
+| 4 | **P9** Correções da web | web | WEB-04, 05, 06, 07, 13, 15, 16 | ✅ completo (#66 fechada): WEB-04, 06, 07, 13, 15, 16 🚀 (web#69); WEB-05 🚀 (web#73, release de 2026-11-04) | [#66](https://github.com/PetCardOrg/petcard-docs/issues/66) |
 | 4 | **P10** Enxugar a web | web | WEB-09, 11, 12 | 🚀 em produção (web#70: WEB-09, 11); WEB-12 🚫 pela D4 (código mantido) | [#67](https://github.com/PetCardOrg/petcard-docs/issues/67) |
-| 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 (+15) | 🟨 em produção (mobile#98: MOB-07, 04, 05, 08, 09, 12, 13 🚀); MOB-01 ✅ em develop (mobile#106); MOB-15 é configuração do EAS | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
+| 5 | **P11** Correções do mobile | mobile | MOB-07, 01, 04, 05, 08, 09, 12, 13 (+15) | 🟨 em produção (mobile#98: MOB-07, 04, 05, 08, 09, 12, 13 🚀); MOB-01 🚀 na `main` (mobile#106, mobile#107; falta o build EAS); MOB-15 é configuração do EAS | [#68](https://github.com/PetCardOrg/petcard-docs/issues/68) |
 | 5 | **P12** Enxugar o mobile | mobile | MOB-06, 10, 11 | 🚀 em produção (mobile#99, #100, #101) | [#69](https://github.com/PetCardOrg/petcard-docs/issues/69) |
 | 6 | **P13** Desejáveis | api, shared, web, mobile | API-12–19, 21, 25, 26, 27 · SH-06 · MOB-16, 17 | ✅ completo (#70 fechada), tudo 🚀; API-22 e WEB-17 foram para o P15 | [#70](https://github.com/PetCardOrg/petcard-docs/issues/70) |
-| 6 | **P15** Contratos do shared 0.25.0 | shared, api, web | SH-09 · API-28 · WEB-17 · API-22 | ✅ completo (#109 fechada): SH-09 🚀 (0.25.0); API-28, WEB-17 e API-22 ✅ em develop (api#196, web#74). OpenAPI regenerado. Na `main`, API e web juntas | [#109](https://github.com/PetCardOrg/petcard-docs/issues/109) |
-| 6 | **P16** Tipos nos specs da API | api | API-29 | ✅ completo (#113 fechada): API-29 ✅ em develop (api#198) | [#113](https://github.com/PetCardOrg/petcard-docs/issues/113) |
+| 6 | **P15** Contratos do shared 0.25.0 | shared, api, web | SH-09 · API-28 · WEB-17 · API-22 | ✅ completo (#109 fechada): SH-09 🚀 (0.25.0); API-28, WEB-17 e API-22 🚀 (api#196, web#74; release api#199 e web#75 em 2026-11-04). OpenAPI regenerado | [#109](https://github.com/PetCardOrg/petcard-docs/issues/109) |
+| 6 | **P16** Tipos nos specs da API | api | API-29 | 🚀 em produção (api#198; release api#199 em 2026-11-04) | [#113](https://github.com/PetCardOrg/petcard-docs/issues/113) |
 | 6 | **P14** Breaking v1.0.0 | shared (+consumidores) | SH-07, SH-08 (`auth0_id`) | ⬜ (só com PC-108) | [#71](https://github.com/PetCardOrg/petcard-docs/issues/71) |
 
-**Totais:** 69 itens (API 28 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos: 63** (57 🚀 em produção; 6 ✅ em develop: WEB-05, MOB-01, API-28, WEB-17, API-22, API-29) · descartados: 1 (WEB-12).
+**Totais:** 69 itens (API 28 · shared 8 · web 16 · mobile 17, contando os derivados; o WEB-10 foi distribuído entre os outros itens). **Concluídos: 63**, todos 🚀 em produção (o MOB-01 está na `main` do mobile e chega aos aparelhos no próximo build EAS) · descartados: 1 (WEB-12).
 
 ---
 
