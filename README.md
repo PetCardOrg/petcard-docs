@@ -35,6 +35,13 @@ Repositório central de documentação, gestão de projeto e artefatos acadêmic
 | DAS — Documento de Arquitetura de Software | [docs/das.md](docs/das.md) |
 | Auditorias técnicas | [docs/auditorias/](docs/auditorias/) |
 | ADRs — Architecture Decision Records | [architecture/adr/](architecture/adr/) |
+| Respostas do teste de usabilidade (apêndice do TCC) | [docs/usabilidade/](docs/usabilidade/README.md) · [planilha `.xlsx`](docs/usabilidade/PetCard%20-%20Respostas%20do%20teste%20de%20usabilidade.xlsx) |
+
+### Material para a banca
+
+As respostas brutas do formulário do teste de usabilidade (28 participantes, coletadas entre 17/10/2026 e 03/11/2026, anônimas e com consentimento para uso acadêmico) estão em [`docs/usabilidade/PetCard - Respostas do teste de usabilidade.xlsx`](docs/usabilidade/PetCard%20-%20Respostas%20do%20teste%20de%20usabilidade.xlsx). No texto do TCC elas são referenciadas no **Apêndice — Respostas do teste de usabilidade**.
+
+Link direto no GitHub: <https://github.com/PetCardOrg/petcard-docs/tree/main/docs/usabilidade> *(disponível na `main` após o release v1.0.0)*.
 
 ## Links Rápidos
  
