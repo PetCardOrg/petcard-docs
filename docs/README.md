@@ -24,6 +24,7 @@ Revisões de qualidade cruzando planejado (TAP/DAS) × implementado × confiáve
 | Documento | Descrição |
 |---|---|
 | [Roteiro de testes manuais](qa/roteiro-testes-manuais.md) | Passos e resultado esperado dos 16 casos de uso (UC01–UC16), revalidado a cada marco |
+| [Evidências dos requisitos](qa/evidencias-requisitos-petcard.md) | Prints e classificação (atendido, parcial ou não atendido) de cada RF e RNF no ambiente de produção, testes de 06 a 08/11/2026 |
 
 ## Teste de usabilidade
 
