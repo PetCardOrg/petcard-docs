@@ -13,7 +13,7 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 ## 🔴 Deve corrigir
 
 ### WEB-01 · Cold start desloga o veterinário
-- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
+- **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/contexts/AuthContext.tsx:37-38` (`.catch(() => localStorage.removeItem(TOKEN_KEY))`), `src/services/api.ts:4` (`API_TIMEOUT_MS = 10000`).
 - **Problema:** qualquer erro na validação do perfil (timeout, 500) apaga o token; o cold start do Render (~13s) é maior que o timeout.
 - **Correção:** apagar o token **só em 401**. Rede/5xx/timeout mantêm o token e mostram estado "reconectando/tentar de novo". Timeout da validação inicial ~30s (parâmetro `timeoutMs` do `apiFetch` já existe).
@@ -21,39 +21,39 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** Só 401 descarta o token; timeout/rede/5xx deixam `semConexao` e o `ProtectedRoute` mostra "Tentar de novo". Validação inicial com `API_COLD_START_TIMEOUT_MS` (30s). Commit `ff78371`.
 
 ### WEB-02 · "Achei o pet" diz que avisou o tutor mesmo quando falhou
-- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
+- **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/pages/LostPet/LostPetPage.tsx:124-130` (`await registrarLeitura(...)` com erro engolido, depois `setLocalizacao(coordenadas ? "enviada" : ...)`), tipo `EstadoLocalizacao` na linha 28.
 - **Correção:** `registrarLeitura` devolve sucesso/falha; novo estado `"falhou"` com botão "tentar de novo" (timeout maior por causa do cold start). Textos no i18n.
 - **Aceite:** [x] teste: falha da chamada → não mostra "avisamos o tutor"; [x] teste: retry com sucesso → "enviada".
 - **Resolução:** Estado `falhou` com botão "Tentar avisar de novo"; `registrarLeitura` com timeout de 30s. Commit `b5c3210`. Textos fixos que ainda afirmam o aviso viraram o WEB-15.
 
 ### WEB-03 · Botão Voltar prende o vet na carteira
-- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
+- **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/pages/PublicCard/PublicCardPage.tsx:193` (state `acessoVet: true`), `:220` (`lerRedirecionamentoVet(location.state).acessoVet`) e a navegação para `/vet/pets/:id`.
 - **Correção:** `navigate(..., { replace: true })` quando entra por `acessoVet`, ou limpar o state antes (`navigate(location.pathname, { replace: true, state: null })`).
 - **Aceite:** [x] teste com `MemoryRouter`: QR → login → prontuário → Voltar não volta ao prontuário.
 - **Resolução:** Na volta do login (`acessoVet`), a ida ao prontuário usa `replace`. Teste com `MemoryRouter` real (`PublicCardPage.voltar.test.tsx`), confirmado falhando sem a correção. Commit `5b303ff`.
 
 ### WEB-04 · Erro ao excluir registro nunca aparece
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** 🚀 em produção · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `VetPetProfilePage.tsx`, `handleDelete` e `handleDeleteNote` (gravam em `recordError`, que só é exibido dentro do modal).
 - **Correção:** estado `deleteError` com aviso visível na aba (fora do modal), limpo ao trocar de aba ou numa nova ação.
 - **Aceite:** [x] teste: delete com 403/500 mostra a mensagem e o item continua na lista.
 - **Resolução:** Estado `deleteError` exibido no topo da aba (`role="alert"`), limpo ao trocar de aba ou ao tentar apagar de novo. Vale para registro e nota clínica. Commit `7b50d13`.
 
 ### WEB-05 · Não dá para limpar campo opcional ao editar
-- **Status:** ⬜ pendente · **Fase:** 4 · **Pacote:** P9 · **PR:** —
+- **Status:** 🚀 em produção (release de 2026-11-04) · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#73
 - **Depende de:** API-24 (API grava `null`).
 - **Onde:** `VetPetProfilePage.tsx` `toDto` e o PATCH da nota clínica.
 - **Correção:** na **edição**, campo opcional esvaziado → `null` no corpo. Na **criação**, continua omitido.
-- **Aceite:** [ ] teste: editar e apagar `next_dose_at` envia `null`; [ ] teste manual contra a API local confirma que o dado some após `load()`.
-- **Resolução:** —
+- **Aceite:** [x] teste: editar e apagar `next_dose_at` envia `null`; [x] teste manual contra a API local confirma que o dado some após `load()` (feito pelo usuário em 2026-11-03).
+- **Resolução:** commit `61ca996`. `toUpdateDto` na edição dos registros: `next_dose_at`, `end_date` e `notes` vazios vão como `null`; a criação segue com o `toDto`, que só omite. Na nota clínica, `prescricao` e `observacoes` vazias vão como `null` na edição. `ComLimpeza<T>` no `pet-profile.service` tipa o `null` nos PATCH, porque os DTOs do shared ainda não o tipam (SH-09). Testes: vacina com próxima dose e observações apagadas, e nota com a prescrição apagada. Teste manual feito pelo usuário com a web e a API locais: criar, editar e apagar os opcionais funcionou.
 
 ### WEB-14 · Pedir senha atual ao trocar e-mail do vet (derivado do SH-03/API-04)
-- **Status:** 🟨 código em develop; falta publicar junto com o API-04 · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-web#71
+- **Status:** 🚀 em produção (web#72, junto com a api#195) · **Fase:** 3 · **Pacote:** P6 · **PR:** PetCardOrg/petcard-web#71
 - **Onde:** `VetProfilePage.tsx` (formulário de perfil).
 - **Correção:** ao alterar o e-mail, mostrar o campo "senha atual" e enviar `senha_atual`. Tratar 401 com mensagem clara.
-- **Aceite:** [x] teste do formulário; [ ] publicar junto com o API-04.
+- **Aceite:** [x] teste do formulário; [x] publicar junto com o API-04 (api#195 e web#72, 2026-11-03).
 - **Resolução:** commit `b75b7fb` (e `a9cf5b1`, shared `^0.24.1`). Mudar o e-mail (comparado como a API normaliza: `trim` + minúsculas) mostra o campo obrigatório **Senha atual** (`PasswordInput`) e manda `senha_atual`; sem mudança, nada de senha. 401 "Senha atual incorreta." vira mensagem no formulário, sem deslogar (`ApiError.isSenhaAtualIncorreta`); outro 401 continua deslogando. Textos em pt-BR e en-US. A web#71 foi mergeada em 2026-11-03 (CI da `develop` verde).
 
 ---
@@ -61,28 +61,28 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 ## 🟠 Convém corrigir
 
 ### WEB-06 · "Hoje" errado à noite (UTC × local)
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** 🚀 em produção · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `src/pages/VetPetProfile/healthRecordValidation.ts:29`, `:48`, `:100` (`toISOString().split("T")[0]`); testes `healthRecordValidation.test.ts:14-15` usam o mesmo padrão.
 - **Correção:** `hojeLocal()` com `toLocaleDateString("sv-SE")` (ou reaproveitar o `diaLocal` existente) num `utils/datas.ts`; usar no formulário e na validação.
 - **Aceite:** [x] teste com `vi.setSystemTime` às 23h em `America/Sao_Paulo` (o `vitest.config.ts` já fixa `TZ`).
 - **Resolução:** `src/utils/datas.ts` (`hojeLocal`, `diaIsoLocal`) no `emptyForm`, no `isValidDate` e na regra de aplicação no futuro; os testes deixaram de usar `toISOString`. Commit `f6c0fd4`.
 
 ### WEB-07 · Respostas atrasadas sobrescrevem as novas
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** 🚀 em produção · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `VetDashboardPage.tsx` (efeitos de `[page]` e `[search]`), `VetPetProfilePage.tsx` (`load`).
 - **Correção:** um único efeito `[page, search]` com `AbortController` (ou a trava `cancelado` do `LostPetPage`); `apiFetch` aceitar `signal`.
 - **Aceite:** [x] teste: resposta de "a" chegando depois da de "ab" é descartada; [x] primeira carga faz 1 chamada.
 - **Resolução:** Dashboard com um efeito só (`[termo, página]`, termo já com debounce) e trava pela última busca; a mesma trava no `load` do prontuário (troca de pet). Usada a trava, e não `AbortController`, então o `apiFetch` não mudou. Commit `0313cf9`.
 
 ### WEB-08 · Parâmetros de URL sem `encodeURIComponent`
-- **Status:** ✅ em develop · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
+- **Status:** 🚀 em produção · **Fase:** 1 · **Pacote:** P1 · **PR:** PetCardOrg/petcard-web#68
 - **Onde:** `src/services/card.service.ts`, `coleira.service.ts`, `pet-profile.service.ts` (só `crmv.service.ts:68` codifica).
 - **Correção:** `encodeURIComponent` em cada segmento dinâmico (helper `path\`/pets/${id}\`` ou na assinatura dos services).
 - **Aceite:** [x] teste: id `..%2Fveterinarios%2Fme` gera URL com o segmento codificado.
 - **Resolução:** Template marcado `caminho` em `api.ts`, aplicado em todos os services com rota dinâmica (card, coleira, pet-profile, anexo, dashboard). Commit `71cf44b`.
 
 ### WEB-09 · `VetPetProfilePage` com 1104 linhas e blocos repetidos
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P10 (**depois do P9**) · **PR:** PetCardOrg/petcard-web#70
+- **Status:** 🚀 em produção · **Fase:** 4 · **Pacote:** P10 (**depois do P9**) · **PR:** PetCardOrg/petcard-web#70
 - **Correção:** `toDto` também na criação; extrair `RecordCard` para as 3 abas. Refactor sem mudar comportamento, coberto pelos testes do P9.
 - **Resolução:** `RecordCard` em `src/pages/VetPetProfile/RecordCard.tsx`, usado nas abas de vacina, vermifugação e medicação. O `toDto` saiu do componente, é tipado por tipo de registro e serve à criação (com o `pet_id`) e à edição. Antes do refactor, os testes de criação passaram a conferir o corpo inteiro, e um teste novo fixa o conteúdo dos cards; os dois passaram antes e depois. Página de 1128 para 1056 linhas. Commit `86577ad`.
 
@@ -101,14 +101,14 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 ## Itens derivados
 
 ### WEB-15 · Textos fixos da página do achador afirmam que o tutor já foi avisado (derivado do WEB-02)
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** 🚀 em produção · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `src/i18n/locales/*/common.json`: `lostPet.hero.lead` ("Ela já foi avisada de que {{name}} foi encontrado"), `lostPet.steps.three` e `lostPet.contact.noPhone` ("já foi notificado/avisado").
 - **Problema:** aparecem antes do envio terminar e continuam na tela quando ele falha (estado `falhou` do WEB-02), contradizendo a mensagem de falha.
 - **Correção:** textos neutros ("Ligue para a pessoa abaixo") ou condicionados ao estado do aviso.
 - **Aceite:** [x] teste: com o envio falhando, nenhum texto da página diz que o tutor foi avisado.
 - **Resolução:** Abertura, aviso de "sem telefone" e passo 3 reescritos de forma neutra (pt-BR e en-US); o estado real do aviso fica no bloco de localização. Teste com e sem telefone. Commit `d694151`.
 ### WEB-16 · Recusa por nome divergente do CRMV manda "corrigir o CRMV" (derivado do API-06)
-- **Status:** ✅ em develop · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
+- **Status:** 🚀 em produção · **Fase:** 4 · **Pacote:** P9 · **PR:** PetCardOrg/petcard-web#69
 - **Onde:** `src/components/CrmvAviso/CrmvAviso.tsx` (`t("crmv.refused", { situacao })`) e o aviso pendente depois do cadastro (`VetRegisterPage` → dashboard).
 - **Problema:** com o API-06, a API grava a situação "Nome do cadastro não confere com o titular do CRMV". A web a exibe dentro de "O registro não foi aceito (situação: …). Corrija o CRMV e tente de novo.", mas o que precisa mudar é o nome. No cadastro, o vet só vê o aviso genérico de pendente, sem o motivo.
 - **Correção:** mensagem própria quando a situação for a de nome divergente, levando à edição do nome no perfil. Idealmente com um código estável no contrato (shared) em vez de comparar o texto.
@@ -116,12 +116,12 @@ O **WEB-10 (testes) não é um item separado**: cada item 🔴 abaixo já inclui
 - **Resolução:** `CrmvAviso` mostra "O nome do seu cadastro não confere…" com o link **Corrigir meu nome** (`/vet/profile`) e recebe a `situacao` que a tela já conhece; o dashboard repassa a do `GET /veterinarios/me/crmv` e, nas outras recusas, mostra a situação do conselho. A comparação é pelo texto copiado da API (`src/utils/crmvSituacao.ts`): o código estável virou o WEB-17. Commit `6edd361`.
 
 ### WEB-17 · Situação de nome divergente do CRMV comparada pelo texto (derivado do WEB-16)
-- **Status:** ⬜ pendente · **Fase:** 6 · **Pacote:** P13 · **PR:** —
+- **Status:** 🚀 em produção (release de 2026-11-04) (api#196, web#74; api#199, web#75) · **Fase:** 6 · **Pacote:** P15 · **PR:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74
 - **Onde:** `petcard-web/src/utils/crmvSituacao.ts` (cópia de `SITUACAO_NOME_DIVERGENTE` de `petcard-api/src/modules/veterinario/crmv/crmv-verification.service.ts`); o status do CRMV (`GET /veterinarios/me/crmv`, `POST …/verificar`) não tem DTO no shared, e a web declara o tipo `CrmvStatus` localmente.
 - **Problema:** a web reconhece a recusa por nome divergente comparando o texto da situação. Se a API mudar a frase, o aviso próprio some sem erro e volta o "Corrija o CRMV".
 - **Correção:** DTO do status do CRMV no shared com um campo estável (ex.: `motivo: 'NOME_DIVERGENTE' | …`), preenchido pela API; a web passa a usar o campo. Bump minor do shared, então depende da liberação do `develop → main`.
-- **Aceite:** [ ] DTO no shared com teste; [ ] API preenche o campo; [ ] web usa o campo e apaga a cópia do texto.
-- **Resolução:** —
+- **Aceite:** [x] DTO no shared (sem teste próprio: é só tipo e enum, sem regra de validação, ADR-006; o comportamento está testado na API e na web); [x] API preenche o campo; [x] web usa o campo e apaga a cópia do texto.
+- **Resolução:** shared `f34430c` (`CrmvStatusResponseDto` com `motivo?: CrmvMotivoRecusa`). API `2f87bd8`: o status e a verificação devolvem o DTO do shared, com `motivo: NOME_DIVERGENTE` calculado a partir da `situacao` gravada (vale para recusas antigas, sem migration); sai o tipo local. Web `e3b4e3c`: `CrmvAviso` e dashboard decidem pelo `motivo`; a cópia do texto saiu de `utils/crmvSituacao.ts`, que guarda só a constante tipada (o enum entra como tipo, para o shared não ir para o bundle). Os testes passaram a usar uma situação com outro texto.
 ---
 
 ## Não verificado pela auditoria

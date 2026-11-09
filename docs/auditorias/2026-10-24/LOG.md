@@ -16,6 +16,141 @@ Entradas mais recentes **no topo**. Toda sessão termina com uma entrada aqui. A
 
 ---
 
+## 2026-11-04 (tarde) — alvaro-unifor (com Claude) — P11 (MOB-15, configuração)
+- **Feito:**
+  - mobile#108 mergeada na `develop`. O `env:list` ainda não tinha o `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID`, e o client Android citado na sessão anterior não foi achado: o projeto `683304030553` (dono dos client IDs web e iOS) não abre em nenhuma conta do Chrome do usuário.
+  - Com a liberação do usuário, pelo Chrome na conta `apppetcard@gmail.com`: projeto `PetCard` (`petcard-513714`, organização `apppetcard-org`); tela de consentimento "PetCard", externa, em **Teste**; usuários de teste alvaro.a.bezerra, sistemapraca, ricardotemporal10 e camilampinheiro1108 (@gmail.com); client OAuth Android "PetCard Android (EAS)" `628041947489-e12s9klk15e9392oi4cko0rd0mpi8rq0` (pacote `com.petcardorg.mobile`, SHA-1 `F2:22:…:AE:37`, igual no `production` e no `preview`).
+  - `eas env:create` do `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` em `production` e `preview` (sensível), conferido no `env:list`. O usuário acrescentou o ID ao `GOOGLE_AUTH_CLIENT_IDS` da API no Render.
+  - Build `preview` Android (APK) disparado: `6052f697-a016-4ff9-8957-d5c6e3927637`.
+- **PRs:** este PR de docs.
+- **Decisões:** o client Android fica num projeto do Google Cloud separado do web/iOS (`petcard-513714`, na conta do PetCard), porque o `683304030553` não está acessível. A tela de consentimento fica em **Teste**: publicar exige página inicial, política de privacidade e termos públicos, e o usuário não quer custo nem publicação agora.
+- **Descobertas:** o "Publicar app" do Google Auth Platform fica desativado sem os links de privacidade e termos no Branding. Candidato a item derivado (web: páginas `/privacidade` e `/termos`), se o time quiser abrir o login Google além dos usuários de teste.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** instalar o APK do build `6052f697-…` num Android com uma das contas de teste e validar: mapa, login Google e MOB-01 (entrar, sair, o lembrete não chega). Passou → marcar o aceite do MOB-15 e a validação em aparelho na #68 e fechá-la. Depois, o rascunho da **auditoria delta** (`docs/auditorias/2026-11-XX-delta.md`) e o roteiro de testes manuais (16 UCs). P14 segue esperando a PC-108.
+
+## 2026-11-04 — alvaro-unifor (com Claude) — P11 (MOB-15)
+- **Feito:**
+  - MOB-15, configuração (com o usuário): o `env:list` de production tinha só a URL da API e o `GOOGLE_SERVICES_JSON`. O usuário cadastrou a chave do Maps e os client IDs iOS e web e liberou o `NODE_AUTH_TOKEN` para o production (só estava no preview; sem ele, o `npm ci` do builder falha no `@petcardorg/shared`). Faltava um client ID **Android** em qualquer lugar (preview e `.env` local com a linha vazia): o usuário o criou no Google Cloud, no projeto `683304030553` (pacote `com.petcardorg.mobile`, SHA-1 da keystore do EAS). Falta cadastrá-lo no EAS.
+  - MOB-15, código: mobile, branch `fix/aud-p11-variaveis-distribuicao`, 1 commit (PR mobile#108). `afe36e0`: nos perfis `preview` e `production`, o `app.config.ts` reprova o build e lista o que falta entre a URL da API, a chave do Maps e o client ID do Google da plataforma (`EAS_BUILD_PLATFORM`). Verificação: `typecheck` ✅ · `test:cov` 284 ✅ · lint sem erro além do `␍`.
+- **PRs:** PetCardOrg/petcard-mobile#108 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:**
+  - Desde 9/10/2026, o Google Cloud exige verificação em duas etapas: a conta Google do PetCard fica bloqueada no console até ativá-la.
+  - No Jest, o `app.config` relê o `.env` local e preenche as variáveis apagadas com `delete`; os testes zeram com `''`, que o Expo não sobrescreve.
+  - A extensão do Chrome só controla abas que ela mesma abre (não a aba do usuário), e o login nelas é o do Chrome, com várias contas Google (`authuser`).
+- **Bloqueios:** depois do merge da mobile#108, um build Android `preview`/`production` falha até o `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` entrar no EAS.
+- **Próximo passo:** com o usuário: (1) `eas env:create --name EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID --value <id> --environment production --environment preview --visibility sensitive --non-interactive` (se o SHA-1 do preview for diferente, um client por ambiente) e conferir no `env:list`; (2) depois do merge da mobile#108, `eas build --profile production --platform android` e validar em aparelho: mapa, login Google e o MOB-01 (entrar, sair, o lembrete não chega mais). Isso fecha o MOB-15 e a #68. Depois, o rascunho da **auditoria delta** (`docs/auditorias/2026-11-XX-delta.md`, no formato do de 2026-07) e o roteiro de testes manuais (16 UCs).
+
+## 2026-11-04 — alvaro-unifor (com Claude) — Release `develop → main` (api, web, mobile)
+- **Feito:**
+  - Com a liberação do usuário ("o que temos até agora", api, web e mobile), PRs de release abertos e mergeados por ele: **api#199** (P15 e P16), **web#75** (WEB-05 e P15), **mobile#107** (MOB-01). Sem migration nem variável de ambiente nova.
+  - CI da `main` verde nos três. "CD Produção" da API aprovado e verde. Vercel: deploy do commit da release concluído.
+  - Produção conferida: `GET /` → 200; `DELETE /veterinarios/me` sem token → 401. O Swagger de produção não publica o JSON (`/docs-json` → 404), então a versão no ar foi confirmada pelo CD, não pelo documento.
+  - Status: WEB-05, API-28, WEB-17, API-22 e API-29 🚀; MOB-01 🚀 na `main` do mobile, chega aos aparelhos no próximo build EAS. Os 63 concluídos estão todos na `main`.
+- **PRs:** PetCardOrg/petcard-api#199, PetCardOrg/petcard-web#75, PetCardOrg/petcard-mobile#107 e PetCardOrg/petcard-docs#115 (mergeados) · este PR de docs
+- **Decisões:** o usuário liberou a release de api, web e mobile. O docs não foi citado: a `main` do docs não foi tocada.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** com o usuário: **MOB-15** (`eas env:list --environment production` precisa ter `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` e os client IDs do Google), novo build EAS com o MOB-01 e a validação de push e Google em aparelho (entrar, sair e conferir que o lembrete não chega mais); com isso a #68 fecha. Se o usuário quiser, release `develop → main` do docs. O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
+## 2026-11-04 — alvaro-unifor (com Claude) — P16 concluído
+- **Feito:** api#198 e docs#114 mergeadas. CI da `develop` da API verde em `0bf4952`, já com o passo `npm run typecheck`. **API-29 ✅ em develop**; **P16 completo**: #113 fechada.
+- **PRs:** PetCardOrg/petcard-api#198 e PetCardOrg/petcard-docs#114 (mergeados) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** tudo o que sobra precisa do usuário: (1) liberar a ida para a `main` de **API e web juntas** (WEB-05, API-28, WEB-17, API-22 na web; API-28, WEB-17, API-22 e API-29 na API) e do mobile (MOB-01); (2) MOB-15 (variáveis do ambiente `production` do EAS) e a validação de push e Google em aparelho, que fecham a #68. O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
+## 2026-11-04 — alvaro-unifor (com Claude) — P16 (API-29)
+- **Feito:**
+  - Sincronização: api#197 e docs#112 já mergeadas; api e docs locais de volta na `develop`.
+  - Com o usuário, criado o **P16**, "Tipos nos specs da API" (#113), só com o API-29.
+  - API, branch `test/aud-p16-tipos-specs`, 1 commit (PR api#198). **API-29** `59a8587`: corrigidos os 6 erros de tipo (mocks do Google tipados com `jest.fn<…, unknown[]>`, cast da carteira pública via `unknown`, `veterinario` opcional no mock do Prisma da vacina); novo script `npm run typecheck` (`tsc --noEmit -p tsconfig.json`, inclui specs e e2e), rodado no CI depois do `lint:check`. Verificação: `typecheck` ✅ · `lint` ✅ (sem diff) · `npm test` 861 ✅ · `build` ✅.
+- **PRs:** PetCardOrg/petcard-api#198 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões (com o usuário):** o API-29 vira o pacote P16.
+- **Descobertas:** os totais do painel já contavam o API-29 (69 itens); não mudam.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da api#198: fechar a #113 e marcar o API-29 ✅. O resto precisa do usuário: (1) liberar a ida para a `main` de **API e web juntas** (WEB-05, API-28, WEB-17, API-22 na web; API-28, WEB-17, API-22 e agora API-29 na API) e do mobile (MOB-01); (2) MOB-15 (variáveis do ambiente `production` do EAS) e a validação de push e Google em aparelho, que fecham a #68. O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P15 concluído
+- **Feito:**
+  - api#196, web#74 e docs#111 mergeadas. **P15 completo na `develop`**: #109 fechada. MOB-01 (mobile#106) também ✅ em develop.
+  - Ao regenerar o OpenAPI, as respostas do status do CRMV e do histórico não apareciam: o plugin do Swagger não infere tipos de pacote externo, e o status do CRMV deixou de ser um tipo local no WEB-17 (antes aparecia como `object` genérico; o histórico nunca apareceu). PR api#197 com `@ApiOkResponse` nas três rotas, só documentação.
+  - `docs/api/openapi.json` e a collection do Postman regenerados com o código da api#197 sobre a `develop` (58 paths, 47 schemas; 76 requests, 15 públicos). Entram o corpo do `DELETE /veterinarios/me`, `limit`/`cursor` do histórico e as respostas com `motivo` e `proximo_cursor`.
+- **PRs:** PetCardOrg/petcard-api#196, PetCardOrg/petcard-web#74 e PetCardOrg/petcard-docs#111 (mergeados) · PetCardOrg/petcard-api#197 (aberto) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** o total de concluídos do painel é contado à mão; os arquivos de itens misturam seções e tabelas, e uma contagem por script não bateu. Fica 62 somando o que mudou desde a última atualização.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da api#197 e deste PR: (1) a próxima ida para a `main` leva **API e web juntas** (WEB-05, API-28, WEB-17 e API-22 na web; API-28, WEB-17 e API-22 na API) e o mobile (MOB-01); precisa de liberação do usuário. (2) Com o usuário: MOB-15 (variáveis do ambiente `production` do EAS) e a validação de push e Google em aparelho, que fecham a #68. (3) O API-29 (specs da API com erro de tipo) não tem pacote: propor ao usuário. (4) O P14 fica para a v1.0.0. Depois, o fechamento do PLANO: roteiro de testes manuais (16 UCs) e a auditoria delta.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P15 (release 0.25.0, API e web)
+- **Feito:**
+  - shared#86 e docs#110 mergeadas. Com a liberação do usuário, release shared#87 (`develop → main`) mergeada: *Publish Package* verde e o registry lista a **0.25.0**. SH-09 🚀.
+  - API, branch `feature/aud-p15-consumo-0-25`, 5 commits (PR api#196): shared `^0.25.0` (`141d564`, lock só com as linhas do shared); `c3c67bd` (o `lint --fix` tirou um cast que o `| null` do SH-09 tornou desnecessário); **API-28** `e274cc8`; **WEB-17** `2f87bd8`; **API-22** `68bc601`. Verificação: `lint` ✅ · `test:cov` 861 ✅ · `build` ✅ · `test:e2e` 88 ✅.
+  - Web, branch `feature/aud-p15-consumo-0-25`, 3 commits (PR web#74): shared `^0.25.0` (`d9d94f2`); **WEB-17** `e3b4e3c`; **API-28** `34bf6a5`. Verificação: `lint` ✅ · `npm test` 235 ✅ · `build` ✅ (sem `class-validator` no bundle).
+- **PRs:** PetCardOrg/petcard-shared#86, #87 e PetCardOrg/petcard-docs#110 (mergeados) · PetCardOrg/petcard-api#196 e PetCardOrg/petcard-web#74 (abertos, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** o usuário liberou a release 0.25.0 do shared.
+- **Descobertas:**
+  - A collation `en_US` do Postgres ignora o hífen ao comparar texto, e os ids são UUIDs em `text`: comparar ids no JavaScript dá outra ordem que a do banco. Na paginação do histórico, o desempate dentro de uma tabela segue a ordem do banco, e o cursor usa a comparação do próprio banco.
+  - Na web, importar um **enum** do shared como valor puxa o pacote inteiro (com os decorators que exigem `reflect-metadata`) e quebra os testes; só tipos podem vir do shared. O valor estável fica numa constante tipada.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da api#196 e da web#74: (1) regenerar `docs/api/openapi.json` e a collection do Postman a partir da `develop` da API (mudaram o corpo do `DELETE /veterinarios/me`, a query do histórico e a resposta do CRMV); (2) fechar a #109; (3) a próxima ida para a `main` leva **API e web juntas** (a web antiga não exclui a conta do vet com a API nova) e precisa de liberação do usuário. Depois disso, sobram o P11 (MOB-15 e a validação em aparelho, com o usuário), o API-29 (sem pacote) e o P14 (só na v1.0.0).
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P15 (shared 0.25.0)
+- **Feito:**
+  - mobile#106 e docs#108 mergeadas (MOB-01 ✅ em develop).
+  - Criado o **P15**, "Contratos do shared 0.25.0" (#109), com o que sobrou fora do P14 e depende de contrato novo: SH-09, API-28, WEB-17 e API-22. O API-22 e o WEB-17 saíram do P13; com isso, **o P13 está completo** e a #70 foi fechada.
+  - Shared, branch `feature/aud-p15-contratos-0-25`, 5 commits (PR shared#86): **SH-09** `ef9ffa2` (`@IsOptionalNaoNulo()`, anuláveis com `| null`), **API-28** `ead3abb` (`DeleteVeterinarioDto`), **WEB-17** `f34430c` (`CrmvStatusResponseDto` com `motivo`, enum `CrmvMotivoRecusa`), **API-22** `9cbb5c3` (`HistoricoClinicoQueryDto`, `proximo_cursor`), release `2dd313e` (0.25.0). Verificação: `build` ✅ · `lint:check` ✅ · `npm test` 55 ✅ · `check-version-bump` ✅.
+  - Compatibilidade conferida antes de publicar: com o `dist` da branch copiado no `node_modules` dos consumidores, o `tsc` do build da API, da web e do mobile passa sem erro. O `node_modules` foi restaurado.
+- **PRs:** PetCardOrg/petcard-mobile#106 e PetCardOrg/petcard-docs#108 (mergeados) · PetCardOrg/petcard-shared#86 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões (com o usuário):** seguir com o pacote do shared 0.25.0. Desenho: a paginação do histórico é **opcional** (sem `limit`, responde tudo), para os clientes atuais seguirem funcionando; o `motivo` do CRMV é calculado na resposta a partir da `situacao` gravada, sem migration.
+- **Descobertas / itens derivados:** **API-29**: o `tsc` com os specs acusa 6 erros de tipo que já existiam (o Jest não faz checagem completa de tipos, então ninguém via).
+- **Bloqueios:** a publicação da 0.25.0 (`develop → main` do shared) precisa de liberação do usuário.
+- **Próximo passo:** depois do merge da shared#86, **perguntar ao usuário** se libera a release 0.25.0 (PR `develop → main` do shared). Publicada, na API (branch `feature/aud-p15-consumo-0-25`): shared `^0.25.0`; **API-28** (`DELETE /veterinarios/me` com `DeleteVeterinarioDto` e `assertSenhaAtualConfere`); **WEB-17** (`motivo` nas respostas do status do CRMV); **API-22** (`limit`/`cursor` no `GET /pets/:petId/historico-clinico`). Depois, na web: shared `^0.25.0`, pedir a senha ao excluir a conta do vet (API-28) e usar o `motivo` no lugar do `crmvSituacao.ts` (WEB-17).
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P9 fechado; P11 (MOB-01)
+- **Feito:**
+  - web#73 e docs#107 mergeadas. **P9 completo**: #66 fechada (WEB-05 ✅ em develop; vai para a produção na próxima release da web).
+  - Mobile, branch `fix/aud-p11-push-logout`, 1 commit (PR mobile#106). **MOB-01** `e2d443d`: o logout descadastra o token de push do aparelho (`deviceService.unregisterCurrent()`, `DELETE /devices/:token`, timeout de 3 s, erro ignorado) antes de limpar a sessão. Verificação: `typecheck` ✅ · `test:cov` 280 ✅ · lint sem erro além do `␍`.
+  - Ambiente do teste manual do WEB-05 desfeito: API da 3001 e web da 5173 paradas, `petcard-api/.run-tmp` apagada.
+- **PRs:** PetCardOrg/petcard-web#73 e PetCardOrg/petcard-docs#107 (mergeados) · PetCardOrg/petcard-mobile#106 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** o processo antigo da API de dev (`npm run start:dev`, aberto pelo usuário) parou de responder na 3000 depois das trocas de branch; a permissão para encerrá-lo foi negada, então ele ficou aberto. O usuário fecha.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** depois do merge da mobile#106: (1) **MOB-15** com o usuário (configuração do EAS: `eas env:list --environment production` precisa ter `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` e os client IDs do Google) e validar push/Google em aparelho; com isso a #68 fecha. (2) O que sobra fora do P14 depende de uma **release minor do shared (0.25.0)**: SH-09 (`null` nos PATCH), DTO do `DELETE /veterinarios/me` (API-28), DTO de status do CRMV com motivo estável (WEB-17) e DTO de paginação (API-22). Propor ao usuário um pacote "shared 0.25.0" com esses quatro; a release precisa de liberação dele.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P9 (WEB-05)
+- **Feito:** web, branch `fix/aud-p9-limpar-opcionais`, 1 commit (PR web#73). **WEB-05** `61ca996`: na edição, opcional apagado vai como `null` (registros clínicos e nota clínica); a criação continua omitindo. `ComLimpeza<T>` tipa o `null` nos PATCH. Verificação: `lint` ✅ · `npm test` 233 ✅ · `build` ✅.
+- **PRs:** PetCardOrg/petcard-web#73 (aberto, review pedido a camilampinheiro) · este PR de docs
+- **Decisões:** nenhuma.
+- **Descobertas:** nenhuma nova (o `null` sem tipo no shared já é o SH-09).
+- **Bloqueios:** nenhum.
+- **Teste manual:** feito pelo usuário com a web (branch do WEB-05) e uma API local na porta 3001 (código da `develop`, banco `petcard_dev`, com `FCM_ENABLED=false` e `CRMV_PROVIDER=stub` só na execução): os opcionais apagados somem depois de salvar. A web usa `HashRouter`: as rotas locais são `http://localhost:5173/#/vet/login`, `/#/vet/pets/<id>` etc.
+- **Próximo passo:** depois do merge da web#73, o P9 (#66) está completo: fechar a issue. Depois, **MOB-01** (P11, #68) no mobile, branch `fix/aud-p11-push-logout` a partir da `develop`: `deviceService.unregister(token)` antes do `clearSession()` no `logout`, com erro ignorado e timeout curto (teste: chama `unregister` e depois limpa a sessão, mesmo se ele falhar).
+
+## 2026-11-03 — alvaro-unifor (com Claude) — P6 concluído
+- **Feito:** o usuário gerou o APK do app a partir da `main` e testou em aparelho, inclusive o "Confirmar com Google" do MOB-14. **MOB-14 e API-04 🚀**: o P6 está todo em produção. #63 fechada. docs#106 mergeada.
+- **PRs:** PetCardOrg/petcard-docs#106 (mergeado) · este PR de docs
+- **Decisões:** o APK testado conta como o "build mobile" do deploy do P6.
+- **Descobertas:** nenhuma.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** **WEB-05** (P9, #66) na web, branch `fix/aud-p9-limpar-opcionais` a partir da `develop`: na edição dos registros clínicos, campo opcional esvaziado vai como `null` (na criação, continua omitido). Depois, **MOB-01** (P11, #68): `deviceService.unregister` antes de `clearSession` no logout. O MOB-15 (P11) é configuração do EAS, com o usuário.
+
+## 2026-11-03 — alvaro-unifor (com Claude) — Release `develop → main` (api, web, mobile, docs)
+- **Feito:**
+  - Antes da release, revisão do que ia para a `main`. Na API: sem migration nova; `CRMV_PROVIDER` e `REMINDERS_TRIGGER_SECRET` passam a ser obrigatórios no boot; o staging já rodava a `develop` com `NODE_ENV=production`. O secret `REMINDERS_API_URL` foi conferido e corrigido pelo usuário (o LOG de 30/10 citava `https://petcard-api.onrender.com`, que responde 404; a produção é `https://petcard-api-v1yi.onrender.com`).
+  - docs#104: a `main` do docs entrou na `develop`, mantendo o OpenAPI da `develop`. O de 52 rotas (docs#47) tinha ido direto para a `main` e dava conflito.
+  - PRs de release abertos e mergeados pelo usuário: **api#195**, **web#72**, **mobile#105**, **docs#105**. O "CD Produção" da API foi aprovado e passou; o run antigo parado desde 20/10 foi cancelado. CI da `main` verde nos três.
+  - Produção conferida: `GET /` → 200, `DELETE /devices/x` → 401 (rota do P6 no ar), `POST /internal/reminders/run` sem segredo → 401. "Lembretes diários" rodado à mão em produção: verde. Vercel: build do commit da release (`e35bfee`) com sucesso.
+  - Status: tudo o que estava ✅ em develop virou **🚀 em produção** (54 itens). API-04 e MOB-14 seguem 🟨 até o build EAS do app.
+- **PRs:** PetCardOrg/petcard-api#195, PetCardOrg/petcard-web#72, PetCardOrg/petcard-mobile#105, PetCardOrg/petcard-docs#104 e #105 (mergeados) · este PR de docs
+- **Decisões:** o usuário liberou a release de api, web, mobile e docs (a liberação vale para esta release).
+- **Descobertas:**
+  - O `environment.url` do `cd-production.yml` da API aponta para `https://petcard-api.onrender.com`, que não existe mais (só afeta o link exibido no GitHub).
+  - O domínio de produção da web não está registrado em nenhum repo: o `petcard-web-dusky.vercel.app` citado responde `DEPLOYMENT_NOT_FOUND`, e o projeto da Vercel agora é `apppetcard-8982/petcard-web`. A web nova não foi aberta no navegador nesta sessão.
+- **Bloqueios:** nenhum.
+- **Próximo passo:** (1) gerar o APK `preview` no EAS e testar em aparelho (login e-mail e Google, mapa, push, carteira, agendamentos, excluir conta com senha e com Google); passando, build de produção. Isso fecha o MOB-14, o API-04 e a #63. (2) Seguir com o **MOB-01** (P11, #68), já liberado pelo API-23 em produção, e o **WEB-05** (P9, #66).
+
 ## 2026-11-03 — alvaro-unifor (com Claude) — P6 (OpenAPI)
 - **Feito:**
   - mobile#104 e docs#102 mergeadas. Os três PRs do P6 estão na `develop`.

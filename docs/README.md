@@ -25,6 +25,12 @@ Revisões de qualidade cruzando planejado (TAP/DAS) × implementado × confiáve
 |---|---|
 | [Roteiro de testes manuais](qa/roteiro-testes-manuais.md) | Passos e resultado esperado dos 16 casos de uso (UC01–UC16), revalidado a cada marco |
 
+## Teste de usabilidade
+
+| Documento | Descrição |
+|---|---|
+| [Respostas do teste de usabilidade](usabilidade/README.md) | Planilha com as 28 respostas do formulário (app do tutor e site do veterinário), anexada ao TCC como apêndice — [`.xlsx`](usabilidade/PetCard%20-%20Respostas%20do%20teste%20de%20usabilidade.xlsx) |
+
 ## API
 
 | Artefato | Descrição |
